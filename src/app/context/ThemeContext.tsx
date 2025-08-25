@@ -11,10 +11,12 @@ import { createContext, useContext, useState } from "react";
 
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
-export const ThemeContextProvider = ({children}: {
+export const ThemeContextProvider = ({
+  children,
+}: {
   children: React.ReactNode;
 }) => {
-  const [theme, setThemeState] = useState<Theme>("light");
+  const [theme, setThemeState] = useState<Theme>("dark");
 
   const setTheme = (theme: string) => {
     setThemeState(theme as Theme);
