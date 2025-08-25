@@ -32,7 +32,7 @@ export default function Blogs() {
             {...cardHoverSmall}
           >
             <div className="p-6">
-              <motion.h2 
+              <motion.h2
                 className="text-xl font-semibold mb-2"
                 whileHover={{ x: 5 }}
                 transition={{ type: "spring", stiffness: 300 }}

@@ -16,7 +16,7 @@ export const ThemeContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [theme, setThemeState] = useState<Theme>("dark");
+  const [theme, setThemeState] = useState<Theme>("light");
 
   const setTheme = (theme: string) => {
     setThemeState(theme as Theme);

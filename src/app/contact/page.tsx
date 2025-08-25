@@ -80,6 +80,7 @@ export default function Contact() {
             initial="initial"
             animate="animate"
           >
+            {/* Email */}
             <motion.div
               className="flex items-center gap-4"
               variants={fadeInUp}
@@ -90,17 +91,17 @@ export default function Contact() {
               <div>
                 <h3 className="font-semibold">Email</h3>
                 <a
-                  href="mailto:your.email@example.com"
+                  href="mailto:youssef.elmohamadi.dev@gmail.com"
                   className="text-secondary hover:text-primary"
                 >
-                  your.email@example.com
+                  youssef.elmohamadi.dev@gmail.com
                 </a>
               </div>
             </motion.div>
 
+            {/* Phone */}
             <motion.div
               className="flex items-center gap-4"
-              //variants={fadeInUp}
               whileHover={{ x: 10 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
@@ -108,14 +109,15 @@ export default function Contact() {
               <div>
                 <h3 className="font-semibold">Phone</h3>
                 <a
-                  href="tel:+1234567890"
+                  href="tel:+201098337262"
                   className="text-secondary hover:text-primary"
                 >
-                  +1 (234) 567-890
+                  +20 10 9833 7262
                 </a>
               </div>
             </motion.div>
 
+            {/* Location */}
             <motion.div
               className="flex items-center gap-4"
               variants={fadeInUp}
@@ -125,7 +127,9 @@ export default function Contact() {
               <FaMapMarkerAlt className="h-6 w-6 text-primary" />
               <div>
                 <h3 className="font-semibold">Location</h3>
-                <p className="text-secondary">San Francisco, CA</p>
+                <p className="text-secondary">
+                  Arad Al-lewaa, Giza Governorate, Egypt
+                </p>
               </div>
             </motion.div>
           </motion.div>

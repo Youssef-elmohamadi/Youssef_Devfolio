@@ -24,10 +24,11 @@ export default function About() {
       {/* Bio Section */}
       <motion.section className="mb-16" {...fadeInUp}>
         <p className="text-lg text-secondary max-w-3xl mx-auto text-center">
-          I&apos;m a passionate Full Stack Developer with expertise in building
-          modern web applications. With a strong foundation in both frontend and
-          backend technologies, I create seamless user experiences and robust
-          server-side solutions.
+          Seeking a challenging career in{" "}
+          <span className="font-semibold">Software Engineering</span>, working
+          with a creative team to gain more experience, solving problems to make
+          people’s lives easier, and adding value to organizations through smart
+          working and continuous learning of new technologies.
         </p>
       </motion.section>
 
@@ -42,36 +43,47 @@ export default function About() {
           initial="initial"
           animate="animate"
         >
+          {/* Frontend Skills */}
           <motion.div
             className="bg-white dark:bg-dark/50 p-6 rounded-lg shadow-md"
             variants={fadeInUp}
             {...cardHover}
           >
             <FaCode className="h-8 w-8 text-primary mb-4" />
-            <h3 className="text-xl font-semibold mb-2">Frontend</h3>
+            <h3 className="text-xl font-semibold mb-2">Frontend Skills</h3>
             <ul className="text-secondary space-y-2">
-              <li>React / Next.js</li>
-              <li>TypeScript</li>
-              <li>Tailwind CSS</li>
-              <li>HTML5 / CSS3</li>
+              <li>HTML / CSS / SASS</li>
+              <li>JavaScript / TypeScript</li>
+              <li>Bootstrap / Tailwind CSS</li>
+              <li>React.js / Next.js</li>
+              <li>React Router DOM / Axios</li>
+              <li>Tanstack Query (React Query)</li>
+              <li>React Table</li>
+              <li>Framer Motion</li>
+              <li>Firebase (Basic)</li>
             </ul>
           </motion.div>
 
+          {/* Programming Languages & Professional */}
           <motion.div
             className="bg-white dark:bg-dark/50 p-6 rounded-lg shadow-md"
             variants={fadeInUp}
             {...cardHover}
           >
             <FaLaptopCode className="h-8 w-8 text-primary mb-4" />
-            <h3 className="text-xl font-semibold mb-2">Backend</h3>
+            <h3 className="text-xl font-semibold mb-2">
+              Programming & Professional
+            </h3>
             <ul className="text-secondary space-y-2">
-              <li>Node.js</li>
-              <li>Express</li>
-              <li>PostgreSQL</li>
-              <li>MongoDB</li>
+              <li>C++ / C#</li>
+              <li>Data Structures</li>
+              <li>OOP (Object-Oriented Programming)</li>
+              <li>API Integration</li>
+              <li>SOLID Principles</li>
             </ul>
           </motion.div>
 
+          {/* Tools & Others */}
           <motion.div
             className="bg-white dark:bg-dark/50 p-6 rounded-lg shadow-md"
             variants={fadeInUp}
@@ -81,9 +93,8 @@ export default function About() {
             <h3 className="text-xl font-semibold mb-2">Tools & Others</h3>
             <ul className="text-secondary space-y-2">
               <li>Git / GitHub</li>
-              <li>Docker</li>
-              <li>AWS</li>
-              <li>CI/CD</li>
+              <li>Problem Solving (CodeWars, CodeForces)</li>
+              <li>Operating Systems: Windows (7, 8, 10), Linux (Ubuntu)</li>
             </ul>
           </motion.div>
         </motion.div>
@@ -106,22 +117,34 @@ export default function About() {
             {...cardHoverSmall}
           >
             <h3 className="text-xl font-semibold mb-2">
-              Senior Full Stack Developer
+              Freelance Frontend Developer
             </h3>
-            <p className="text-primary mb-2">Company Name • 2020 - Present</p>
+            <p className="text-primary mb-2">Remote • Apr 2025 – Jun 2025</p>
             <ul className="text-secondary list-disc list-inside space-y-2">
               <li>
-                Led development of multiple web applications using React and
-                Node.js
+                Built the entire frontend of a multi-role e-commerce platform
+                (Tashtiba) using React.js, TypeScript, and Tailwind CSS.
               </li>
               <li>
-                Implemented CI/CD pipelines reducing deployment time by 50%
+                Implemented role-based dashboards for users, vendor admins, and
+                super admins.
               </li>
-              <li>Mentored junior developers and conducted code reviews</li>
+              <li>
+                Added multi-language support (Arabic/English) with i18next and
+                protected routing with React Router.
+              </li>
+              <li>
+                Developed reusable components (tables, modals, dropdowns, form
+                validation).
+              </li>
+              <li>
+                Collaborated with backend developer via REST APIs, integrating
+                React Query for data fetching, state management, and caching.
+              </li>
             </ul>
           </motion.div>
 
-          <motion.div
+          {/* <motion.div
             className="bg-white dark:bg-dark/50 p-6 rounded-lg shadow-md"
             variants={fadeInUp}
             {...cardHoverSmall}
@@ -136,7 +159,7 @@ export default function About() {
               </li>
               <li>Optimized database queries improving performance by 40%</li>
             </ul>
-          </motion.div>
+          </motion.div> */}
         </motion.div>
       </motion.section>
 
@@ -159,7 +182,10 @@ export default function About() {
             <h3 className="text-xl font-semibold mb-2">
               Bachelor of Science in Computer Science
             </h3>
-            <p className="text-primary mb-2">University Name • 2014 - 2018</p>
+            <p className="text-primary mb-2">
+              Thebes Academy, Cairo, Egypt • 2022 - 2026 Accumulative grade:
+              Very Good.
+            </p>
             <p className="text-secondary">
               Graduated with honors. Focused on software engineering and web
               development.

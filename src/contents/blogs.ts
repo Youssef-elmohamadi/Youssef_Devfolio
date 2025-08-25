@@ -42,5 +42,6 @@ export const blogs: Blog[] = [
             date: '2024-02-20',
             readTime: '10 min read',
             slug: 'building-a-restful-api-with-nodejs-and-express',
+            
         },
   ];
