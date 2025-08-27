@@ -1,26 +1,12 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import { Outfit } from "next/font/google";
+
 import { ThemeContextProvider } from "./context/ThemeContext";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import { SidebarProvider } from "./context/SidebarContext";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+
+const outfit = Outfit({
   subsets: ["latin"],
 });
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title:
-    "Devfolio | Portfolio Website using Next.js, Tailwind CSS, and Framer Motion",
-  description:
-    "Devfolio is a portfolio website for developers to showcase their projects and skills.",
-};
 
 export default function RootLayout({
   children,
@@ -29,13 +15,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`bg-white transition-colors dark:bg-gray-900 dark:text-white ${geistSans.variable} ${geistMono.variable}`}
-      >
+      <body className={`${outfit.className} dark:bg-gray-900`}>
         <ThemeContextProvider>
-          <Navbar />
-          <main className="min-h-screen pt-24">{children}</main>
-          <Footer />
+          <SidebarProvider>{children}</SidebarProvider>
         </ThemeContextProvider>
       </body>
     </html>
