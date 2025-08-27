@@ -15,29 +15,7 @@ import { NextSeo } from "next-seo";
 export default function About() {
   return (
     <>
-      <NextSeo
-        title="About Me | Devfolio"
-        description="Learn more about my skills, experience, and education as a software engineer."
-        canonical="https://youssef-devfolio.vercel.app/about"
-        openGraph={{
-          url: "https://youssef-devfolio.vercel.app/about",
-          title: "About Me | Devfolio",
-          description:
-            "Learn more about my skills, experience, and education as a software engineer.",
-          images: [
-            {
-              url: "https://youssef-devfolio.vercel.app/about-og.png",
-              width: 1200,
-              height: 630,
-              alt: "About Devfolio",
-            },
-          ],
-          siteName: "Devfolio",
-        }}
-        twitter={{
-          cardType: "summary_large_image",
-        }}
-      />
+
       <div className="container max-w-7xl mx-auto py-12">
         <motion.h1
           className="text-4xl font-bold mb-8 text-center"
