@@ -27,13 +27,9 @@ export default function RootLayout({
       <body
         className={`bg-white transition-colors dark:bg-gray-900 dark:text-white ${geistSans.variable} ${geistMono.variable}`}
       >
-        <SidebarProvider>
-          <ThemeContextProvider>
-            <Navbar />
-            <main className="min-h-screen pt-24">{children}</main>
-            <Footer />
-          </ThemeContextProvider>
-        </SidebarProvider>
+        <Navbar />
+        <main className="min-h-screen pt-24">{children}</main>
+        <Footer />
       </body>
     </html>
   );
