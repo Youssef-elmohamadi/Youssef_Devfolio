@@ -1,8 +1,8 @@
+"use client";
 import { Outfit } from "next/font/google";
 
 import { ThemeContextProvider } from "./context/ThemeContext";
 import { SidebarProvider } from "./context/SidebarContext";
-
 
 const outfit = Outfit({
   subsets: ["latin"],

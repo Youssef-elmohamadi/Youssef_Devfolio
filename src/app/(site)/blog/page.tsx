@@ -5,12 +5,12 @@ import Link from "next/link";
 import { FaCalendarAlt, FaClock } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { fadeInUp, staggerContainer, cardHoverSmall } from "@/utils/animations";
-import { NextSeo } from "next-seo"; // 👈
+// import { NextSeo } from "next-seo"; // 👈
 
 export default function Blogs() {
   return (
     <>
-      <NextSeo
+      {/* <NextSeo
         title="Blog Posts | Devfolio"
         description="Read the latest blog posts about web development, React, Next.js, and software engineering tips."
         canonical="https://youssef-devfolio.vercel.app/blogs"
@@ -32,7 +32,7 @@ export default function Blogs() {
         twitter={{
           cardType: "summary_large_image",
         }}
-      />
+      /> */}
 
       <div className="container max-w-7xl mx-auto py-12">
         <motion.h1

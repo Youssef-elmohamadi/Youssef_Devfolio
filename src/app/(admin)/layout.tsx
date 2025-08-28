@@ -5,6 +5,7 @@ import Backdrop from "@/app/(site)/components/Backdrop";
 import { SidebarProvider, useSidebar } from "@/app/context/SidebarContext";
 import React from "react";
 import "./globals.css";
+import { ThemeContextProvider } from "@/app/context/ThemeContext";
 export default function AdminLayout({
   children,
 }: {
@@ -12,7 +13,9 @@ export default function AdminLayout({
 }) {
   return (
     <SidebarProvider>
-      <AdminLayoutContent>{children}</AdminLayoutContent>
+      <ThemeContextProvider>
+        <AdminLayoutContent>{children}</AdminLayoutContent>
+      </ThemeContextProvider>
     </SidebarProvider>
   );
 }
