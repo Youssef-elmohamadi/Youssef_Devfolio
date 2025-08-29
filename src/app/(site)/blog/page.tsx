@@ -64,7 +64,7 @@ export default function Blogs() {
                   transition={{ type: "spring", stiffness: 300 }}
                 >
                   <Link
-                    href={`/blogs/${blog.slug}`}
+                    href={`/blog/${blog.slug}`}
                     className="hover:text-primary transition-colors"
                   >
                     {blog.title}
