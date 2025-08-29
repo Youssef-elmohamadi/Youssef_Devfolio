@@ -7,12 +7,18 @@ export interface Project {
   image: string;
 }
 
+interface Block {
+  type: string;
+  content: string;
+  language?: string;
+}
+
 export interface Blog {
   title: string;
   excerpt: string;
   date: string;
   readTime: string;
   slug: string;
-  content?: any[];
+  content?: Block[];
   lang?: string;
 }
