@@ -44,5 +44,8 @@ export function generateSEO({
       images: image ? [image] : [],
     },
     robots: robots as Metadata["robots"],
+    icons: {
+      icon: "/logo/dark-logo.webp",
+    },
   };
 }
