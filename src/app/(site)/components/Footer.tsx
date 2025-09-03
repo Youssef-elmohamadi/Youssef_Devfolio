@@ -31,7 +31,9 @@ export default function Footer() {
               />
             </Link>
             <p className="text-sm text-center md:text-left text-secondary mt-2">
-              © {new Date().getFullYear()} Devfolio. All rights reserved.
+              © {new Date().getFullYear()} Youssef Elmohamadi{" "}
+              <span className="text-primary">The Forge</span>. All rights
+              reserved.
             </p>
           </div>
 

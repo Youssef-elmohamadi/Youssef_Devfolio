@@ -9,13 +9,23 @@ const outfit = Outfit({
 
 export const metadata: Metadata = {
   title: "Youssef Elmohamadi | Frontend Developer | The Forge",
-  description: "Hi, I'm Youssef, a Frontend Developer and Computer Science student. Explore my projects and articles on React, Next.js, and more.",
-  keywords: ["Youssef Elmohamadi", "Frontend Developer", "React", "Next.js", "Computer Science", "portfolio", "the Forge"],
+  description:
+    "Hi, I'm Youssef, a Frontend Developer and Computer Science student. Explore my projects and articles on React, Next.js, and more.",
+  keywords: [
+    "Youssef Elmohamadi",
+    "Frontend Developer",
+    "React",
+    "Next.js",
+    "Computer Science",
+    "portfolio",
+    "the Forge",
+  ],
   openGraph: {
     title: "Youssef Elmohamadi | Frontend Developer | The Forge",
-    description: "Hi, I'm Youssef, a Frontend Developer and Computer Science student. Explore my projects and articles on React, Next.js, and more.",
-    url: "https://youssef-devfolio.vercel.app/",
-    images: ["https://youssef-devfolio.vercel.app/elmohammadi.jpg"],
+    description:
+      "Hi, I'm Youssef, a Frontend Developer and Computer Science student. Explore my projects and articles on React, Next.js, and more.",
+    url: "https://the-forge-one.vercel.app/",
+    images: ["https://the-forge-one.vercel.app/elmohammadi.jpg"],
     siteName: "the Forge",
     type: "website",
   },
@@ -24,8 +34,9 @@ export const metadata: Metadata = {
     site: "@elmohamadidev",
     creator: "@elmohamadidev",
     title: "Youssef Elmohamadi | Frontend Developer | The Forge",
-    description: "Hi, I'm Youssef, a Frontend Developer and Computer Science student. Explore my projects and articles on React, Next.js, and more.",
-    images: ["https://youssef-devfolio.vercel.app/elmohammadi.jpg"],
+    description:
+      "Hi, I'm Youssef, a Frontend Developer and Computer Science student. Explore my projects and articles on React, Next.js, and more.",
+    images: ["https://the-forge-one.vercel.app/elmohammadi.jpg"],
   },
 };
 

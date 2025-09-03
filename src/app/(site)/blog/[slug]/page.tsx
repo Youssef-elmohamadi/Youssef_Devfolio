@@ -9,12 +9,11 @@ import SingleBlogClient from "./SingleBlogClient";
 //   searchParams?: { [key: string]: string | string[] | undefined };
 // }
 
-
-export async function generateMetadata({ params }:any): Promise<Metadata> {
+export async function generateMetadata({ params }: any): Promise<Metadata> {
   const blogPost = blogs.find((blog) => blog.slug === params.slug);
   if (!blogPost) notFound();
 
-  const url = `https://youssef-devfolio.vercel.app/blog/${blogPost.slug}`;
+  const url = `https://the-forge-one.vercel.app/blog/${blogPost.slug}`;
   return generateSEO({
     title: `${blogPost.title} | Youssef Elmohamadi | The Forge`,
     description: blogPost.excerpt,
@@ -23,7 +22,7 @@ export async function generateMetadata({ params }:any): Promise<Metadata> {
   });
 }
 
-export default function SingleBlogPage({ params }:any) {
+export default function SingleBlogPage({ params }: any) {
   const blogPost = blogs.find((blog) => blog.slug === params.slug);
   if (!blogPost) notFound();
 

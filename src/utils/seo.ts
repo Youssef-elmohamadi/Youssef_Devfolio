@@ -17,7 +17,7 @@ export function generateSEO({
   title,
   description,
   url,
-  image = "https://youssef-devfolio.vercel.app/elmohamadi.jpg",
+  image = "https://the-forge-one.vercel.app/elmohammadi.jpg",
   keywords,
   siteName = "Youssef Elmohamadi | The Forge",
   type = "website",
@@ -27,12 +27,12 @@ export function generateSEO({
   return {
     title,
     description,
-    keywords: keywords?.join(", "), // لازم string مش array
+    keywords: keywords?.join(", "), 
     openGraph: {
       title,
       description,
       url,
-      type, // استخدم الـ prop مش ثابت
+      type, 
       siteName,
       images: image ? [{ url: image }] : [],
     },

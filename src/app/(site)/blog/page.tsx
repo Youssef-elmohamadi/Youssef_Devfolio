@@ -2,12 +2,11 @@ import React from "react";
 import BlogsClientPage from "./BlogsClientPage";
 import { generateSEO } from "@/utils/seo"; // اتأكد من المسار الصحيح
 
-const blogPageUrl = "https://youssef-devfolio.vercel.app/blog";
+const blogPageUrl = "https://the-forge-one.vercel.app/blog";
 const blogPageTitle = "Blog Posts | Youssef Elmohamadi | The Forge";
 const blogPageDescription =
   "Read the latest blog posts about web development, React, Next.js, and software engineering tips.";
-const blogPageImage =
-  "https://youssef-devfolio.vercel.app/youssef.png"; // صورة OG/Twitter مخصصة للمدونة
+const blogPageImage = "https://the-forge-one.vercel.app/youssef.png"; // صورة OG/Twitter مخصصة للمدونة
 
 export const metadata = generateSEO({
   title: blogPageTitle,

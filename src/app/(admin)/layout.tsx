@@ -10,8 +10,9 @@ import AdminLayoutClient from "./AdminLayoutClient"; // 👈 هنفصل client c
 
 export const metadata = generateSEO({
   title: "Admin Dashboard | Youssef Elmohamadi",
-  description: "Manage projects, blogs, and site settings from the admin dashboard.",
-  url: "https://youssef-devfolio.vercel.app/admin",
+  description:
+    "Manage projects, blogs, and site settings from the admin dashboard.",
+  url: "https://the-forge-one.vercel.app/admin",
   type: "website",
   robots: "noindex, nofollow",
   keywords: [
