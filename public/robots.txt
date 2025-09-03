@@ -1,0 +1,10 @@
+# *
+User-agent: *
+Allow: /
+
+
+# Host
+Host: https://the-forge-one.vercel.app
+
+# Sitemaps
+Sitemap: https://the-forge-one.vercel.app/sitemap.xml
