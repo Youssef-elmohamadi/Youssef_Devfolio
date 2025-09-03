@@ -1,11 +1,13 @@
+import React from "react";
+import "./globals.css";
 import AppHeader from "@/app/(site)/components/AppHeader";
 import AppSidebar from "@/app/(site)/components/AppSidebar";
 import Backdrop from "@/app/(site)/components/Backdrop";
-import { SidebarProvider, useSidebar } from "@/app/context/SidebarContext";
-import React from "react";
-import "./globals.css";
+import { SidebarProvider } from "@/app/context/SidebarContext";
 import { ThemeContextProvider } from "@/app/context/ThemeContext";
 import { generateSEO } from "@/utils/seo";
+import AdminLayoutClient from "./AdminLayoutClient"; // 👈 هنفصل client component
+
 export const metadata = generateSEO({
   title: "Admin Dashboard | Youssef Elmohamadi",
   description: "Manage projects, blogs, and site settings from the admin dashboard.",
@@ -29,39 +31,8 @@ export default function AdminLayout({
   return (
     <SidebarProvider>
       <ThemeContextProvider>
-        <AdminLayoutContent>{children}</AdminLayoutContent>
+        <AdminLayoutClient>{children}</AdminLayoutClient>
       </ThemeContextProvider>
     </SidebarProvider>
-  );
-}
-
-function AdminLayoutContent({ children }: { children: React.ReactNode }) {
-  const { isExpanded, isHovered, isMobileOpen } = useSidebar();
-
-  const mainContentMargin = isMobileOpen
-    ? "ml-0"
-    : isExpanded || isHovered
-    ? "lg:ml-[290px]"
-    : "lg:ml-[90px]";
-
-  return (
-    <div className="min-h-screen xl:flex">
-      {/* Sidebar and Backdrop */}
-      <AppSidebar />
-      <Backdrop />
-
-      {/* Main Content Area */}
-      <div
-        className={`flex-1 transition-all duration-300 ease-in-out ${mainContentMargin}`}
-      >
-        {/* Header */}
-        <AppHeader />
-
-        {/* Page Content */}
-        <div className="p-4 mx-auto max-w-screen-2xl md:p-6">
-          {children}
-        </div>
-      </div>
-    </div>
   );
 }
