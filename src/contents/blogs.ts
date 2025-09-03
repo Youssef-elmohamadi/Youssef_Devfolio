@@ -12,17 +12,17 @@ export const blogs: Blog[] = [
       {
         type: "text",
         content:
-          "زمان React كانت بتستخدم نظام اسمه Stack Reconciler عشان تحدث الـ UI، بس كان عندها مشكلة كبيرة… أي تحديث كان لازم يخلص كله مرة واحدة الاول. ده معناه إن لو حصل تحديث تقيل، الصفحة كلها بتجمد معاه.",
+          "Previously, React used a system called Stack Reconciler to update the UI, but it had a big problem… any update had to finish entirely in one go first. That means if a heavy update happened, the whole page would freeze along with it.",
       },
       {
         type: "text",
         content:
-          "المشاكل الأساسية مع Stack Reconciler:\n\n- أي تحديث لازم يخلص بالكامل، حتى لو كان تقيل.\n- مفيش تأجيل: الكتابة في input ممكن تتأخر.\n- كل التحديثات بنفس الأولوية.",
+          "Main issues with Stack Reconciler:\n\n- Any update had to complete fully, even if it was heavy.\n- No deferring: typing in an input could be delayed.\n- All updates had the same priority.",
       },
       {
         type: "text",
         content:
-          "لو بصيت على الكود ده هتفهم إيه اللي بيحصل مع Stack Reconciler:",
+          "If you look at this code, you’ll understand what happens with Stack Reconciler:",
       },
       {
         type: "code",
@@ -35,13 +35,13 @@ function App() {
   const [list, setList] = useState([]);
 
   const handleClick = () => {
-    setList(products); // تحديث كبير مرة واحدة = تهنيج
+    setList(products); // Large update all at once = freeze
   };
 
   return (
     <div>
-      <button onClick={handleClick}>حمل المنتجات</button>
-      <input type="text" placeholder="اكتب هنا" className="border p-2 block my-2" />
+      <button onClick={handleClick}>Load Products</button>
+      <input type="text" placeholder="Type here" className="border p-2 block my-2" />
       {list.map((item, index) => (
         <p key={index}>{item}</p>
       ))}
@@ -54,20 +54,20 @@ export default App;`,
       {
         type: "text",
         content:
-          "لما تضغط على الزر، React بتحاول تعرض 1000 منتج مرة واحدة وده بيهنج الصفحة. أي ضغط أو كتابة أثناء التحديث مش هيتنفذ بسرعة.",
+          "When you click the button, React tries to render 1000 products at once, which freezes the page. Any typing or clicking during the update won’t execute immediately.",
       },
       {
         type: "text",
         content:
-          "React Fiber جه يحل المشكلة:\n\n- بيقسم التحديثات لمراحل صغيرة.\n- بيدي أولوية للأحداث المهمة زي الكليكات والكتابة.\n- يقدر يوقف التحديثات التقيلة ويكملها بعدين.",
+          "React Fiber came to solve this problem:\n\n- It splits updates into smaller tasks.\n- It prioritizes important events like clicks and typing.\n- It can pause heavy updates and resume them later.",
       },
       {
         type: "text",
         content:
-          "الخلاصة: Fiber خلا التحديثات مرنة وسلسة، وخلّى React تقدر تدير الأولويات بشكل ذكي.",
+          "In summary: Fiber made updates smoother and allowed React to manage priorities intelligently.",
       },
     ],
-    lang: "ar",
+    lang: "en",
   },
 
   {
@@ -81,30 +81,30 @@ export default App;`,
       {
         type: "text",
         content:
-          "لو شغال بـ React ومش واخد بالك من الأداء فإنت زي اللي سايق عربية ودايس فرامل وهو فاكر إنه بيزود بنزين! 😅",
+          "If you’re coding with React and not paying attention to performance, it’s like driving a car with the brakes pressed while thinking you’re accelerating! 😅",
       },
       {
         type: "text",
         content:
-          "كتير بتحس إن الموقع تقيل رغم إن الكود شكله شغال تمام والسبب يا معلم إن في مكونات بتعمل إعادة Render على الفاضي.",
+          "Often you feel the site is slow even though the code looks fine, and the reason is that some components re-render unnecessarily.",
       },
       {
         type: "text",
         content:
-          "خليني أقولك إمتى بيحصل الـ reRender:\n\n- أي Component في React بيعمل reRender لو الـ state أو props بتاعته اتغيرت.\n- لو الأب (Parent Component) عمل re-render، كل الأولاد (Child Components) هتعمل re-render معاه حتى لو مفيش تغيير حقيقي في الـ props.",
+          "When does reRender happen:\n\n- Any React component re-renders if its state or props change.\n- If the parent component re-renders, all child components will also re-render, even if their props haven’t really changed.",
       },
       {
         type: "text",
-        content: "طيب ودي نحلها إزاي؟",
+        content: "So, how do we fix this?",
       },
       {
         type: "text",
-        content: "أولاً: React.memo()",
+        content: "First: React.memo()",
       },
       {
         type: "text",
         content:
-          "لو عندك Component مش محتاج يعمل re-render غير لما props بتاعته تتغير فعلاً، هتلف الـ component ده بـ React.memo(). كده الـ Component مش هيعمل re-render على الفاضي وهيتعمل re-render بس لما data تتغير.",
+          "If you have a component that should only re-render when its props actually change, wrap it with React.memo(). This prevents unnecessary re-renders and only updates when data changes.",
       },
       {
         type: "code",
@@ -116,12 +116,12 @@ export default App;`,
       },
       {
         type: "text",
-        content: "ثانياً: useCallback()",
+        content: "Second: useCallback()",
       },
       {
         type: "text",
         content:
-          "لو عندك function بتتبعت كـ prop لمكون تاني، كل مرة الأب هيعمل re-render الـ function بتتعاد إنشائها وده بيخلي الـ child يعمل re-render هو كمان. وهنا ييجي دور useCallback().",
+          "If you pass a function as a prop to another component, every time the parent re-renders, the function gets recreated, causing the child to re-render as well. That’s where useCallback() comes in.",
       },
       {
         type: "code",
@@ -135,15 +135,15 @@ const handleClick = useCallback(() => {
       {
         type: "text",
         content:
-          "كده handleClick مش هتتغير بين كل render والتاني، وده يحل المشكلة.",
+          "Now handleClick won’t change between renders, solving the problem.",
       },
       {
         type: "text",
         content:
-          "الخلاصة:\n\n- استخدم React.memo() عشان تمنع إعادة الـ render اللي مالهاش لازمة.\n- استخدم useCallback() علشان تحافظ على ثبات functions وتحسن الأداء.",
+          "Summary:\n\n- Use React.memo() to prevent unnecessary re-renders.\n- Use useCallback() to keep functions stable and improve performance.",
       },
     ],
-    lang: "ar",
+    lang: "en",
   },
   {
     title: "React Performance: Beyond React.memo and useCallback",
@@ -156,38 +156,38 @@ const handleClick = useCallback(() => {
       {
         type: "text",
         content:
-          "عزيزي مطور React، لو حسيت ببطء في تطبيقك، أول حاجة بتفكر فيها هي أدوات زي React.memo، useMemo، و useCallback. وبتحس إنك كده بتحقق أعلى مستويات التحسين! 😅",
+          "Dear React developer, if your app feels slow, the first thing you think of is tools like React.memo, useMemo, and useCallback. You feel like you’re reaching peak optimization! 😅",
       },
       {
         type: "text",
         content:
-          "لكن الحقيقة؟ المستخدم مش هيفتح الموقع ويقول 'الله! ده عدد الـ renders قليل!' هو بس عايز تطبيق سريع وسَلس. الأدوات دي ممكن تكون حلول في بعض الحالات، لكن البطء الحقيقي سببه مش بس إعادة الـ renders. دي مجرد أدوات تحسين مش هي السرعة الحقيقية!",
+          "But the truth? Users don’t open your app and say, 'Wow! The number of renders is low!' They just want a smooth and fast experience. These tools can help in some cases, but real slowness isn’t just about renders. They’re just optimization tools, not real speed boosters!",
       },
       {
         type: "text",
-        content: "الأسباب اللي فعلًا تبطأ التطبيق:",
-      },
-      {
-        type: "text",
-        content:
-          "- تأخر تحميل الكود أو البيانات الأساسية.\n- الصور بتظهر فجأة وبتسبب مشكلة في تنسيق الصفحة (Layout Shift).\n- البيانات بتتأخر جدًا في الوصول والمستخدم بيستنى كتير.\n- Scroll تقيل بسبب صور ضخمة أو عناصر كتير جدًا في الـ DOM.\n- تحميل الجافاسكريبت الأساسية بياخد وقت وبيأخر تفاعل المستخدم.",
-      },
-      {
-        type: "text",
-        content: "طيب إيه اللي يخلي التطبيق سريع بجد؟",
+        content: "The actual reasons apps slow down:",
       },
       {
         type: "text",
         content:
-          "الحاجات اللي بتحسن الأداء فعلاً:\n\n1. تحميل العناصر الأساسية الأول.\n2. استخدام Lazy Loading وتقسيم الكود.\n3. استخدام Suspense مع مكتبات زي React Query أو SWR.\n4. تثبيت الـ Layout باستخدام أبعاد الصور والفيديوهات.\n5. تأجيل تحميل الجافاسكريبت الغير ضرورية.\n6. تخزين الـ state محلي في الكومبوننت لو مش محتاج يكون global.",
+          "- Delayed loading of code or essential data.\n- Images popping in suddenly causing layout shifts.\n- Data taking too long to arrive, leaving users waiting.\n- Heavy scrolling due to large images or too many DOM elements.\n- Initial JavaScript bundle being too heavy, delaying interactivity.",
+      },
+      {
+        type: "text",
+        content: "So, what really makes an app fast?",
       },
       {
         type: "text",
         content:
-          "الخلاصة: بلاش تركّز بس على تقليل الـ renders، ركّز على تحسين تحميل الكود والبيانات. ده اللي يخلي التطبيق فعلاً سريع.",
+          "Real performance boosters:\n\n1. Load essential elements first.\n2. Use lazy loading and code splitting.\n3. Use Suspense with libraries like React Query or SWR.\n4. Stabilize layout by setting image and video dimensions.\n5. Defer loading non-essential JavaScript.\n6. Keep state local if it doesn’t need to be global.",
+      },
+      {
+        type: "text",
+        content:
+          "Summary: Don’t just focus on reducing renders—focus on improving code and data loading. That’s what really makes an app fast.",
       },
     ],
-    lang: "ar",
+    lang: "en",
   },
   {
     title: "Improving React Performance with useTransition",
@@ -200,17 +200,17 @@ const handleClick = useCallback(() => {
       {
         type: "text",
         content:
-          "حاسس إن الأداء مش أحسن حاجة في التطبيقات اللي بتعملها؟ الـ UI بيتقل وبيفريز مع التحديثات الكبيرة؟ تعالى أقولك على Hook في React هيساعدك: useTransition 🥷🏼",
+          "Feeling like your apps aren’t as smooth as they should be? The UI lags and freezes during heavy updates? Let me introduce you to a React hook that helps: useTransition 🥷🏼",
       },
       {
         type: "text",
         content:
-          "الـ useTransition هي React Hook بتستخدم لتأجيل بعض التحديثات عشان تسيب التحديثات المهمة تتنفذ الأول.",
+          "useTransition is a React hook used to defer some updates so important ones can run first.",
       },
       {
         type: "text",
         content:
-          "تخيل إن عندك input للبحث في Array كبيرة وعايز تعرض النتايج مباشرة. الكود هيكون بالشكل ده:",
+          "Imagine you have a search input for a large array and want to display results instantly. The code would look like this:",
       },
       {
         type: "code",
@@ -222,10 +222,10 @@ function SearchComponent() {
   const [isPending, startTransition] = useTransition();
 
   function handleSearch(e) {
-    // تحديث عاجل - فوري
+    // Urgent update - immediate
     setSearchText(e.target.value);
     
-    // تحديث غير عاجل - يمكن تأجيله
+    // Non-urgent update - can be deferred
     startTransition(() => {
       setFilteredData(
         data.filter(item =>
@@ -238,7 +238,7 @@ function SearchComponent() {
   return (
     <>
       <input value={searchText} onChange={handleSearch} />
-      {isPending && <div>جاري البحث...</div>}
+      {isPending && <div>Searching...</div>}
       <ul>
         {filteredData.map(item => <li key={item}>{item}</li>)}
       </ul>
@@ -248,38 +248,39 @@ function SearchComponent() {
       },
       {
         type: "text",
-        content: "في عملية البحث دي، بيحصل تحديثين مع بعض:",
+        content: "In this search process, two updates happen at the same time:",
       },
       {
         type: "text",
         content:
-          "1. تحديث نص البحث داخل الـ input → لازم يكون فوري.\n2. تحديث البيانات وتصفيتها → ممكن يتأجل شوية.",
+          "1. Updating the search text in the input → must be immediate.\n2. Updating and filtering the data → can be slightly delayed.",
       },
       {
         type: "text",
         content:
-          "من غير useTransition، تحديث الكتابة هيتأخر لحد ما التصفية تخلص وده بيأثر على السرعة.",
+          "Without useTransition, typing updates would be delayed until filtering finishes, which hurts responsiveness.",
       },
       {
         type: "text",
-        content: "هنا ييجي دور useTransition:",
-      },
-      {
-        type: "text",
-        content:
-          "useTransition بتقسم التحديثات إلى:\n\n- تحديثات عاجلة: زي تحديث نص البحث.\n- تحديثات غير عاجلة: زي تصفية البيانات.",
+        content: "Here’s where useTransition comes in:",
       },
       {
         type: "text",
         content:
-          "React بتفهم إن التحديثات اللي جوه startTransition ممكن تتأجل لو فيه حاجة أهم بتحصل في نفس الوقت.",
+          "useTransition separates updates into:\n\n- Urgent updates: like updating the input value.\n- Non-urgent updates: like filtering data.",
       },
       {
         type: "text",
-        content: "وده بيخلي الأداء أفضل والتطبيق أسرع من غير ما يحصل تهنيج.",
+        content:
+          "React understands that updates inside startTransition can be deferred if something more important is happening.",
+      },
+      {
+        type: "text",
+        content:
+          "This improves responsiveness and prevents the app from freezing.",
       },
     ],
-    lang: "ar",
+    lang: "en",
   },
 ];
 

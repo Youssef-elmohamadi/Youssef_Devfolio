@@ -10,6 +10,7 @@ import {
 import { useTheme } from "../../context/ThemeContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
@@ -32,8 +33,27 @@ export default function Navbar() {
     <nav className="fixed w-full bg-white/80 dark:bg-dark/80 backdrop-blur-sm z-50">
       <div className="container max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Link href="/" className="text-xl font-bold text-primary">
-            Devfolio&trade;
+          <Link
+            href="/"
+            className="text-xl block dark:hidden font-bold text-primary"
+          >
+            <Image
+              src="/logo/light-logo.webp"
+              width={150}
+              height={100}
+              alt="the Forge Logo"
+            />
+          </Link>
+          <Link
+            href="/"
+            className="text-xl hidden dark:block font-bold text-primary"
+          >
+            <Image
+              src="/logo/dark-logo.webp"
+              width={150}
+              height={100}
+              alt="the Forge Logo"
+            />
           </Link>
 
           {/* Desktop Menu */}
