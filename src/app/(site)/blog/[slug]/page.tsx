@@ -4,16 +4,15 @@ import { generateSEO } from "@/utils/seo";
 import type { Metadata } from "next";
 import SingleBlogClient from "./SingleBlogClient";
 
-// تعريف نوع عام للـ props
-interface PageProps {
-  params: { [key: string]: string | string[] | undefined };
+// تعريف نوع مخصص للصفحة
+interface BlogPageProps {
+  params: { slug: string };
   searchParams?: { [key: string]: string | string[] | undefined };
 }
 
 // تعريف دالة generateMetadata
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const slug = params.slug as string; // تحويل slug لـ string
-  const blogPost = blogs.find((blog) => blog.slug === slug);
+export async function generateMetadata({ params }: BlogPageProps): Promise<Metadata> {
+  const blogPost = blogs.find((blog) => blog.slug === params.slug);
   if (!blogPost) notFound();
 
   const url = `https://youssef-devfolio.vercel.app/blog/${blogPost.slug}`;
@@ -26,9 +25,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 // تعريف الصفحة
-export default function SingleBlogPage({ params }: PageProps) {
-  const slug = params.slug as string; // تحويل slug لـ string
-  const blogPost = blogs.find((blog) => blog.slug === slug);
+export default function SingleBlogPage({ params }: BlogPageProps) {
+  const blogPost = blogs.find((blog) => blog.slug === params.slug);
   if (!blogPost) notFound();
 
   return <SingleBlogClient blogPost={blogPost} />;
