@@ -4,14 +4,16 @@ import { generateSEO } from "@/utils/seo";
 import type { Metadata } from "next";
 import SingleBlogClient from "./SingleBlogClient";
 
-// تعريف نوع مخصص للصفحة
+// تعريف نوع مخصص للـ props
 interface BlogPageProps {
   params: { slug: string };
   searchParams?: { [key: string]: string | string[] | undefined };
 }
 
 // تعريف دالة generateMetadata
-export async function generateMetadata({ params }: BlogPageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: BlogPageProps): Promise<Metadata> {
   const blogPost = blogs.find((blog) => blog.slug === params.slug);
   if (!blogPost) notFound();
 
