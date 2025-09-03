@@ -2,15 +2,16 @@ import { notFound } from "next/navigation";
 import { blogs } from "@/contents/blogs";
 import { generateSEO } from "@/utils/seo";
 import type { Metadata } from "next";
-import SingleBlogClient from "./SingleBlogClient"; // Import the new client component
-import { Blog } from "@/types";
+import SingleBlogClient from "./SingleBlogClient";
 
-// This remains a Server Component because it exports generateMetadata
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}): Promise<Metadata> {
+type PageProps = {
+  params: {
+    slug: string;
+  };
+};
+
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const blogPost = blogs.find((blog) => blog.slug === params.slug);
 
   if (!blogPost) {
@@ -27,15 +28,12 @@ export async function generateMetadata({
   });
 }
 
-// This is also a Server Component. It fetches data and renders the Client Component.
-const SingleBlogPage = ({ params }: { params: { slug: string } }) => {
+export default function SingleBlogPage({ params }: PageProps) {
   const blogPost = blogs.find((blog) => blog.slug === params.slug);
+
   if (!blogPost) {
     notFound();
   }
 
-  // Pass the server-fetched data to the client component
   return <SingleBlogClient blogPost={blogPost} />;
-};
-
-export default SingleBlogPage;
+}
