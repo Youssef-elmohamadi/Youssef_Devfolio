@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { FaGithub, FaTwitter, FaLinkedin } from "react-icons/fa";
 
@@ -9,9 +10,25 @@ export default function Footer() {
           <div className="mb-4 md:mb-0">
             <Link
               href="/"
-              className="text-xl text-center md:text-left font-bold text-primary"
+              className="text-xl block dark:hidden font-bold text-primary"
             >
-              Devfolio&trade;
+              <Image
+                src="/logo/light-logo.webp"
+                width={150}
+                height={100}
+                alt="the Forge Logo"
+              />
+            </Link>
+            <Link
+              href="/"
+              className="text-xl hidden dark:block font-bold text-primary"
+            >
+              <Image
+                src="/logo/dark-logo.webp"
+                width={150}
+                height={100}
+                alt="the Forge Logo"
+              />
             </Link>
             <p className="text-sm text-center md:text-left text-secondary mt-2">
               © {new Date().getFullYear()} Devfolio. All rights reserved.
