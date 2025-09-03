@@ -4,16 +4,13 @@ import { generateSEO } from "@/utils/seo";
 import type { Metadata } from "next";
 import SingleBlogClient from "./SingleBlogClient";
 
-// تعريف نوع مخصص للـ props
-interface BlogPageProps {
-  params: { slug: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-}
+// interface BlogPageProps {
+//   params: { slug: string };
+//   searchParams?: { [key: string]: string | string[] | undefined };
+// }
 
-// تعريف دالة generateMetadata
-export async function generateMetadata({
-  params,
-}: BlogPageProps): Promise<Metadata> {
+
+export async function generateMetadata({ params }:any): Promise<Metadata> {
   const blogPost = blogs.find((blog) => blog.slug === params.slug);
   if (!blogPost) notFound();
 
@@ -26,8 +23,7 @@ export async function generateMetadata({
   });
 }
 
-// تعريف الصفحة
-export default function SingleBlogPage({ params }: BlogPageProps) {
+export default function SingleBlogPage({ params }:any) {
   const blogPost = blogs.find((blog) => blog.slug === params.slug);
   if (!blogPost) notFound();
 

@@ -8,7 +8,7 @@ interface SEOProps {
   image?: string;
   keywords?: string[];
   siteName?: string;
-  type?: "website" | "article" | "product";
+  type?: "website" | "article";
   twitterHandle?: string;
   robots?: string;
 }
