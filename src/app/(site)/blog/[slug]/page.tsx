@@ -4,14 +4,14 @@ import { generateSEO } from "@/utils/seo";
 import type { Metadata } from "next";
 import SingleBlogClient from "./SingleBlogClient";
 
-type PageProps = {
+type BlogPageProps = {
   params: {
     slug: string;
   };
 };
 
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: BlogPageProps): Promise<Metadata> {
   const blogPost = blogs.find((blog) => blog.slug === params.slug);
 
   if (!blogPost) {
