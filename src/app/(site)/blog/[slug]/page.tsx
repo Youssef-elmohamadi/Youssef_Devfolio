@@ -4,14 +4,19 @@ import { generateSEO } from "@/utils/seo";
 import type { Metadata } from "next";
 import SingleBlogClient from "./SingleBlogClient";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}): Promise<Metadata> {
+type PageProps = {
+  params: {
+    slug: string;
+  };
+};
+
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const blogPost = blogs.find((blog) => blog.slug === params.slug);
 
-  if (!blogPost) notFound();
+  if (!blogPost) {
+    notFound();
+  }
 
   const url = `https://youssef-devfolio.vercel.app/blog/${blogPost.slug}`;
 
@@ -23,14 +28,12 @@ export async function generateMetadata({
   });
 }
 
-export default function SingleBlogPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export default function SingleBlogPage({ params }: PageProps) {
   const blogPost = blogs.find((blog) => blog.slug === params.slug);
 
-  if (!blogPost) notFound();
+  if (!blogPost) {
+    notFound();
+  }
 
   return <SingleBlogClient blogPost={blogPost} />;
 }
