@@ -80,7 +80,7 @@ export default function Blogs() {
         >
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link
-              href="/blogs"
+              href="/blog"
               className="inline-block bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary/90 transition-colors"
             >
               View All Posts

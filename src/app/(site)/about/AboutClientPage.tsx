@@ -56,6 +56,7 @@ export default function AboutClient() {
               <li>Bootstrap / Tailwind CSS</li>
               <li>React.js / Next.js</li>
               <li>React Router DOM / Axios</li>
+              <li>Zustand / Redux / Redux Tool kit / Context Api</li>
               <li>Tanstack Query (React Query)</li>
               <li>React Table</li>
               <li>Framer Motion</li>
@@ -113,7 +114,7 @@ export default function AboutClient() {
             {...cardHoverSmall}
           >
             <h3 className="text-xl font-semibold mb-2">
-              Freelance Frontend Developer
+              Freelance Frontend Developer 
             </h3>
             <p className="text-primary mb-2">Remote • Apr 2025 – Jun 2025</p>
             <ul className="text-secondary list-disc list-inside space-y-2">

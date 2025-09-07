@@ -53,7 +53,7 @@ const SingleBlogClient = ({ blogPost }: SingleBlogClientProps) => {
       <div className="max-w-4xl mx-auto">
         <button
           onClick={() => router.back()}
-          className="flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-primary transition-colors mb-8 md:mb-12"
+          className="flex items-center space-x-2 cursor-pointer text-gray-600 dark:text-gray-400 hover:text-primary transition-colors mb-8 md:mb-12"
         >
           <ArrowLeftIcon className="h-5 w-5" />
           <span>Go Back</span>

@@ -50,8 +50,8 @@ export default function Hero() {
             {...fadeInUp}
             transition={{ delay: 0.4 }}
           >
-            Frontend Developer (React, Next.js) |
-            Computer Science Student, Welcome to my digital forge! crafting ideas into reality.
+            Frontend Developer (React, Next.js) | Computer Science Student,
+            Welcome to my digital forge! crafting ideas into reality.
           </motion.p>
           <motion.div
             className="flex justify-center space-x-4 mb-8"
@@ -104,10 +104,10 @@ export default function Hero() {
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
-                href="/contact"
+                href="/youssef-cv"
                 className=" inline-block w-full bg-gray-500  md:w-auto text-gray-800 dark:text-white px-8 py-3 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
               >
-                Contact Me
+                hire Me
               </Link>
             </motion.div>
           </motion.div>
