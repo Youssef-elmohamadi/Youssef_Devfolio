@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { NextResponse } from "next/server";
 import crypto from "crypto";
 
@@ -14,9 +16,16 @@ export async function POST(req: Request) {
   try {
     const API_KEY = process.env.MAILCHIMP_API_KEY as string;
     const AUDIENCE_ID = process.env.MAILCHIMP_AUDIENCE_ID as string;
-    const DATACENTER = API_KEY.split("-")[1]; // ex: us2
 
-    // MD5 hash of lowercase email
+    if (!API_KEY || !AUDIENCE_ID) {
+      console.error("Missing Mailchimp env vars");
+      return NextResponse.json(
+        { message: "Server misconfiguration." },
+        { status: 500 }
+      );
+    }
+
+    const DATACENTER = API_KEY.split("-")[1]; // ex: us2
     const subscriberHash = crypto
       .createHash("md5")
       .update(email.toLowerCase())
@@ -27,13 +36,15 @@ export async function POST(req: Request) {
       {
         method: "PUT",
         headers: {
-          Authorization: `apikey ${API_KEY}`,
           "Content-Type": "application/json",
+          Authorization: `Basic ${Buffer.from(`anystring:${API_KEY}`).toString(
+            "base64"
+          )}`,
         },
         body: JSON.stringify({
           email_address: email,
-          status_if_new: "subscribed", // لو جديد يضاف
-          status: "subscribed", // لو قديم يتأكد إنه لسه مشترك
+          status_if_new: "subscribed",
+          status: "subscribed",
         }),
       }
     );

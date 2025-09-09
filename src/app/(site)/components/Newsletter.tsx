@@ -21,8 +21,8 @@ export default function Newsletter() {
       });
 
       if (res.ok) {
-        setShowPopup(true); // إظهار النافذة المنبثقة عند النجاح
-        setEmail(""); // مسح حقل الإيميل
+        setShowPopup(true); 
+        setEmail(""); 
       } else {
         const data = await res.json();
         setMessage(data.message);
