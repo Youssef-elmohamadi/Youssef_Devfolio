@@ -6,7 +6,7 @@ import Label from "./form/Label";
 import Button from "./ui/button/Button";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "@/app/icons";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -20,7 +20,12 @@ export default function SignInForm() {
   }>({});
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-
+  useEffect(() => {
+    const token = localStorage.getItem("admin_token");
+    if (token) {
+      router.push("/admin");
+    }
+  }, []);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if (name === "email") {
