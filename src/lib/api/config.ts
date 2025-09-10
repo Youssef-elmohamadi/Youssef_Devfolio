@@ -19,5 +19,5 @@ export async function apiFetch(
   if (!res.ok) {
     throw new Error(`API Error: ${res.status}`);
   }
-  return res.json;
+  return res.json();
 }

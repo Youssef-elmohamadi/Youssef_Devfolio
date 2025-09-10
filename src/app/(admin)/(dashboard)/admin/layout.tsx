@@ -1,5 +1,5 @@
 import React from "react";
-import "./globals.css";
+import "../../globals.css";
 import AppHeader from "@/app/(site)/components/AppHeader";
 import AppSidebar from "@/app/(site)/components/AppSidebar";
 import Backdrop from "@/app/(site)/components/Backdrop";
@@ -7,6 +7,7 @@ import { SidebarProvider } from "@/app/context/SidebarContext";
 import { ThemeContextProvider } from "@/app/context/ThemeContext";
 import { generateSEO } from "@/utils/seo";
 import AdminLayoutClient from "./AdminLayoutClient"; // 👈 هنفصل client component
+import ProtectedProvider from "../../components/ProtectedProvider";
 
 export const metadata = generateSEO({
   title: "Admin Dashboard | Youssef Elmohamadi",
@@ -30,10 +31,12 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SidebarProvider>
-      <ThemeContextProvider>
-        <AdminLayoutClient>{children}</AdminLayoutClient>
-      </ThemeContextProvider>
-    </SidebarProvider>
+    <ProtectedProvider>
+      <SidebarProvider>
+        <ThemeContextProvider>
+          <AdminLayoutClient>{children}</AdminLayoutClient>
+        </ThemeContextProvider>
+      </SidebarProvider>
+    </ProtectedProvider>
   );
 }
