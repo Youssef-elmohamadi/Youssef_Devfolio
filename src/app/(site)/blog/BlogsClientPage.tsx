@@ -47,7 +47,7 @@ export default function BlogsClientPage() {
                 </motion.h2>
 
                 <motion.p
-                  className="text-secondary mb-4"
+                  className="text-secondary mb-4 truncate"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2 }}

@@ -9,7 +9,11 @@ export interface Project {
 
 interface Block {
   type: string;
-  content: string;
+  id: string | number;
+  url?: string;
+  caption?: string;
+  alt?: string;
+  content?: string;
   language?: string;
 }
 
@@ -18,6 +22,12 @@ export interface Blog {
   excerpt: string;
   date: string;
   readTime: string;
+  banner: {
+    url: string;
+    alt?: string;
+    type: string;
+    caption?: string;
+  };
   slug: string;
   content?: Block[];
   lang?: string;
