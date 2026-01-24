@@ -1,34 +1,53 @@
-import React from "react";
+// app/blog/page.tsx
+import React, { Suspense } from "react";
 import BlogsClientPage from "./BlogsClientPage";
-import { generateSEO } from "@/utils/seo"; // اتأكد من المسار الصحيح
+import { generateSEO } from "@/utils/seo";
+import { getArticles } from "@/lib/api/articles";
+import Loading from "./load";
 
-const blogPageUrl = "https://the-forge-one.vercel.app/blog";
 const blogPageTitle = "Blog Posts | Youssef Elmohamadi | The Forge";
 const blogPageDescription =
   "Read the latest blog posts about web development, React, Next.js, and software engineering tips.";
-const blogPageImage = "https://the-forge-one.vercel.app/youssef.png"; // صورة OG/Twitter مخصصة للمدونة
 
 export const metadata = generateSEO({
   title: blogPageTitle,
   description: blogPageDescription,
-  url: blogPageUrl,
-  image: blogPageImage,
-  type: "article", // علشان تعتبر صفحة مقالات
+  type: "website",
   keywords: [
     "Youssef Elmohamadi",
     "blog",
     "web development",
     "React",
-    "Next.js",
-    "software engineering",
-    "JavaScript",
-    "frontend tips",
-    "programming blogs",
+    "Laravel",
   ],
 });
 
-const Blog = () => {
-  return <BlogsClientPage />;
+// تعريف واجهة الخصائص لاستقبال الباراميترز
+type Props = {
+  searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export default Blog;
+async function ArticlesWrapper({ page }: { page: number }) {
+  // جلب المقالات بناءً على رقم الصفحة
+  const response = await getArticles(page);
+
+  // التحقق من شكل البيانات (لضمان عدم حدوث خطأ إذا كانت المصفوفة فارغة)
+  const articles = response.data || [];
+  const meta = response.meta || null;
+
+  return <BlogsClientPage initialBlogs={articles} meta={meta} />;
+}
+
+export default function Blog({ searchParams }: Props) {
+  // استخراج رقم الصفحة (الافتراضي 1)
+  const page =
+    typeof searchParams.page === "string" ? Number(searchParams.page) : 1;
+
+  return (
+    <main>
+      <Suspense fallback={<Loading />}>
+        <ArticlesWrapper page={page} />
+      </Suspense>
+    </main>
+  );
+}

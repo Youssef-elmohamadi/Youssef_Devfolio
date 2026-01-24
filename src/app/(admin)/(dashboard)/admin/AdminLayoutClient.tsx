@@ -1,5 +1,4 @@
 "use client";
-
 import { useSidebar } from "@/app/context/SidebarContext";
 import AppHeader from "@/app/(site)/components/AppHeader";
 import AppSidebar from "@/app/(site)/components/AppSidebar";

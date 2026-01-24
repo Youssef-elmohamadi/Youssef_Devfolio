@@ -12,7 +12,6 @@ const contactPageImage = "https://the-forge-one.vercel.app/youssef.png"; // صو
 export const metadata = generateSEO({
   title: contactPageTitle,
   description: contactPageDescription,
-  url: contactPageUrl,
   image: contactPageImage,
   type: "website",
   keywords: [

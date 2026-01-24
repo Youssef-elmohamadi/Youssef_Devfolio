@@ -1,67 +1,29 @@
 "use client";
-import { login } from "@/lib/api/admin/auth";
+
+import React, { useState } from "react";
+import { useActionState } from "react"; // تأكد أنك تستخدم React 19 أو Canary، وإلا استخدم useFormState من react-dom
+import Link from "next/link";
+
+// تأكد من مسار الأكشن الصحيح
+import { loginAction } from "../../../../actions/auth";
+
 import Checkbox from "./form/input/Checkbox";
 import Input from "./form/input/InputField";
 import Label from "./form/Label";
 import Button from "./ui/button/Button";
-import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "@/app/icons";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { EyeCloseIcon, EyeIcon } from "@/app/icons";
+
+// تعريف الحالة الأولية (اختياري، لتجنب أخطاء TypeScript)
+const initialState = {
+  message: "",
+  errors: {},
+};
+
 export default function SignInForm() {
+  const [state, action, isPending] = useActionState(loginAction, undefined);
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState<{
-    email?: string;
-    password?: string;
-    global?: string;
-  }>({});
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
-  useEffect(() => {
-    const token = localStorage.getItem("admin_token");
-    if (token) {
-      router.push("/admin");
-    }
-  }, []);
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    if (name === "email") {
-      setEmail(value);
-    } else if (name === "password") {
-      setPassword(value);
-    }
-  };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrors({});
-    setIsLoading(true);
-
-    try {
-      const response = await login(email, password);
-      console.log("Login successful:", response);
-      localStorage.setItem("admin_token", response.token);
-      router.push("/admin");
-    } catch (error: any) {
-      if (error?.response?.data) {
-        const { message, errors: fieldErrors } = error.response.data;
-        setErrors({
-          global: message || "Something went wrong, please try again.",
-          email: fieldErrors?.email?.[0],
-          password: fieldErrors?.password?.[0],
-        });
-      } else {
-        setErrors({
-          global: "Network error, please try again later.",
-        });
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
   return (
     <div className="flex flex-col flex-1 w-full">
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
@@ -74,9 +36,15 @@ export default function SignInForm() {
               Enter your email and password to sign in!
             </p>
           </div>
+
           <div>
+            {/* أزرار السوشيال ميديا (ثابتة كما هي) */}
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5">
-              <button className="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10">
+              <button
+                type="button"
+                className="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10"
+              >
+                {/* ... SVG Google ... */}
                 <svg
                   width="20"
                   height="20"
@@ -103,7 +71,11 @@ export default function SignInForm() {
                 </svg>
                 Sign in with Google
               </button>
-              <button className="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10">
+              <button
+                type="button"
+                className="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10"
+              >
+                {/* ... SVG X ... */}
                 <svg
                   width="21"
                   className="fill-current"
@@ -117,6 +89,7 @@ export default function SignInForm() {
                 Sign in with X
               </button>
             </div>
+
             <div className="relative py-3 sm:py-5">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-200 dark:border-gray-800"></div>
@@ -127,42 +100,50 @@ export default function SignInForm() {
                 </span>
               </div>
             </div>
-            {errors.global && (
+
+            {/* عرض الأخطاء العامة (Global Errors) */}
+            {state?.error && (
               <div className="mb-4 text-sm text-red-500 bg-red-100 border border-red-200 rounded-md p-3">
-                {errors.global}
+                {state.error}
               </div>
             )}
 
-            <form onSubmit={handleSubmit}>
+            {/* استخدام action بدلاً من onSubmit */}
+            <form action={action}>
               <div className="space-y-6">
+                {/* حقل الإيميل */}
                 <div>
                   <Label>
-                    Email <span className="text-error-500">*</span>{" "}
+                    Email <span className="text-error-500">*</span>
                   </Label>
                   <Input
                     name="email"
                     placeholder="info@gmail.com"
                     type="email"
-                    defaultValue={email}
-                    onChange={handleChange}
-                    className={errors.email ? "border-red-500" : ""}
+                    // حذفنا value و onChange لأننا نستخدم Server Actions
+                    className={state?.errors?.email ? "border-red-500" : ""}
                   />
-                  {errors.email && (
-                    <p className="mt-1 text-sm text-red-500">{errors.email}</p>
+                  {/* عرض خطأ الإيميل إن وجد */}
+                  {state?.errors?.email && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {state.errors.email}
+                    </p>
                   )}
                 </div>
+
+                {/* حقل الباسورد */}
                 <div>
                   <Label>
-                    Password <span className="text-error-500">*</span>{" "}
+                    Password <span className="text-error-500">*</span>
                   </Label>
                   <div className="relative">
                     <Input
                       name="password"
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter your password"
-                      defaultValue={password}
-                      onChange={handleChange}
-                      className={errors.password ? "border-red-500" : ""}
+                      className={
+                        state?.errors?.password ? "border-red-500" : ""
+                      }
                     />
                     <span
                       onClick={() => setShowPassword(!showPassword)}
@@ -175,18 +156,26 @@ export default function SignInForm() {
                       )}
                     </span>
                   </div>
-                  {errors.password && (
+                  {/* عرض خطأ الباسورد إن وجد */}
+                  {state?.errors?.password && (
                     <p className="mt-1 text-sm text-red-500">
-                      {errors.password}
+                      {state.errors.password}
                     </p>
                   )}
                 </div>
+
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <Checkbox checked={isChecked} onChange={setIsChecked} />
                     <span className="block font-normal text-gray-700 text-theme-sm dark:text-gray-400">
                       Keep me logged in
                     </span>
+                    {/* إرسال قيمة checkbox للسيرفر إذا لزم الأمر */}
+                    <input
+                      type="hidden"
+                      name="remember"
+                      value={isChecked ? "true" : "false"}
+                    />
                   </div>
                   <Link
                     href="/reset-password"
@@ -195,30 +184,19 @@ export default function SignInForm() {
                     Forgot password?
                   </Link>
                 </div>
+
                 <div>
                   <Button
                     className="w-full"
                     size="sm"
                     type="submit"
-                    disabled={isLoading}
+                    disabled={isPending} // استخدام حالة التحميل من الهوك
                   >
-                    {isLoading ? "Signing in..." : "Sign in"}
+                    {isPending ? "Signing in..." : "Sign in"}
                   </Button>
                 </div>
               </div>
             </form>
-            {/* 
-            <div className="mt-5">
-              <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
-                Don&apos;t have an account? {""}
-                <Link
-                  href="/signup"
-                  className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
-                >
-                  Sign Up
-                </Link>
-              </p>
-            </div> */}
           </div>
         </div>
       </div>

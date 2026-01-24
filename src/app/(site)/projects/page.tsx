@@ -10,7 +10,6 @@ const projectsPageImage = "https://the-forge-one.vercel.app/youssef.png"; // OG/
 export const metadata = generateSEO({
   title: projectsPageTitle,
   description: projectsPageDescription,
-  url: projectsPageUrl,
   image: projectsPageImage,
   type: "website",
   keywords: [

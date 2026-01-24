@@ -2,7 +2,6 @@
 import { generateSEO } from "@/utils/seo"; // تأكد من المسار الصحيح
 import AboutClient from "./AboutClientPage";
 
-const aboutPageUrl = "https://the-forge-one.vercel.app/about";
 const aboutPageTitle =
   "About Youssef Elmohamadi | Frontend Developer | The Forge";
 const aboutPageDescription =
@@ -12,7 +11,6 @@ const aboutPageImage = "https://the-forge-one.vercel.app/youssef.png";
 export const metadata = generateSEO({
   title: aboutPageTitle,
   description: aboutPageDescription,
-  url: aboutPageUrl,
   image: aboutPageImage,
   type: "article",
   keywords: [

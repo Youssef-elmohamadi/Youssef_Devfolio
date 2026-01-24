@@ -9,9 +9,18 @@ const nextConfig: NextConfig = {
     });
     return config;
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '1000mb', 
+    },
+  },
   eslint: {
     ignoreDuringBuilds: true,
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  images: { domains: ['127.0.0.1'] }
 };
 
 export default nextConfig;

@@ -1,41 +1,54 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import { Blog } from "@/types";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import ProgressBar from "./ProgressBar";
 
-const TableOfContents = ({ content }: { content: Blog["content"] }) => {
+// تحديث الـ Interface ليتناسب مع الـ API
+interface TableOfContentsProps {
+  content: Array<{
+    id: number;
+    title: string | null;
+    [key: string]: any;
+  }>;
+}
+
+const TableOfContents = ({ content }: TableOfContentsProps) => {
   const [activeId, setActiveId] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const headings = content?.filter((block) => block.type === "heading");
-  const headingRefs = useRef<Record<string, HTMLHeadingElement | null>>({});
+
+  // 1. فلترة العناوين التي ليست Null فقط
+  const headings = content?.filter((block) => block.title !== null);
+
+  const headingRefs = useRef<Record<string, HTMLElement | null>>({});
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          // استخدام نسبة ظهور (threshold) أفضل
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
             setActiveId(entry.target.id);
           }
         });
       },
-      { rootMargin: "0px 0px -70% 0px" }
+      {
+        rootMargin: "-10% 0px -70% 0px", // تحسين المسافات للـ Active state
+        threshold: 0.5,
+      },
     );
 
     headings?.forEach((h) => {
-      const heading = document.getElementById(h.id.toString());
-      if (heading) {
-        observer.observe(heading);
-        headingRefs.current[h.id.toString()] = heading as HTMLHeadingElement;
+      const element = document.getElementById(h.id.toString());
+      if (element) {
+        observer.observe(element);
+        headingRefs.current[h.id.toString()] = element;
       }
     });
 
-    return () => {
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, [headings]);
 
   useEffect(() => {
@@ -51,24 +64,34 @@ const TableOfContents = ({ content }: { content: Blog["content"] }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleScroll = (id: string) => {
-    headingRefs.current[id]?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
+  const handleScrollTo = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const offset = 100; // مسافة التوقف قبل العنوان
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
     setIsOpen(false);
   };
+
+  if (!headings || headings.length === 0) return null;
 
   return (
     <>
       <ProgressBar progress={progress} />
 
-      {/* زرار فتح الـ TOC في الموبايل */}
+      {/* Mobile Toggle Button */}
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-orange-500 text-white shadow-lg lg:hidden"
+        className="fixed bottom-6 right-6 z-50 p-4 rounded-full bg-primary text-white shadow-2xl lg:hidden"
         whileTap={{ scale: 0.9 }}
-        whileHover={{ scale: 1.1 }}
       >
         {isOpen ? (
           <XMarkIcon className="h-6 w-6" />
@@ -77,55 +100,40 @@ const TableOfContents = ({ content }: { content: Blog["content"] }) => {
         )}
       </motion.button>
 
-      {/* Mobile Drawer (Full Screen) */}
+      {/* Mobile Drawer */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed left-0 right-0 top-[64px] bottom-0 z-20 bg-black/50 lg:hidden"
+            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
             onClick={() => setIsOpen(false)}
           >
             <motion.aside
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
-              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              className="w-72 h-full bg-white dark:bg-dark p-6 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
-              className="w-80 h-full p-6 bg-white/80 dark:bg-dark/80 backdrop-blur-sm shadow-xl border-r border-gray-200 dark:border-gray-700"
             >
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold text-gray-900 dark:text-orange-400">
-                  Table of Contents
-                </h2>
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="text-gray-500 dark:text-gray-300"
-                >
-                  <XMarkIcon className="h-7 w-7" />
-                </button>
-              </div>
-              <ul className="space-y-4 text-base">
-                {headings?.map((h, i) => (
-                  <motion.li
-                    key={i}
-                    whileHover={{ scale: 1.02, x: 5 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                    className="relative"
-                  >
+              <h2 className="text-xl font-bold mb-6 text-primary border-b pb-4">
+                المحتويات
+              </h2>
+              <ul className="space-y-4">
+                {headings.map((h) => (
+                  <li key={h.id}>
                     <button
-                      onClick={() => handleScroll(h.id.toString())}
-                      className={`hover:text-orange-600 dark:hover:text-orange-300 block transition-colors cursor-pointer text-left w-full ${
+                      onClick={() => handleScrollTo(h.id.toString())}
+                      className={`text-sm text-right w-full transition-all ${
                         activeId === h.id.toString()
-                          ? "text-orange-600 dark:text-orange-400 font-bold"
-                          : "text-gray-500 dark:text-gray-300"
+                          ? "text-primary font-bold pr-2 border-r-2 border-primary"
+                          : "text-gray-500"
                       }`}
                     >
-                      {h.content}
+                      {h.title}
                     </button>
-                  </motion.li>
+                  </li>
                 ))}
               </ul>
             </motion.aside>
@@ -135,43 +143,34 @@ const TableOfContents = ({ content }: { content: Blog["content"] }) => {
 
       {/* Desktop Sidebar */}
       <motion.aside
-        initial={{ x: -100, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 70 }}
-        className="hidden lg:block fixed top-24 left-6 w-64 h-[60vh] overflow-y-auto pr-4 z-10"
+        initial={{ opacity: 0, x: -50 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="hidden lg:block fixed top-32 left-8 w-64 max-h-[70vh] overflow-y-auto"
       >
-        <div className="bg-white/80 dark:bg-gray-800/80 p-6 rounded-xl backdrop-blur-sm border border-gray-200 dark:border-gray-700 transition-colors">
-          <h2 className="text-lg font-bold mb-4 text-gray-900 dark:text-orange-400">
-            Table of Contents
+        <div className="bg-white/50 dark:bg-dark/50 p-6 rounded-2xl border border-gray-100 dark:border-gray-800 backdrop-blur-md">
+          <h2 className="text-sm font-black uppercase tracking-widest mb-6 text-primary">
+            محتوى المقال
           </h2>
-          <ul className="space-y-3 text-sm">
-            {headings?.map((h, i) => (
-              <motion.li
-                key={i}
-                whileHover={{ scale: 1.05, x: 5 }}
-                transition={{ type: "spring", stiffness: 300 }}
-                className="relative"
-              >
+          <ul className="space-y-4">
+            {headings.map((h) => (
+              <li key={h.id} className="relative">
                 <button
-                  onClick={() => handleScroll(h.id.toString())}
-                  className={`hover:text-orange-600 dark:hover:text-orange-300 block transition-colors cursor-pointer text-left w-full ${
+                  onClick={() => handleScrollTo(h.id.toString())}
+                  className={`text-xs text-left w-full transition-all hover:text-primary ${
                     activeId === h.id.toString()
-                      ? "text-orange-600 dark:text-orange-400 font-bold"
-                      : "text-gray-500 dark:text-gray-300"
+                      ? "text-primary font-bold"
+                      : "text-gray-400"
                   }`}
                 >
-                  {h.content}
+                  {h.title}
                 </button>
                 {activeId === h.id.toString() && (
                   <motion.div
-                    layoutId="active-toc-indicator"
-                    className="absolute left-[-20px] top-1/2 -translate-y-1/2 w-1 h-full rounded-full bg-gradient-to-b from-orange-500 to-pink-500 shadow-md"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
+                    layoutId="indicator"
+                    className="absolute -left-6 top-1/2 -translate-y-1/2 w-1 h-4 bg-primary rounded-full"
                   />
                 )}
-              </motion.li>
+              </li>
             ))}
           </ul>
         </div>

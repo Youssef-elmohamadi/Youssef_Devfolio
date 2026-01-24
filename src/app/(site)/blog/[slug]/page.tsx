@@ -1,29 +1,36 @@
+// app/blog/[slug]/page.tsx
 import { notFound } from "next/navigation";
-import { blogs } from "@/contents/blogs";
 import { generateSEO } from "@/utils/seo";
 import type { Metadata } from "next";
 import SingleBlogClient from "./SingleBlogClient";
 
-// interface BlogPageProps {
-//   params: { slug: string };
-//   searchParams?: { [key: string]: string | string[] | undefined };
-// }
+async function getArticle(id: string) {
+  try {
+    const res = await fetch(`http://127.0.0.1:8000/api/articles/${id}`, {
+      next: { revalidate: 3600 } // تحديث كل ساعة
+    });
+    if (!res.ok) return null;
+    const json = await res.json();
+    return json.data;
+  } catch (error) {
+    return null;
+  }
+}
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
-  const blogPost = blogs.find((blog) => blog.slug === params.slug);
-  if (!blogPost) notFound();
+  const blogPost = await getArticle(params.slug);
+  if (!blogPost) return {};
 
-  const url = `https://the-forge-one.vercel.app/blog/${blogPost.slug}`;
   return generateSEO({
-    title: `${blogPost.title} | Youssef Elmohamadi | The Forge`,
+    title: `${blogPost.title} | Youssef Elmohamadi`,
     description: blogPost.excerpt,
-    url,
+    image: blogPost.feature_image,
     type: "article",
   });
 }
 
-export default function SingleBlogPage({ params }: any) {
-  const blogPost = blogs.find((blog) => blog.slug === params.slug);
+export default async function SingleBlogPage({ params }: any) {
+  const blogPost = await getArticle(params.slug);
   if (!blogPost) notFound();
 
   return <SingleBlogClient blogPost={blogPost} />;
