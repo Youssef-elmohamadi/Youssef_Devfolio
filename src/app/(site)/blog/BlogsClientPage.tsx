@@ -15,7 +15,7 @@ import {
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { fadeInUp, staggerContainer, cardHoverSmall } from "@/utils/animations";
-import { likeArticleAction } from "../../../../actions/articles";
+import { likeArticleAction } from "@/actions/articles";
 
 // --- Blog Card Component ---
 const BlogCard = ({ blog }: { blog: any }) => {

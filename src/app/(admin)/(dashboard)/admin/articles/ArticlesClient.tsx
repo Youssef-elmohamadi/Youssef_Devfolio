@@ -3,7 +3,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { useRouter, useSearchParams, usePathname } from "next/navigation"; // 1. هوكات التنقل
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import {
   FaEdit,
   FaTrash,
@@ -14,6 +14,8 @@ import {
 } from "react-icons/fa";
 import DataTable, { Column } from "@/app/(admin)/components/ui/DataTable";
 import { formatDate } from "@/utils/formatDate";
+import Link from "next/link";
+import { deleteArticleAction } from "@/actions/articles";
 
 // 2. تعريف الأنواع بناءً على ريسبونس Laravel
 type Article = {
@@ -33,6 +35,8 @@ type Meta = {
   to: number;
 };
 
+
+
 // استقبال المقالات + الميتا داتا
 export default function ArticlesClient({
   articles,
@@ -44,7 +48,7 @@ export default function ArticlesClient({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-
+  
   // 3. دالة تغيير الصفحة
   const handlePageChange = (newPage: number) => {
     if (newPage < 1 || newPage > meta.last_page) return;
@@ -111,21 +115,19 @@ export default function ArticlesClient({
       className: "text-right",
       render: (article) => (
         <div className="flex justify-end gap-2">
-          <button
-            onClick={() => console.log("Show", article.id)}
-            className="group flex items-center justify-center w-8 h-8 rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-900 hover:text-white transition-all dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white dark:hover:text-black"
-          >
-            <FaEye className="text-xs" />
-          </button>
-          <button
-            onClick={() => console.log("Edit", article.id)}
-            className="group flex items-center justify-center w-8 h-8 rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-900 hover:text-white transition-all dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white dark:hover:text-black"
-          >
-            <FaEdit className="text-xs" />
-          </button>
+          <Link href={`/admin/articles/details/${article.id}`}>
+            <button className="group flex items-center justify-center w-8 h-8 rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-900 hover:text-white transition-all dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white dark:hover:text-black">
+              <FaEye className="text-xs" />
+            </button>
+          </Link>
+          <Link href={`/admin/articles/update/${article.id}`}>
+            <button className="group flex items-center justify-center w-8 h-8 rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-900 hover:text-white transition-all dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white dark:hover:text-black">
+              <FaEdit className="text-xs" />
+            </button>
+          </Link>
 
           <button
-            onClick={() => console.log("Delete", article.id)}
+            onClick={() => deleteArticleAction(article.id)}
             className="group flex items-center justify-center w-8 h-8 rounded-lg bg-red-50 text-red-500 hover:bg-red-600 hover:text-white transition-all dark:bg-red-900/10 dark:text-red-400 dark:hover:bg-red-600 dark:hover:text-white"
           >
             <FaTrash className="text-xs" />

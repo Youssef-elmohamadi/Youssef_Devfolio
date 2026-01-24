@@ -5,7 +5,7 @@ import { useActionState } from "react"; // تأكد أنك تستخدم React 19
 import Link from "next/link";
 
 // تأكد من مسار الأكشن الصحيح
-import { loginAction } from "../../../../actions/auth";
+import { loginAction } from "@/actions/auth";
 
 import Checkbox from "./form/input/Checkbox";
 import Input from "./form/input/InputField";

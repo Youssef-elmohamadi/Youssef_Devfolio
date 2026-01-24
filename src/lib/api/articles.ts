@@ -29,3 +29,17 @@ export const toglleLikeArticle = async (articleId: number) => {
     throw error;
   } 
 };
+
+export async function getArticleForEdit(id: string) {
+  try {
+    const res = await apiFetch(
+      "http://127.0.0.1:8000",
+      `/api/articles/${id}`,
+      { cache: "no-store" }, // بيانات طازجة دائماً للتعديل
+      "admin_token",
+    );
+    return res.data; // نفترض أن المقال داخل data
+  } catch (error) {
+    return null;
+  }
+}
