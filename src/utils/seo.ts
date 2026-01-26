@@ -8,7 +8,7 @@ interface SEOProps {
   image?: string;
   icons?: string;
   noIndex?: boolean;
-  asPath?: string; // المسار الحالي لضبط الـ Canonical
+  asPath?: string; 
   type?: "website" | "article" | "profile";
   keywords?: string[];
   publishedTime?: string;
@@ -27,26 +27,19 @@ export function generateSEO({
   publishedTime,
   authors = ["Youssef Elmohamadi"],
 }: SEOProps): Metadata {
-  
-  // دمج الرابط الأساسي مع المسار الحالي
-  const canonicalUrl = new URL(asPath, SITE_CONFIG.url).href;
+    const canonicalUrl = new URL(asPath, SITE_CONFIG.url).href;
 
   return {
-    // 1. Base Setup
     metadataBase: new URL(SITE_CONFIG.url),
     title: {
       default: title,
-      template: `%s | ${SITE_CONFIG.name}`, // سيظهر كـ: Title | Site Name
+      template: `%s | ${SITE_CONFIG.name}`, 
     },
     description,
     keywords: keywords.join(", "),
-    
-    // 2. Canonical URL (مهم جداً للسيو)
     alternates: {
       canonical: canonicalUrl,
     },
-
-    // 3. Robots Control
     robots: {
       index: !noIndex,
       follow: !noIndex,
@@ -58,8 +51,6 @@ export function generateSEO({
         'max-snippet': -1,
       },
     },
-
-    // 4. Open Graph (Facebook, LinkedIn, etc)
     openGraph: {
       title,
       description,
@@ -80,8 +71,6 @@ export function generateSEO({
         authors,
       }),
     },
-
-    // 5. Twitter
     twitter: {
       card: "summary_large_image",
       title,
@@ -90,11 +79,10 @@ export function generateSEO({
       creator: SITE_CONFIG.twitterHandle,
     },
 
-    // 6. Icons
     icons: {
       icon: icons,
       shortcut: icons,
-      apple: icons, // اختياري
+      apple: icons,
     },
   };
 }

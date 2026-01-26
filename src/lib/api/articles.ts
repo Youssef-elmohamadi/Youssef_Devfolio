@@ -1,12 +1,12 @@
 import { apiFetch } from "./config";
 
-export const getArticles = async (page , per_page=10) => {
+export const getArticles = async (page: number, per_page=10) => {
   try {
     const data = await apiFetch("http://127.0.0.1:8000", `/api/articles?page=${page}&per_page=${per_page}`, {
       next: {
-        tags: ['articles-list']
+        tags: ['articles-list'],
+        revalidate: 3600*24, // إعادة التحقق كل 24 ساعة
        },
-      
     });
 
     return data;
@@ -15,6 +15,19 @@ export const getArticles = async (page , per_page=10) => {
     throw new Error("Failed to load articles");
   }
 };
+
+export async function getArticleForEndUser(id: string) {
+  try {
+    const res = await fetch(`http://127.0.0.1:8000/api/articles/${id}`, {
+      next: { revalidate: 3600 }, // تحديث كل ساعة
+    });
+    if (!res.ok) return null;
+    const json = await res.json();
+    return json.data;
+  } catch (error) {
+    return null;
+  }
+}
 
 
 export const toglleLikeArticle = async (articleId: number) => {
@@ -35,10 +48,10 @@ export async function getArticleForEdit(id: string) {
     const res = await apiFetch(
       "http://127.0.0.1:8000",
       `/api/articles/${id}`,
-      { cache: "no-store" }, // بيانات طازجة دائماً للتعديل
+      { cache: "no-store" }, 
       "admin_token",
     );
-    return res.data; // نفترض أن المقال داخل data
+    return res.data; 
   } catch (error) {
     return null;
   }

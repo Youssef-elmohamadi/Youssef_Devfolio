@@ -1,5 +1,6 @@
 "use server";
 
+import { logout } from "@/lib/api/admin/auth";
 import { apiFetch } from "@/lib/api/config";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -39,4 +40,16 @@ console.log("Token to save:", response.token)
     };
   }
   redirect("/admin");
+}
+
+export async function logoutAction() {
+  try {
+    await logout();
+
+    const cookieStore = await cookies();
+    cookieStore.delete("admin_token");
+    redirect("/admin/login");
+  } catch (error) {
+    throw error;  
+  }
 }

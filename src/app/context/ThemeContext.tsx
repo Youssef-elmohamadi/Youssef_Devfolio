@@ -1,13 +1,13 @@
 "use client";
+import { createContext, useContext, useEffect, useState } from "react";
+
 type Theme = "light" | "dark";
 
 type ThemeContextProps = {
   theme: Theme;
-  setTheme: (theme: string) => void;
+  setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
 };
-
-import { createContext, useContext, useState } from "react";
 
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
@@ -16,12 +16,26 @@ export const ThemeContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  // 1. نبدأ بـ light افتراضياً لتجنب Hydration Mismatch
   const [theme, setThemeState] = useState<Theme>("light");
 
-  const setTheme = (theme: string) => {
-    setThemeState(theme as Theme);
-    localStorage.setItem("theme", theme);
-    document.documentElement.classList.toggle("dark", theme === "dark");
+  // 2. useEffect لقراءة التخزين عند تحميل الصفحة فقط (Client Side)
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme") as Theme;
+    if (savedTheme) {
+      setThemeState(savedTheme);
+      document.documentElement.classList.toggle("dark", savedTheme === "dark");
+    } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      // (اختياري) قراءة تفضيلات النظام
+      setThemeState("dark");
+      document.documentElement.classList.add("dark");
+    }
+  }, []);
+
+  const setTheme = (newTheme: Theme) => { // قمت بتعديل النوع ليكون Theme بدلاً من string لضبط الـ Type Safety
+    setThemeState(newTheme);
+    localStorage.setItem("theme", newTheme);
+    document.documentElement.classList.toggle("dark", newTheme === "dark");
   };
 
   const toggleTheme = () => {

@@ -1,7 +1,5 @@
 // lib/schema-generator.ts
 import { SITE_CONFIG } from "./constants";
-
-// 1. سكيم الموقع العام (يوضع في الصفحة الرئيسية)
 export function generateWebsiteSchema() {
   return {
     "@context": "https://schema.org",
@@ -15,8 +13,6 @@ export function generateWebsiteSchema() {
     },
   };
 }
-
-// 2. سكيم المقال (لصفحات البلوج)
 export function generateArticleSchema({
   title,
   description,
@@ -47,7 +43,7 @@ export function generateArticleSchema({
     author: {
       "@type": "Person",
       name: "Youssef Elmohamadi",
-      url: SITE_CONFIG.url, // رابط صفحتك الشخصية
+      url: SITE_CONFIG.url,
     },
     publisher: {
       "@type": "Organization",

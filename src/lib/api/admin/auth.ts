@@ -11,3 +11,14 @@ export async function login(email: string, password: string) {
     "admin_token"
   );
 }
+
+export async function logout() {
+  return await apiFetch(
+    "http://127.0.0.1:8000",
+    "/api/logout",
+    {
+      method: "POST",
+    },
+    "admin_token"
+  );
+}
