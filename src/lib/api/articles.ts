@@ -19,7 +19,11 @@ export const getArticles = async (page: number, per_page=10) => {
 export async function getArticleForEndUser(id: string) {
   try {
     const res = await fetch(`http://127.0.0.1:8000/api/articles/${id}`, {
-      next: { revalidate: 3600 }, // تحديث كل ساعة
+      next: { revalidate: 3600,
+       tags: ['articles-list',`article-${id}`],
+                
+       },
+      
     });
     if (!res.ok) return null;
     const json = await res.json();

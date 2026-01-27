@@ -12,6 +12,7 @@ import {
   PageIcon,
   UserCircleIcon,
   ChevronDownIcon,
+  UserIcon,
 } from "../../icons/index";
 import SidebarWidget from "./SidebarWidget";
 import { FaSignOutAlt } from "react-icons/fa";
@@ -41,6 +42,11 @@ const navItems: NavItem[] = [
     icon: <PageIcon />,
     name: "Articles",
     path: "/admin/articles",
+  },
+  {
+    icon: <UserIcon />,
+    name: "About Me",
+    path: "/admin/about",
   },
   {
     icon: <ListIcon />,

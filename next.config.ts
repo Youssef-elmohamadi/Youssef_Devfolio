@@ -20,7 +20,8 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  images: { domains: ['127.0.0.1'] }
+  images: { domains: ['127.0.0.1'] },
+  htmlLimitedBots: /.*/,
 };
 
 export default nextConfig;

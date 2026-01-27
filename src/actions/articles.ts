@@ -2,7 +2,6 @@
 
 import { revalidatePath, revalidateTag } from "next/cache";
 import { toglleLikeArticle } from "@/lib/api/articles"; // استورد دالتك القديمة
-import { cookies } from "next/headers";
 import { apiFetch } from "@/lib/api/config";
 
 export async function likeArticleAction(articleId: number) {
@@ -10,7 +9,10 @@ export async function likeArticleAction(articleId: number) {
     const result = await toglleLikeArticle(articleId);
 
     revalidateTag('articles-list');
-
+    revalidateTag(`article-${articleId}`); 
+    
+    revalidatePath("/admin/articles");
+    revalidatePath(`/blog/${articleId}`);
     return result;
   } catch (error) {
     throw error;
@@ -30,8 +32,8 @@ export async function createArticleAction(formData: FormData) {
     );
 
         revalidateTag('articles-list');
-
-    revalidatePath("/admin/articles");
+         revalidatePath("/admin/articles");
+         revalidatePath("/blog");
 
     return { success: true, message: "Article created successfully", data: response };
 
@@ -49,15 +51,16 @@ export async function updateArticleAction(id: number, formData: FormData) {
       "http://127.0.0.1:8000",
       `/api/articles/${id}`,
       {
-        method: "POST", // نستخدم POST فعلياً
+        method: "POST",
         body: formData,
       },
       "admin_token"
     );
 
     revalidateTag("articles-list");
+    revalidateTag(`article-${id}`); 
     revalidatePath("/admin/articles");
-    revalidatePath(`/blog/${id}`); // تحديث صفحة المقال نفسها
+    revalidatePath(`/blog/${id}`);
 
     return { success: true, message: "Article updated successfully" };
   } catch (error: any) {
@@ -79,6 +82,7 @@ export async function deleteArticleAction(id: number) {
     );
     revalidateTag("articles-list");
     revalidatePath("/admin/articles");
+    revalidatePath("/blog");
     return { success: true, message: "Article deleted successfully" };
   } catch (error: any) {
     console.error("Delete Action Error:", error);
