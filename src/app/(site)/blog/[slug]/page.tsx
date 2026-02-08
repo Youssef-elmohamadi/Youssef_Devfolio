@@ -1,30 +1,51 @@
 import { notFound } from "next/navigation";
-import { blogs } from "@/contents/blogs";
-import { generateSEO } from "@/utils/seo";
+import { generateArticleSchema } from "@/lib/schema-generator";
 import type { Metadata } from "next";
 import SingleBlogClient from "./SingleBlogClient";
+import { getArticleForEndUser } from "@/lib/api/articles";
+import { generateSEO } from "@/utils/seo";
+import JsonLd from "../../components/JsonLd";
 
-// interface BlogPageProps {
-//   params: { slug: string };
-//   searchParams?: { [key: string]: string | string[] | undefined };
-// }
+type Props = {
+  params: Promise<{ slug: string }>;
+};
 
-export async function generateMetadata({ params }: any): Promise<Metadata> {
-  const blogPost = blogs.find((blog) => blog.slug === params.slug);
-  if (!blogPost) notFound();
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const blogPost = await getArticleForEndUser(slug);
 
-  const url = `https://the-forge-one.vercel.app/blog/${blogPost.slug}`;
+  if (!blogPost) return {};
+
   return generateSEO({
-    title: `${blogPost.title} | Youssef Elmohamadi | The Forge`,
+    title: blogPost.title,
     description: blogPost.excerpt,
-    url,
+    image: blogPost.feature_image,
     type: "article",
+    asPath: `/blog/${slug}`,
+    publishedTime: blogPost.created_at,
+    keywords: blogPost.tags, 
   });
 }
 
-export default function SingleBlogPage({ params }: any) {
-  const blogPost = blogs.find((blog) => blog.slug === params.slug);
-  if (!blogPost) notFound();
+export default async function SingleBlogPage({ params }: Props) {
+  const { slug } = await params;
+  const blogPost = await getArticleForEndUser(slug);
 
-  return <SingleBlogClient blogPost={blogPost} />;
+  if (!blogPost) notFound();
+  // const jsonLd = generateArticleSchema({
+  //   title: blogPost.title,
+  //   description: blogPost.excerpt,
+  //   image: blogPost.feature_image,
+  //   datePublished: blogPost.created_at,
+  //   dateModified: blogPost.updated_at,
+  //   slug: slug,
+  // });
+
+  return (
+    <>
+      {/* <JsonLd data={jsonLd} /> */}
+
+      <SingleBlogClient blogPost={blogPost} />
+    </>
+  );
 }

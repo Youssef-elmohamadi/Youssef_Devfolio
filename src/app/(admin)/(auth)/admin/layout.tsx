@@ -1,4 +1,3 @@
-import { ThemeContextProvider } from "@/app/context/ThemeContext";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -20,10 +19,12 @@ export default function AuthLayout({
         <div className="flex flex-col justify-center items-center gap-5 w-full h-full lg:w-1/2 p-4 sm:p-0">
           <div className="lg:hidden flex flex-col justify-center lg:flex-row lg:items-center mt-8">
             <Link href="/" className="flex justify-center mb-4">
-              <img
+              <Image
                 className="h-[76px] w-[200px] mb-3 drop-shadow-lg"
                 src={`/logo/dark-logo.webp`}
                 alt="The Forge logo"
+                width={40}
+                height={40}
               />
             </Link>
             {/* <p className="text-center text-gray-400 dark:text-white/60">
@@ -39,10 +40,12 @@ export default function AuthLayout({
             <GridShape />
             <div className="flex flex-col items-center max-w-xs">
               <Link href={"/"} className="block mb-4">
-                <img
+                <Image
                   className="h-[76px] w-[200px] mb-3 drop-shadow-lg"
                   src={`/logo/dark-logo.webp`}
                   alt="The Forge logo"
+                  width={40}
+                  height={40}
                 />
               </Link>
               <p className="text-center text-gray-400 dark:text-white/60">

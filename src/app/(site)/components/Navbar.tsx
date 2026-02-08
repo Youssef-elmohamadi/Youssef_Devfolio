@@ -15,7 +15,7 @@ import Image from "next/image";
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const pathname = usePathname(); // 👉 تجيب المسار الحالي
+  const pathname = usePathname(); 
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);

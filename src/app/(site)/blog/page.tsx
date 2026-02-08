@@ -1,34 +1,42 @@
+// app/blog/page.tsx
 import React from "react";
 import BlogsClientPage from "./BlogsClientPage";
-import { generateSEO } from "@/utils/seo"; // اتأكد من المسار الصحيح
+import { generateSEO } from "@/utils/seo";
+import { getArticles } from "@/lib/api/articles";
 
-const blogPageUrl = "https://the-forge-one.vercel.app/blog";
 const blogPageTitle = "Blog Posts | Youssef Elmohamadi | The Forge";
 const blogPageDescription =
   "Read the latest blog posts about web development, React, Next.js, and software engineering tips.";
-const blogPageImage = "https://the-forge-one.vercel.app/youssef.png"; // صورة OG/Twitter مخصصة للمدونة
 
 export const metadata = generateSEO({
   title: blogPageTitle,
   description: blogPageDescription,
-  url: blogPageUrl,
-  image: blogPageImage,
-  type: "article", // علشان تعتبر صفحة مقالات
+  type: "website",
   keywords: [
     "Youssef Elmohamadi",
     "blog",
     "web development",
     "React",
-    "Next.js",
-    "software engineering",
-    "JavaScript",
-    "frontend tips",
-    "programming blogs",
+    "Laravel",
   ],
 });
 
-const Blog = () => {
-  return <BlogsClientPage />;
+type Props = {
+  searchParams: Promise<{ page?: string }>;
 };
 
-export default Blog;
+export default async function Blog({ searchParams }: Props) {
+  const page =
+    typeof (await searchParams).page === "string" ? Number((await searchParams).page) : 1;
+
+  const response = await getArticles(page);
+
+  const articles = response.data || [];
+  const meta = response.meta || null;
+
+  return (
+    <main>
+      <BlogsClientPage initialBlogs={articles} meta={meta} />
+    </main>
+  );
+}

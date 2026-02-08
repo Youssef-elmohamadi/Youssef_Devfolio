@@ -1,43 +1,59 @@
 "use client";
-
 import React, { useEffect, useState, useRef } from "react";
-import { Blog } from "@/types";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  XMarkIcon,
+  ListBulletIcon,
+} from "@heroicons/react/24/outline";
 import ProgressBar from "./ProgressBar";
 
-const TableOfContents = ({ content }: { content: Blog["content"] }) => {
+interface TableOfContentsProps {
+  content: Array<{
+    id: number;
+    title: string | null;
+    text?: string;
+    code?: string;
+    images?: string[];
+    videos?: string[];
+  }>;
+  lang?: string;
+}
+
+const TableOfContents = ({ content, lang = "en" }: TableOfContentsProps) => {
   const [activeId, setActiveId] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const headings = content?.filter((block) => block.type === "heading");
-  const headingRefs = useRef<Record<string, HTMLHeadingElement | null>>({});
   const [progress, setProgress] = useState(0);
 
+  const isRtl = lang === "ar";
+  const headings = content?.filter((block) => block.title !== null);
+  const headingRefs = useRef<Record<string, HTMLElement | null>>({});
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-          }
-        });
-      },
-      { rootMargin: "0px 0px -70% 0px" }
-    );
+    const callback = (entries: IntersectionObserverEntry[]) => {
+      const visibleEntries = entries.filter((entry) => entry.isIntersecting);
+
+      if (visibleEntries.length > 0) {
+        const visibleEntry = visibleEntries[0];
+        setActiveId(visibleEntry.target.id);
+      }
+    };
+
+    const observer = new IntersectionObserver(callback, {
+      rootMargin: "-10% 0px -40% 0px", 
+      threshold: 0.1,
+    });
 
     headings?.forEach((h) => {
-      const heading = document.getElementById(h.id.toString());
-      if (heading) {
-        observer.observe(heading);
-        headingRefs.current[h.id.toString()] = heading as HTMLHeadingElement;
+      const element = document.getElementById(h.id.toString());
+      if (element) {
+        observer.observe(element);
+        headingRefs.current[h.id.toString()] = element;
       }
     });
 
-    return () => {
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, [headings]);
 
+  // 2. شريط التقدم العلوي
   useEffect(() => {
     const handleScroll = () => {
       const totalHeight =
@@ -51,81 +67,87 @@ const TableOfContents = ({ content }: { content: Blog["content"] }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleScroll = (id: string) => {
-    headingRefs.current[id]?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
+  // 3. التنقل السلس
+  const handleScrollTo = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const offset = 120;
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
     setIsOpen(false);
   };
+
+  if (!headings || headings.length === 0) return null;
 
   return (
     <>
       <ProgressBar progress={progress} />
 
-      {/* زرار فتح الـ TOC في الموبايل */}
+      {/* Mobile Toggle Button */}
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-orange-500 text-white shadow-lg lg:hidden"
+        className={`fixed bottom-6 z-50 p-3.5 rounded-full bg-primary text-white shadow-xl lg:hidden hover:bg-orange-600 transition-colors ${
+          isRtl ? "left-6" : "right-6"
+        }`}
         whileTap={{ scale: 0.9 }}
-        whileHover={{ scale: 1.1 }}
       >
         {isOpen ? (
           <XMarkIcon className="h-6 w-6" />
         ) : (
-          <Bars3Icon className="h-6 w-6" />
+          <ListBulletIcon className="h-6 w-6" />
         )}
       </motion.button>
 
-      {/* Mobile Drawer (Full Screen) */}
+      {/* Mobile Drawer */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed left-0 right-0 top-[64px] bottom-0 z-20 bg-black/50 lg:hidden"
+            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
             onClick={() => setIsOpen(false)}
           >
             <motion.aside
-              initial={{ x: "-100%" }}
+              initial={{ x: isRtl ? "100%" : "-100%" }}
               animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              exit={{ x: isRtl ? "100%" : "-100%" }}
+              className={`fixed top-0 bottom-0 w-72 bg-white dark:bg-[#111] p-6 shadow-2xl overflow-y-auto ${
+                isRtl ? "right-0" : "left-0"
+              }`}
               onClick={(e) => e.stopPropagation()}
-              className="w-80 h-full p-6 bg-white/80 dark:bg-dark/80 backdrop-blur-sm shadow-xl border-r border-gray-200 dark:border-gray-700"
             >
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold text-gray-900 dark:text-orange-400">
-                  Table of Contents
-                </h2>
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="text-gray-500 dark:text-gray-300"
-                >
-                  <XMarkIcon className="h-7 w-7" />
-                </button>
-              </div>
-              <ul className="space-y-4 text-base">
-                {headings?.map((h, i) => (
-                  <motion.li
-                    key={i}
-                    whileHover={{ scale: 1.02, x: 5 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                    className="relative"
-                  >
+              <h2
+                className={`text-xl font-bold mb-6 text-primary border-b border-gray-100 dark:border-gray-800 pb-4 ${
+                  isRtl ? "text-right" : "text-left"
+                }`}
+              >
+                {isRtl ? "المحتويات" : "Table of Contents"}
+              </h2>
+              <ul className="space-y-4">
+                {headings.map((h) => (
+                  <li key={h.id}>
                     <button
-                      onClick={() => handleScroll(h.id.toString())}
-                      className={`hover:text-orange-600 dark:hover:text-orange-300 block transition-colors cursor-pointer text-left w-full ${
+                      onClick={() => handleScrollTo(h.id.toString())}
+                      className={`text-sm w-full transition-all duration-200 ${
+                        isRtl ? "text-right" : "text-left"
+                      } ${
                         activeId === h.id.toString()
-                          ? "text-orange-600 dark:text-orange-400 font-bold"
-                          : "text-gray-500 dark:text-gray-300"
+                          ? `text-primary font-bold ${isRtl ? "border-r-4 pr-3" : "border-l-4 pl-3"} border-primary`
+                          : "text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
                       }`}
                     >
-                      {h.content}
+                      {h.title}
                     </button>
-                  </motion.li>
+                  </li>
                 ))}
               </ul>
             </motion.aside>
@@ -135,43 +157,50 @@ const TableOfContents = ({ content }: { content: Blog["content"] }) => {
 
       {/* Desktop Sidebar */}
       <motion.aside
-        initial={{ x: -100, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 70 }}
-        className="hidden lg:block fixed top-24 left-6 w-64 h-[60vh] overflow-y-auto pr-4 z-10"
+        initial={{ opacity: 0, x: isRtl ? 50 : -50 }}
+        animate={{ opacity: 1, x: 0 }}
+        className={`hidden lg:block fixed top-32 w-72 max-h-[70vh] overflow-y-auto custom-scrollbar ${
+          isRtl ? "right-8" : "left-8"
+        }`}
       >
-        <div className="bg-white/80 dark:bg-gray-800/80 p-6 rounded-xl backdrop-blur-sm border border-gray-200 dark:border-gray-700 transition-colors">
-          <h2 className="text-lg font-bold mb-4 text-gray-900 dark:text-orange-400">
-            Table of Contents
+        <div className="bg-white/80 dark:bg-[#111]/80 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 backdrop-blur-md shadow-sm dark:shadow-none">
+          <h2
+            className={`text-xs font-black uppercase tracking-widest mb-6 text-primary flex items-center gap-2 ${
+              isRtl ? "flex-row-reverse" : "flex-row"
+            }`}
+          >
+            <ListBulletIcon className="w-4 h-4" />
+            {isRtl ? "محتوى المقال" : "ON THIS PAGE"}
           </h2>
-          <ul className="space-y-3 text-sm">
-            {headings?.map((h, i) => (
-              <motion.li
-                key={i}
-                whileHover={{ scale: 1.05, x: 5 }}
-                transition={{ type: "spring", stiffness: 300 }}
-                className="relative"
-              >
+
+          <ul
+            className={`space-y-3 relative ${isRtl ? "border-r" : "border-l"} border-gray-200 dark:border-gray-800`}
+          >
+            {headings.map((h) => (
+              <li key={h.id} className="relative group">
                 <button
-                  onClick={() => handleScroll(h.id.toString())}
-                  className={`hover:text-orange-600 dark:hover:text-orange-300 block transition-colors cursor-pointer text-left w-full ${
+                  onClick={() => handleScrollTo(h.id.toString())}
+                  className={`block w-full py-1 transition-all duration-300 ${
+                    isRtl ? "text-right pr-4" : "text-left pl-4"
+                  } ${
                     activeId === h.id.toString()
-                      ? "text-orange-600 dark:text-orange-400 font-bold"
-                      : "text-gray-500 dark:text-gray-300"
+                      ? "text-primary font-bold scale-105 origin-left"
+                      : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 text-xs font-medium"
                   }`}
                 >
-                  {h.content}
+                  {h.title}
                 </button>
-                {activeId === h.id.toString() && (
+
+               {activeId === h.id.toString() && (
                   <motion.div
-                    layoutId="active-toc-indicator"
-                    className="absolute left-[-20px] top-1/2 -translate-y-1/2 w-1 h-full rounded-full bg-gradient-to-b from-orange-500 to-pink-500 shadow-md"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
+                    layoutId="activeIndicator"
+                    className={`absolute top-0 bottom-0 w-1 bg-primary rounded-full ${
+                      isRtl ? "-right-[2.5px]" : "-left-[2.5px]"
+                    }`}
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   />
                 )}
-              </motion.li>
+              </li>
             ))}
           </ul>
         </div>
