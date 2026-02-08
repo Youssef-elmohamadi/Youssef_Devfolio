@@ -1,16 +1,5 @@
-const fs = require("fs");
-const path = require("path");
-
 const BASE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://the-forge-one.vercel.app";
-
-// روابط وهمية — استبدلها بالـ fetch/DB call عندك
-// async function getAllProducts() {
-//   return [
-//     { slug: "understanding-react-fiber", updatedAt: "2025-09-01" },
-//     { slug: "react-performance-optimization", updatedAt: "2025-08-15" },
-//   ];
-// }
 
 async function getAllPosts() {
   return [
@@ -50,14 +39,6 @@ async function generate() {
     { url: `${BASE_URL}/blog`, changefreq: "weekly", priority: 0.8 },
     { url: `${BASE_URL}/projects`, changefreq: "weekly", priority: 0.8 },
   ];
-
-  // const products = await getAllProducts();
-  // const productItems = products.map((p) => ({
-  //   url: `${BASE_URL}/products/${p.slug}`,
-  //   lastmod: p.updatedAt,
-  //   changefreq: "weekly",
-  //   priority: 0.9,
-  // }));
 
   const posts = await getAllPosts();
   const postItems = posts.map((p) => ({

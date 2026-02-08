@@ -13,6 +13,12 @@ import {
   UserCircleIcon,
   ChevronDownIcon,
   UserIcon,
+  PieChartIcon,
+  DocsIcon,
+  BellIcon,
+  CalenderIcon,
+  SettingsIcon,
+  MessagesIcon,
 } from "../../icons/index";
 import SidebarWidget from "./SidebarWidget";
 import { FaSignOutAlt } from "react-icons/fa";
@@ -34,11 +40,6 @@ const navItems: NavItem[] = [
     path: "/admin",
   },
   {
-    icon: <UserCircleIcon />,
-    name: "Personal Information",
-    path: "/admin/personal-information",
-  },
-  {
     icon: <PageIcon />,
     name: "Articles",
     path: "/admin/articles",
@@ -49,14 +50,38 @@ const navItems: NavItem[] = [
     path: "/admin/about",
   },
   {
+    icon: <PieChartIcon />,
+    name: "My Skills",
+    path: "/admin/skills",
+  },
+  {
+    icon: <CalenderIcon />,
+    name: "My Experience",
+    path: "/admin/experience",
+  },
+  {
+    icon: <DocsIcon />,
+    name: "My Education",
+    path: "/admin/education",
+  },
+  {
     icon: <ListIcon />,
-    name: "Projects",
+    name: "MyProjects",
     path: "/admin/projects",
+  },
+  {
+    icon: <MessagesIcon />,
+    name: "Messages",
+    path: "/admin/messages",
+  },
+  {
+     icon: <SettingsIcon />,
+    name: "Profile Settings",
+    path: "/admin/settings",
   },
   {
     icon: <FaSignOutAlt />,
     name: "Logout",
-    path: "/admin/logout", // هذا المسار لن يتم استخدامه لأننا حولناه لزر
   },
 ];
 
@@ -65,8 +90,6 @@ const othersItems: NavItem[] = [];
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const pathname = usePathname();
-
-  // 👇 دالة التعامل مع تسجيل الخروج
   const handleLogout = async () => {
     await logoutAction();
   };
@@ -245,7 +268,7 @@ const AppSidebar: React.FC = () => {
                     >
                       {subItem.name}
                       <span className="flex items-center gap-1 ml-auto">
-                        {subItem.new && (
+                        {/* {subItem.new && (
                           <span
                             className={`ml-auto ${
                               isActive(subItem.path)
@@ -255,8 +278,8 @@ const AppSidebar: React.FC = () => {
                           >
                             new
                           </span>
-                        )}
-                        {subItem.pro && (
+                        )} */}
+                        {/* {subItem.pro && (
                           <span
                             className={`ml-auto ${
                               isActive(subItem.path)
@@ -266,7 +289,7 @@ const AppSidebar: React.FC = () => {
                           >
                             pro
                           </span>
-                        )}
+                        )} */}
                       </span>
                     </Link>
                   </li>
@@ -331,23 +354,11 @@ const AppSidebar: React.FC = () => {
         <nav className="mb-6">
           <div className="flex flex-col gap-4">
             <div>
-              <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
-                  !isExpanded && !isHovered
-                    ? "lg:justify-center"
-                    : "justify-start"
-                }`}
-              >
-                {isExpanded || isHovered || isMobileOpen ? (
-                  "Menu"
-                ) : (
-                  <HorizontaLDots />
-                )}
-              </h2>
+
               {renderMenuItems(navItems, "main")}
             </div>
 
-            <div className="">
+            {/* <div className="">
               <h2
                 className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
                   !isExpanded && !isHovered
@@ -362,10 +373,10 @@ const AppSidebar: React.FC = () => {
                 )}
               </h2>
               {renderMenuItems(othersItems, "others")}
-            </div>
+            </div> */}
           </div>
         </nav>
-        {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}
+        {/* {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null} */}
       </div>
     </aside>
   );

@@ -5,7 +5,7 @@ import { revalidatePath, revalidateTag } from "next/dist/server/web/spec-extensi
 export async function pushAboutData(formData: FormData) {
   try {
     const response = await apiFetch(
-      "http://127.0.0.1:8000", 
+      "https://khaled67.alwaysdata.net", 
       "/api/about/update",         
       {
         method: "POST",

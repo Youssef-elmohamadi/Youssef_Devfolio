@@ -1,31 +1,43 @@
+import React from "react";
 import ProjectsClientPage from "./ProjectsClientPage";
 import { generateSEO } from "@/utils/seo";
-const projectsPageUrl = "https://the-forge-one.vercel.app/projects";
-const projectsPageTitle =
-  "Projects | Youssef Elmohamadi | Frontend Developer | The Forge";
+import { getProjects } from "@/lib/api/admin/projects";
+
+const projectsPageTitle = "Projects | Youssef Elmohamadi | The Forge";
 const projectsPageDescription =
-  "Explore the projects built by Youssef Elmohamadi, showcasing skills in React, Next.js, TypeScript, and modern web development.";
-const projectsPageImage = "https://the-forge-one.vercel.app/youssef.png"; // OG/Twitter image
+  "Explore my latest web development projects, featuring React, Next.js, and Laravel applications.";
 
 export const metadata = generateSEO({
   title: projectsPageTitle,
   description: projectsPageDescription,
-  image: projectsPageImage,
   type: "website",
   keywords: [
     "Youssef Elmohamadi",
-    "projects",
-    "portfolio",
-    "frontend developer",
+    "Projects",
+    "Portfolio",
     "React",
-    "Next.js",
-    "TypeScript",
-    "web development",
+    "Laravel",
+    "Full Stack",
   ],
 });
 
-const Projects = () => {
-  return <ProjectsClientPage />;
+type Props = {
+  searchParams: Promise<{ page?: string }>;
 };
 
-export default Projects;
+export default async function Projects({ searchParams }: Props) {
+  // استقبال رقم الصفحة من الرابط أو افتراض 1
+  const page =
+    typeof (await searchParams).page === "string" ? Number((await searchParams).page) : 1;
+
+  const response = await getProjects(page);
+
+  const projects = response.data || [];
+  const meta = response.meta || null;
+
+  return (
+    <main>
+      <ProjectsClientPage initialProjects={projects} meta={meta} />
+    </main>
+  );
+}

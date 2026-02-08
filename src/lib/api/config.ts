@@ -42,14 +42,23 @@ export async function apiFetch(
 
   if (!res.ok) {
     const errorText = await res.text();
+    console.log("API Fetch Error Response Text:", errorText);
+    let errorJson: any = null;
     try {
-      const errorJson = JSON.parse(errorText);
-      throw new Error(errorJson.message || `API Error: ${res.status}`);
+       errorJson = JSON.parse(errorText);
     } catch (e) {
-      console.error("Non-JSON Error Response:", errorText);
-      throw new Error(`API Error: ${res.status} (Check server logs)`);
+      throw new Error(`API Error: ${res.status}`);
     }
-  }
 
+    if (res.status === 422 && errorJson.errors) {
+      throw {
+        type: "validation",
+        message: errorJson.message || "Validation Error",
+        errors: errorJson.errors,
+      };
+    }
+    throw new Error(errorJson.message || `API Error: ${res.status}`);
+      }
+  
   return res.json();
 }

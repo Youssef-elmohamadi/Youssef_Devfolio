@@ -58,8 +58,6 @@ const AboutForm = ({ initialData }: { initialData: AboutData | null }) => {
     }
   };
 
-
-
   const handlePdfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -78,7 +76,6 @@ const AboutForm = ({ initialData }: { initialData: AboutData | null }) => {
     try {
       const formData = new FormData(formRef.current);
       const result = await pushAboutData(formData);
-      console.log("Action Result:", formData);
 
       if (result.success) {
         setStatus({
@@ -189,7 +186,7 @@ const AboutForm = ({ initialData }: { initialData: AboutData | null }) => {
                   </div>
                   <input
                     type="file"
-                    name="image"
+                    name="image_file"
                     accept="image/*"
                     className="absolute inset-0 opacity-0 cursor-pointer"
                     onChange={handleImageChange}
@@ -212,7 +209,7 @@ const AboutForm = ({ initialData }: { initialData: AboutData | null }) => {
                   </span>
                   <input
                     type="file"
-                    name="cv"
+                    name="cv_file"
                     accept=".pdf"
                     className="absolute inset-0 opacity-0 cursor-pointer"
                     onChange={handlePdfChange}

@@ -237,7 +237,6 @@ export default function CreateArticlePage() {
         </div>
       </div>
 
-      {/* 🚨 Error Display Block */}
       {serverError && (
         <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 dark:bg-red-900/20 dark:border-red-900/50 flex items-start gap-3">
           <FaExclamationCircle className="text-red-500 mt-0.5" />

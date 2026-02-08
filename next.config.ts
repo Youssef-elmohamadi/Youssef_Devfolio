@@ -20,7 +20,15 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  images: { domains: ['127.0.0.1'] },
+images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'khaled67.alwaysdata.net', // 👈 ضيف الدومين بتاعك هنا
+        pathname: '**', // اسمح بكل المسارات
+      },
+    ],
+  },
   htmlLimitedBots: /.*/,
 };
 

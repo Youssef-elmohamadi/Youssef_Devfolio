@@ -2,7 +2,7 @@ import { apiFetch } from "./config";
 
 export const getArticles = async (page: number, per_page=10) => {
   try {
-    const data = await apiFetch("http://127.0.0.1:8000", `/api/articles?page=${page}&per_page=${per_page}`, {
+    const data = await apiFetch("https://khaled67.alwaysdata.net", `/api/articles?page=${page}&per_page=${per_page}`, {
       next: {
         tags: ['articles-list'],
         revalidate: 3600*24, // إعادة التحقق كل 24 ساعة
@@ -18,7 +18,7 @@ export const getArticles = async (page: number, per_page=10) => {
 
 export async function getArticleForEndUser(id: string) {
   try {
-    const res = await fetch(`http://127.0.0.1:8000/api/articles/${id}`, {
+    const res = await fetch(`https://khaled67.alwaysdata.net/api/articles/${id}`, {
       next: { revalidate: 3600,
        tags: ['articles-list',`article-${id}`],
                 
@@ -37,7 +37,7 @@ export async function getArticleForEndUser(id: string) {
 export const toglleLikeArticle = async (articleId: number) => {
   try {
     const data = await apiFetch(
-      "http://127.0.0.1:8000",
+      "https://khaled67.alwaysdata.net",
         `/api/articles/${articleId}/like`,
         {method: "POST",})
     return data;
@@ -50,7 +50,7 @@ export const toglleLikeArticle = async (articleId: number) => {
 export async function getArticleForEdit(id: string) {
   try {
     const res = await apiFetch(
-      "http://127.0.0.1:8000",
+      "https://khaled67.alwaysdata.net",
       `/api/articles/${id}`,
       { cache: "no-store" }, 
       "admin_token",

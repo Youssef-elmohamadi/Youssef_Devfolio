@@ -1,7 +1,7 @@
 'use server' // هذا السطر ضروري جداً
 
 import { revalidatePath, revalidateTag } from "next/cache";
-import { toglleLikeArticle } from "@/lib/api/articles"; // استورد دالتك القديمة
+import { toglleLikeArticle } from "@/lib/api/articles";
 import { apiFetch } from "@/lib/api/config";
 
 export async function likeArticleAction(articleId: number) {
@@ -22,7 +22,7 @@ export async function likeArticleAction(articleId: number) {
 export async function createArticleAction(formData: FormData) {
   try {
     const response = await apiFetch(
-      "http://127.0.0.1:8000", 
+      "https://khaled67.alwaysdata.net", 
       "/api/articles",         
       {
         method: "POST",
@@ -48,7 +48,7 @@ export async function updateArticleAction(id: number, formData: FormData) {
   try {
 
     const response = await apiFetch(
-      "http://127.0.0.1:8000",
+      "https://khaled67.alwaysdata.net",
       `/api/articles/${id}`,
       {
         method: "POST",
@@ -73,7 +73,7 @@ export async function updateArticleAction(id: number, formData: FormData) {
 export async function deleteArticleAction(id: number) {
   try {
     await apiFetch(
-      "http://127.0.0.1:8000",
+      "https://khaled67.alwaysdata.net",
       `/api/articles/${id}`,
       {
         method: "DELETE",
