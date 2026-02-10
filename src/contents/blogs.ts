@@ -620,7 +620,7 @@ function SearchComponent() {
       {
         type: "text",
         id: "5",
-        content: "In this search process, two updates happen at the same time:",
+        content: "How it Works",
       },
       {
         type: "text",
