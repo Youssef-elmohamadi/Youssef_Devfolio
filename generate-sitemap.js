@@ -5,7 +5,8 @@ const BASE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ||
   "https://the-forge-one.vercel.app";
 
-const API_URL = "http://127.0.0.1:8000/api/articles";
+const API_URL =
+  (process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net") + "/api/articles";
 
 /* =========================
    Fetch all articles

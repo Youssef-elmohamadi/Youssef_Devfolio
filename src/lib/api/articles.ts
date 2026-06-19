@@ -18,7 +18,8 @@ export const getArticles = async (page: number, per_page=10) => {
 
 export async function getArticleForEndUser(id: string) {
   try {
-    const res = await fetch(`http://127.0.0.1:8000/api/articles/${id}`, {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net";
+    const res = await fetch(`${baseUrl}/api/articles/${id}`, {
       next: { revalidate: 3600,
        tags: ['articles-list',`article-${id}`],
                 
