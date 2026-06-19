@@ -4,11 +4,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 
 const roles = [
-  "Frontend Developer",
+  "Fullstack Developer",
   "React Specialist",
+  ".NET Specialist",
   "Next.js Engineer",
   "UI/UX Enthusiast",
-  "Web Craftsman"
 ];
 
 export default function RoleSwitcher() {

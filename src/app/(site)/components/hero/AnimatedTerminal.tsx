@@ -10,9 +10,9 @@ const terminalCode = [
   { text: "", type: "empty" },
   { text: "$ cat skills.json", type: "command" },
   { text: "{", type: "code" },
-  { text: '  "core": ["React", "Next.js", "TypeScript"],', type: "code" },
+  { text: '  "core": ["React", "Next.js", "ASP.NET"],', type: "code" },
   { text: '  "styling": ["Tailwind CSS", "Framer Motion"],', type: "code" },
-  { text: '  "backend": ["Node.js", "Laravel"]', type: "code" },
+  { text: '  "backend": ["C#", "Node.js", "ASP.NET"]', type: "code" },
   { text: "}", type: "code" },
   { text: "", type: "empty" },
   { text: "$ npm run craft", type: "command" },
@@ -49,7 +49,7 @@ export default function AnimatedTerminal() {
           <div className="w-3 h-3 rounded-full bg-green-500/80" />
         </div>
         <div className="mx-auto text-xs text-gray-400 font-mono tracking-wider">
-          youssef@forge:~
+          youssef@forge:~$
         </div>
       </div>
 

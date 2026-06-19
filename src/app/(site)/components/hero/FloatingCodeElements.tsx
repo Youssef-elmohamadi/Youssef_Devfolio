@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
-const CODE_SYMBOLS = ["{}", "< />", "()", "=>", "const", "let", "interface", "type", "[]", "&&"];
+const CODE_SYMBOLS = ["{}", "< />", "()", "=>", "const", "let", "interface", "type", "[]", "&&", ".NET"];
 
 interface FloatingElementProps {
   symbol: string;
