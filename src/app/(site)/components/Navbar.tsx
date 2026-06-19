@@ -57,20 +57,24 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6">
             {menuItems.map((item) => {
-              const isActive = pathname === item.href; // 🔵 هل هو المسار الحالي؟
+              const isActive = pathname === item.href;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`transition-colors ${
-                    isActive
-                      ? "text-primary font-semibold"
-                      : "hover:text-primary"
-                  }`}
+                  className="font-mono text-sm flex items-center group transition-colors duration-200"
                 >
-                  {item.label}
+                  <span className={`transition-colors duration-200 ${isActive ? "text-primary" : "text-gray-400 dark:text-gray-600 group-hover:text-primary/70"}`}>
+                    &lt;
+                  </span>
+                  <span className={`transition-colors duration-200 px-0.5 ${isActive ? "text-primary font-bold" : "text-gray-600 dark:text-gray-300 group-hover:text-primary"}`}>
+                    {item.label}
+                  </span>
+                  <span className={`transition-colors duration-200 ${isActive ? "text-primary" : "text-gray-400 dark:text-gray-600 group-hover:text-primary/70"}`}>
+                    &nbsp;/&gt;
+                  </span>
                 </Link>
               );
             })}
@@ -113,7 +117,7 @@ export default function Navbar() {
               transition={{ duration: 0.3 }}
               className="md:hidden"
             >
-              <div className="py-4 space-y-4">
+              <div className="py-4 space-y-3">
                 {menuItems.map((item, index) => {
                   const isActive = pathname === item.href;
                   return (
@@ -125,14 +129,18 @@ export default function Navbar() {
                     >
                       <Link
                         href={item.href}
-                        className={`block py-2 transition-colors ${
-                          isActive
-                            ? "text-primary font-semibold"
-                            : "hover:text-primary"
-                        }`}
+                        className="font-mono text-sm py-2 flex items-center group transition-colors duration-200"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
-                        {item.label}
+                        <span className={`transition-colors duration-200 ${isActive ? "text-primary" : "text-gray-400 dark:text-gray-600 group-hover:text-primary/70"}`}>
+                          &lt;
+                        </span>
+                        <span className={`transition-colors duration-200 px-0.5 ${isActive ? "text-primary font-bold" : "text-gray-600 dark:text-gray-300 group-hover:text-primary"}`}>
+                          {item.label}
+                        </span>
+                        <span className={`transition-colors duration-200 ${isActive ? "text-primary" : "text-gray-400 dark:text-gray-600 group-hover:text-primary/70"}`}>
+                          &nbsp;/&gt;
+                        </span>
                       </Link>
                     </motion.div>
                   );

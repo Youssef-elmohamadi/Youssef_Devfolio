@@ -20,12 +20,24 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-images: {
+  images: {
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'khaled67.alwaysdata.net', // 👈 ضيف الدومين بتاعك هنا
-        pathname: '**', // اسمح بكل المسارات
+        pathname: '/**', // اسمح بكل المسارات
+      },
+      {
+        protocol: 'http',
+        hostname: '127.0.0.1',
+        port: '8000',
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '8000',
+        pathname: '/**',
       },
     ],
   },

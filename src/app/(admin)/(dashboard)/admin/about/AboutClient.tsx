@@ -75,6 +75,35 @@ const AboutForm = ({ initialData }: { initialData: AboutData | null }) => {
 
     try {
       const formData = new FormData(formRef.current);
+      
+      const imageFile = formData.get("image_file") as File;
+      if (imageFile) {
+        if (imageFile.size === 0) {
+          formData.delete("image_file");
+        } else if (imageFile.size > 2 * 1024 * 1024) { // 2MB limit
+          setStatus({
+            type: "error",
+            message: "Profile photo size must be less than 2MB.",
+          });
+          setIsLoading(false);
+          return;
+        }
+      }
+      
+      const cvFile = formData.get("cv_file") as File;
+      if (cvFile) {
+        if (cvFile.size === 0) {
+          formData.delete("cv_file");
+        } else if (cvFile.size > 5 * 1024 * 1024) { // 5MB limit
+          setStatus({
+            type: "error",
+            message: "CV file size must be less than 5MB.",
+          });
+          setIsLoading(false);
+          return;
+        }
+      }
+
       const result = await pushAboutData(formData);
 
       if (result.success) {
@@ -83,7 +112,13 @@ const AboutForm = ({ initialData }: { initialData: AboutData | null }) => {
           message: "Profile updated successfully!",
         });
       } else {
-        setStatus({ type: "error", message: result.message });
+        let errMsg = result.message;
+        if (errMsg === "validation.max.file") {
+          errMsg = "One of the files exceeds the allowed size limit (2MB for photos, 5MB for PDFs).";
+        } else if (errMsg === "validation.mimes") {
+          errMsg = "Invalid file type. Please upload a valid image or PDF document.";
+        }
+        setStatus({ type: "error", message: errMsg });
       }
     } catch (error) {
       setStatus({ type: "error", message: "An unexpected error occurred." });
@@ -97,7 +132,7 @@ const AboutForm = ({ initialData }: { initialData: AboutData | null }) => {
       {/* Toast Notification */}
       {status && (
         <div
-          className={`fixed top-4 right-4 z-[9000] px-6 py-4 rounded-lg flex items-center gap-3 transition-all duration-300 ${
+          className={`fixed top-4 right-4 z-[100000] px-6 py-4 rounded-lg flex items-center gap-3 transition-all duration-300 ${
             status.type === "success"
               ? "bg-green-600 text-white"
               : "bg-red-600 text-white"

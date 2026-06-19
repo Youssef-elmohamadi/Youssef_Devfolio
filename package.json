@@ -10,6 +10,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@codesandbox/sandpack-react": "^2.20.0",
     "@heroicons/react": "^2.2.0",
     "framer-motion": "^12.23.12",
     "heroicons": "^2.2.0",

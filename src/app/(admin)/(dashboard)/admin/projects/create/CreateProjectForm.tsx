@@ -106,6 +106,16 @@ const CreateProjectForm = () => {
     try {
       const formData = new FormData(formRef.current!);
       
+      const projectImage = formData.get("project_image") as File;
+      if (projectImage && projectImage.size > 2 * 1024 * 1024) { // 2MB limit
+        setStatus({
+          type: "error",
+          message: "Project image size must be less than 2MB.",
+        });
+        setIsLoading(false);
+        return;
+      }
+
       // Append tags manually for Laravel array handling
       tagsList.forEach((tag) => {
         formData.append("tags[]", tag);
@@ -124,7 +134,13 @@ const CreateProjectForm = () => {
         setImagePreview(null);
         if (formRef.current) formRef.current.reset();
       } else {
-        setStatus({ type: "error", message: result.message });
+        let errMsg = result.message;
+        if (errMsg === "validation.max.file") {
+          errMsg = "The project image exceeds the allowed size limit of 2MB.";
+        } else if (errMsg === "validation.mimes") {
+          errMsg = "Invalid image type. Please upload a valid image file.";
+        }
+        setStatus({ type: "error", message: errMsg });
       }
     } catch (err: any) {
       setStatus({ type: "error", message: "An unexpected error occurred." });
@@ -138,7 +154,7 @@ const CreateProjectForm = () => {
       {/* Notifications */}
       {status && (
         <div
-          className={`fixed top-4 right-4 z-[9000] px-6 py-4 rounded-xl flex items-center gap-3 shadow-2xl transition-all duration-300 animate-in slide-in-from-top-5 ${
+          className={`fixed top-4 right-4 z-[100000] px-6 py-4 rounded-xl flex items-center gap-3 shadow-2xl transition-all duration-300 animate-in slide-in-from-top-5 ${
             status.type === "success"
               ? "bg-green-600 text-white"
               : "bg-red-600 text-white"

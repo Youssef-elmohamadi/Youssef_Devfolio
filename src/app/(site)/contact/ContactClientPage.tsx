@@ -58,7 +58,7 @@ export default function ContactClientPage() {
   };
 
   return (
-    <div className="container max-w-7xl mx-auto py-12">
+    <div className="container md:pt-24  max-w-7xl mx-auto py-12">
       <motion.h1 className="text-4xl font-bold mb-8 text-center" {...fadeInUp}>
         Contact Me
       </motion.h1>

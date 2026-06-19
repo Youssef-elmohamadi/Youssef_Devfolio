@@ -22,7 +22,7 @@ export async function likeArticleAction(articleId: number) {
 export async function createArticleAction(formData: FormData) {
   try {
     const response = await apiFetch(
-      "https://khaled67.alwaysdata.net", 
+      (process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net"), 
       "/api/articles",         
       {
         method: "POST",
@@ -48,7 +48,7 @@ export async function updateArticleAction(id: number, formData: FormData) {
   try {
 
     const response = await apiFetch(
-      "https://khaled67.alwaysdata.net",
+      (process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net"),
       `/api/articles/${id}`,
       {
         method: "POST",
@@ -73,7 +73,7 @@ export async function updateArticleAction(id: number, formData: FormData) {
 export async function deleteArticleAction(id: number) {
   try {
     await apiFetch(
-      "https://khaled67.alwaysdata.net",
+      (process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net"),
       `/api/articles/${id}`,
       {
         method: "DELETE",

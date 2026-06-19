@@ -57,7 +57,7 @@ export default function AboutClient({ data }: AboutClientProps) {
   const { about, skills, experience, education } = data;
 
   return (
-    <div className="container max-w-7xl mx-auto py-12 px-4 sm:px-6">
+    <div className="container max-w-7xl md:pt-24  mx-auto py-12 px-4 sm:px-6">
       {/* --- Header --- */}
       <motion.h1
         className="text-4xl font-bold mb-8 text-center text-gray-900 dark:text-white"
@@ -92,7 +92,7 @@ export default function AboutClient({ data }: AboutClientProps) {
           {skills.map((skillGroup) => (
             <motion.div
               key={skillGroup.id}
-              className="bg-white dark:bg-[#1a1a1a] p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-800"
+              className="bg-white dark:bg-dark/50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-800"
               variants={fadeInUp}
               {...cardHover}
             >
@@ -146,7 +146,7 @@ export default function AboutClient({ data }: AboutClientProps) {
           {experience.map((exp) => (
             <motion.div
               key={exp.id}
-              className="bg-white dark:bg-[#1a1a1a] p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 relative md:ml-16"
+              className="bg-white dark:bg-dark/50 p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 relative md:ml-16"
               variants={fadeInUp}
               {...cardHoverSmall}
             >
@@ -209,7 +209,7 @@ export default function AboutClient({ data }: AboutClientProps) {
           {education.map((edu) => (
             <motion.div
               key={edu.id}
-              className="bg-white dark:bg-[#1a1a1a] p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col md:flex-row gap-6 items-start"
+              className="bg-white dark:bg-dark/50 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col md:flex-row gap-6 items-start"
               variants={fadeInUp}
               {...cardHoverSmall}
             >

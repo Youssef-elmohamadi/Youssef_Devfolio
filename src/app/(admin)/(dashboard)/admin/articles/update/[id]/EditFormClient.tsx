@@ -239,7 +239,13 @@ export default function EditArticleForm({ article }: { article: any }) {
       const result = await updateArticleAction(article.id, formData);
 
       if (!result.success) {
-        setServerError(result.message);
+        let errMsg = result.message;
+        if (errMsg === "validation.max.file") {
+          errMsg = "One of the uploaded files exceeds the maximum size limit (typically 2MB for images, 5MB for PDFs/videos).";
+        } else if (errMsg === "validation.mimes") {
+          errMsg = "Invalid file type. Please upload a valid image or video file.";
+        }
+        setServerError(errMsg);
         window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
         router.push("/admin/articles");

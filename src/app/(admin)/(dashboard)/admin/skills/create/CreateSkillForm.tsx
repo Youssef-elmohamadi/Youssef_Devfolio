@@ -119,7 +119,7 @@ const CreateSkillForm = () => {
       {/* Toast Notification */}
       {status && (
         <div
-          className={`fixed top-4 right-4 z-[9000] px-6 py-4 rounded-xl flex items-center gap-3 shadow-2xl transition-all duration-300 animate-in slide-in-from-top-5 ${
+          className={`fixed top-4 right-4 z-[100000] px-6 py-4 rounded-xl flex items-center gap-3 shadow-2xl transition-all duration-300 animate-in slide-in-from-top-5 ${
             status.type === "success"
               ? "bg-green-600 text-white"
               : "bg-red-600 text-white"

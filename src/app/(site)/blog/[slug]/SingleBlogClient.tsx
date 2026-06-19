@@ -1,11 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
-import {
-  dracula,
-  oneLight,
-} from "react-syntax-highlighter/dist/cjs/styles/prism";
 import {
   ArrowLeftIcon,
   ClockIcon,
@@ -16,9 +11,10 @@ import {
 import Image from "next/image";
 import TableOfContents from "../../components/BlogIndex";
 import { likeArticleAction } from "@/actions/articles";
-import CodeCopyButton from "../../components/CodeCopyButton";
 import SocialShareButtons from "../../components/SocialShareButtons";
+import CodeBlockWithPreview from "../../components/CodeBlockWithPreview";
 import { useTheme } from "@/app/context/ThemeContext";
+import { formatRelativeTime } from "@/utils/formatDate";
 
 type BlogContentBlock = {
   id: number;
@@ -45,7 +41,9 @@ const SingleBlogClient = ({
     }>;
     date: {
       diff: string;
+      raw?: string;
     };
+    created_at?: string;
     lang: string;
     feature_image: string;
     stats: {
@@ -114,7 +112,7 @@ const SingleBlogClient = ({
             <div className="flex flex-wrap items-center gap-4 text-gray-600 dark:text-gray-400 text-sm md:text-base">
               <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-800/50 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700">
                 <CalendarIcon className="h-4 w-4 text-primary" />
-                <span>{blogPost.date.diff}</span>
+                <span>{formatRelativeTime(blogPost.date?.raw || blogPost.created_at)}</span>
               </div>
               <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-800/50 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700">
                 <ClockIcon className="h-4 w-4 text-primary" />
@@ -190,26 +188,11 @@ const SingleBlogClient = ({
 
               {/* الأكواد البرمجية */}
               {block.code && (
-                <div className="relative my-8 rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-800">
-                  <div className="flex items-center justify-between px-4 py-2 bg-gray-100 dark:bg-[#1f2129] border-b border-gray-200 dark:border-gray-800 text-xs text-gray-500 dark:text-gray-400">
-                    <span className="font-mono font-semibold">JavaScript</span>
-                    <div className="flex gap-1.5">
-                      <div className="w-3 h-3 rounded-full bg-red-400" />
-                      <div className="w-3 h-3 rounded-full bg-yellow-400" />
-                      <div className="w-3 h-3 rounded-full bg-green-400" />
-                    </div>
-                  </div>
-                  <SyntaxHighlighter
-                    language="javascript"
-                    style={isDark ? dracula : oneLight}
-                    customStyle={{ margin: 0, padding: "1.5rem" }}
-                    showLineNumbers={true}
-                    wrapLines={true}
-                  >
-                    {block.code}
-                  </SyntaxHighlighter>
-                  <CodeCopyButton code={block.code} />
-                </div>
+                <CodeBlockWithPreview
+                  code={block.code}
+                  language="javascript"
+                  isDark={isDark}
+                />
               )}
 
               {/* الصور */}

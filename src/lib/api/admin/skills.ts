@@ -3,7 +3,7 @@ import { apiFetch } from "../config";
 
 export const getSkills = async (page: number, per_page=10) => {
   try {
-    const data = await apiFetch("https://khaled67.alwaysdata.net", `/api/skills?page=${page}&per_page=${per_page}`, {
+    const data = await apiFetch((process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net"), `/api/skills?page=${page}&per_page=${per_page}`, {
       next: {
         tags: ['skills-list'],
         revalidate: 3600*24,
@@ -21,7 +21,7 @@ export const getSkills = async (page: number, per_page=10) => {
 export async function getSkillForEdit(id: string) {
   try {
     const res = await apiFetch(
-      "https://khaled67.alwaysdata.net",
+      (process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net"),
       `/api/skills/${id}`,
       { cache: "no-store" }, 
       "admin_token",
@@ -35,7 +35,7 @@ export async function getSkillForEdit(id: string) {
 export async function deleteSkillAction(id: number) {
   try {
     await apiFetch(
-      "https://khaled67.alwaysdata.net",
+      (process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net"),
       `/api/skills/${id}`,
       {
         method: "DELETE",

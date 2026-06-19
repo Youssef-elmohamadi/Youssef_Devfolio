@@ -165,7 +165,7 @@ export default function ProjectsClientPage({
   };
 
   return (
-    <div className="container max-w-7xl mx-auto py-12 px-4">
+    <div className="container md:pt-24  max-w-7xl mx-auto py-12 px-4">
       <motion.h1
         className="text-4xl font-bold mb-6 text-center text-gray-900 dark:text-white"
         initial={{ opacity: 0, y: -20 }}

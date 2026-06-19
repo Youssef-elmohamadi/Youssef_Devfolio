@@ -18,10 +18,10 @@ export async function POST(req: Request) {
     const AUDIENCE_ID = process.env.MAILCHIMP_AUDIENCE_ID as string;
 
     if (!API_KEY || !AUDIENCE_ID) {
-      console.error("Missing Mailchimp env vars");
+      console.warn("Mailchimp env vars missing. Returning mock successful response for development.");
       return NextResponse.json(
-        { message: "Server misconfiguration." },
-        { status: 500 }
+        { message: "You have been successfully subscribed! (Development Mock)" },
+        { status: 201 }
       );
     }
 

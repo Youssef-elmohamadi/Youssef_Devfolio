@@ -202,7 +202,13 @@ export default function CreateArticlePage() {
       const result = await createArticleAction(formData);
 
       if (!result.success) {
-        setServerError(result.message);
+        let errMsg = result.message;
+        if (errMsg === "validation.max.file") {
+          errMsg = "One of the uploaded files exceeds the maximum size limit (typically 2MB for images, 5MB for PDFs/videos).";
+        } else if (errMsg === "validation.mimes") {
+          errMsg = "Invalid file type. Please upload a valid image or video file.";
+        }
+        setServerError(errMsg);
         // Scroll to top to see error
         window.scrollTo({ top: 0, behavior: "smooth" });
       } else {

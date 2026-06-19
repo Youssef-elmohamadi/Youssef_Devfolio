@@ -4,7 +4,7 @@ import { apiFetch } from "@/lib/api/config";
 export async function createProjectAction(formData: FormData) {
   try {
     const response = await apiFetch(
-      "https://khaled67.alwaysdata.net", 
+      (process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net"), 
       "/api/projects",         
       {
         method: "POST",
@@ -29,7 +29,7 @@ export async function updateProjectAction(id: number, formData: FormData) {
   try {
 
     const response = await apiFetch(
-      "https://khaled67.alwaysdata.net",
+      (process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net"),
       `/api/projects/${id}`,
       {
         method: "POST",
@@ -54,7 +54,7 @@ export async function updateProjectAction(id: number, formData: FormData) {
 export async function deleteProjectAction(id: number) {
   try {
     await apiFetch(
-      "https://khaled67.alwaysdata.net",
+      (process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net"),
       `/api/projects/${id}`,
       {
         method: "DELETE",

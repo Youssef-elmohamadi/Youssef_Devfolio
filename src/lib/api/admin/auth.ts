@@ -2,7 +2,7 @@ import { apiFetch } from "../config";
 
 export async function login(email: string, password: string) {
   return await apiFetch(
-    "https://khaled67.alwaysdata.net",
+    (process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net"),
     "/api/login",
     {
       method: "POST",
@@ -14,7 +14,7 @@ export async function login(email: string, password: string) {
 
 export async function logout() {
   return await apiFetch(
-    "https://khaled67.alwaysdata.net",
+    (process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net"),
     "/api/logout",
     {
       method: "POST",

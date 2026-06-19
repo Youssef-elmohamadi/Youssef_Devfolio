@@ -1,10 +1,16 @@
-import { Outfit } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import { ThemeContextProvider } from "./context/ThemeContext";
 import { SidebarProvider } from "./context/SidebarContext";
 import type { Metadata } from "next";
 
-const outfit = Outfit({
+const inter = Inter({
   subsets: ["latin"],
+  variable: "--font-inter",
+});
+
+const jetBrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
 });
 
 export const metadata: Metadata = {
@@ -48,7 +54,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`bg-white transition-colors dark:bg-gray-900 dark:text-white ${outfit.className}`}
+        className={`bg-white transition-colors dark:bg-gray-900 dark:text-white ${inter.variable} ${jetBrainsMono.variable} antialiased`}
       >
         <ThemeContextProvider>
           <SidebarProvider>{children}</SidebarProvider>

@@ -23,12 +23,12 @@ export default function SubscriptionPopup({
   }, [onClose, duration]);
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center p-4 z-50">
+    <div className="fixed inset-0 flex items-center justify-center p-4 z-50 animate-fade-in">
       <div
-        className="absolute inset-0 bg-[rgba(0,0,0,0.5)] backdrop-blur-sm animate-fade-in"
+        className="absolute inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-xs transition-opacity duration-300"
         onClick={onClose}
       ></div>
-      <div className="relative bg-white dark:bg-dark rounded-lg p-12 max-w-lg w-full text-center shadow-2xl transform transition-transform duration-300 scale-100 animate-slide-up">
+      <div className="relative bg-white/95 dark:bg-[#0c0c0e]/95 border border-gray-150 dark:border-gray-800/80 backdrop-blur-md rounded-2xl p-8 md:p-10 max-w-md w-full text-center shadow-2xl transform scale-100 transition-all duration-300">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -37,7 +37,7 @@ export default function SubscriptionPopup({
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
+            className="h-5 w-5"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -53,37 +53,39 @@ export default function SubscriptionPopup({
 
         {/* Icon and Logo */}
         <div className="flex flex-col items-center mb-6">
-          <FaCheckCircle className="text-green-500 text-6xl mb-4" />
+          <FaCheckCircle className="text-green-500 text-5xl mb-5 animate-pulse" />
           <div className="hidden dark:block">
             <Image
               src="/logo/dark-logo.webp"
-              width={150}
-              height={100}
+              width={130}
+              height={86}
               alt="the Forge Logo"
+              className="object-contain"
             />
           </div>
           <div className="block dark:hidden">
             <Image
               src="/logo/light-logo.webp"
-              width={150}
-              height={100}
+              width={130}
+              height={86}
               alt="the Forge Logo"
+              className="object-contain"
             />
           </div>
         </div>
 
         {/* Success Message */}
-        <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed text-lg">
-          Thank you for subscribing to our newsletter!
-          <br />
-          Your email has been successfully added, and you will receive the
-          latest updates soon.
+        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+          Successfully Subscribed!
+        </h3>
+        <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed text-sm">
+          Thank you for subscribing to our newsletter! Your email has been added, and you will receive the latest updates soon.
         </p>
 
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="bg-orange-500 text-white px-8 py-3 rounded-lg hover:bg-orange-600 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+          className="w-full bg-primary text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/10 hover:shadow-primary/25 focus:outline-none focus:ring-2 focus:ring-primary text-sm"
         >
           Close
         </button>

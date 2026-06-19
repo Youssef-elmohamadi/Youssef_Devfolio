@@ -2,7 +2,7 @@ import { apiFetch } from "../config";
 
 export const getAllEducations = async (page: number, per_page=10) => {
   try {
-    const data = await apiFetch("https://khaled67.alwaysdata.net", `/api/education?page=${page}&per_page=${per_page}`, {
+    const data = await apiFetch((process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net"), `/api/education?page=${page}&per_page=${per_page}`, {
       next: {
         tags: ['educations-list'],
         revalidate: 3600*24,
@@ -20,7 +20,7 @@ export const getAllEducations = async (page: number, per_page=10) => {
 export async function getEducationsForEdit(id: string) {
   try {
     const res = await apiFetch(
-      "https://khaled67.alwaysdata.net",
+      (process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net"),
       `/api/education/${id}`,
       { cache: "no-store" }, 
       "admin_token",

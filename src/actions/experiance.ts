@@ -4,7 +4,7 @@ import { apiFetch } from "@/lib/api/config";
 export async function createExperianceAction(formData: FormData) {
   try {
     const response = await apiFetch(
-      "https://khaled67.alwaysdata.net", 
+      (process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net"), 
       "/api/experiences",         
       {
         method: "POST",
@@ -30,7 +30,7 @@ export async function updateExperianceAction(id: number, formData: FormData) {
   try {
 
     const response = await apiFetch(
-      "https://khaled67.alwaysdata.net",
+      (process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net"),
       `/api/experiences/${id}`,
       {
         method: "POST",
@@ -56,7 +56,7 @@ export async function updateExperianceAction(id: number, formData: FormData) {
 export async function deleteExperienceAction(id: number) {
   try {
     await apiFetch(
-      "https://khaled67.alwaysdata.net",
+      (process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net"),
       `/api/experiences/${id}`,
       {
         method: "DELETE",

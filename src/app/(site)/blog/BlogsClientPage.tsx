@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter, useSearchParams, usePathname } from "next/navigation"; // هوكات التنقل
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import {
   FaCalendarAlt,
   FaClock,
@@ -16,6 +16,7 @@ import {
 import { motion } from "framer-motion";
 import { fadeInUp, staggerContainer, cardHoverSmall } from "@/utils/animations";
 import { likeArticleAction } from "@/actions/articles";
+import { formatRelativeTime } from "@/utils/formatDate";
 
 // --- Blog Card Component ---
 const BlogCard = ({ blog }: { blog: any }) => {
@@ -32,7 +33,7 @@ const BlogCard = ({ blog }: { blog: any }) => {
 
     // Optimistic Update
     setIsLiked(!isLiked);
-    setLikesCount((prev) => (isLiked ? prev - 1 : prev + 1));
+    setLikesCount((prev: number) => (isLiked ? prev - 1 : prev + 1));
     setIsLoading(true);
 
     try {
@@ -71,7 +72,7 @@ const BlogCard = ({ blog }: { blog: any }) => {
         <div className="flex items-center gap-4 text-xs text-secondary/80 mb-3">
           <div className="flex items-center gap-1.5">
             <FaCalendarAlt className="text-primary/70" />
-            <span>{blog.date.diff}</span>
+            <span>{formatRelativeTime(blog.date?.raw || blog.created_at || blog.date)}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <FaClock className="text-primary/70" />
@@ -156,7 +157,7 @@ export default function BlogsClientPage({
   };
 
   return (
-    <div className="container max-w-7xl mx-auto py-12 px-4">
+    <div className="container md:pt-24  max-w-7xl mx-auto py-12 px-4">
       <motion.h1
         className="text-4xl font-bold mb-12 text-center text-primary"
         initial={{ opacity: 0, y: -20 }}
