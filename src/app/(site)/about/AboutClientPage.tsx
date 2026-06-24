@@ -17,10 +17,10 @@ import LocationMap from "../components/LocationMap";
 // --- Subcomponents ---
 function CairoTime() {
   const [time, setTime] = React.useState<string>("");
-  
+
   React.useEffect(() => {
     const update = () => {
-      setTime(new Date().toLocaleTimeString("en-US", { timeZone: "Africa/Cairo", hour: '2-digit', minute:'2-digit' }));
+      setTime(new Date().toLocaleTimeString("en-US", { timeZone: "Africa/Cairo", hour: '2-digit', minute: '2-digit' }));
     };
     update();
     const interval = setInterval(update, 1000);
@@ -88,25 +88,31 @@ export default function AboutClient({ data }: AboutClientProps) {
       </motion.h1>
 
       {/* --- Intro & Map Grid --- */}
-      <motion.section 
-        className="mb-24 grid grid-cols-1 xl:grid-cols-2 gap-12 xl:gap-8 items-start" 
+      <motion.section
+        className="mb-24 grid grid-cols-1 xl:grid-cols-2 gap-12 xl:gap-8 items-start"
         {...fadeInUp}
       >
         {/* Left: Bio & Image */}
-        <div className="flex flex-col space-y-6 text-center xl:text-left">
+        <div className="flex flex-col space-y-6 xl:text-left">
           {about.image_url && (
-            <div className="relative shrink-0 mx-auto">
+            <div className="relative shrink-0">
               <Image
                 src={about.image_url}
                 alt={about.title || "Profile"}
-                width={120}
-                height={120}
-                className="rounded-full w-28 h-28 object-cover ring-4 ring-primary/20"
+                width={160}
+                height={160}
+                className="rounded-full w-36 h-36 md:w-40 md:h-40 object-cover ring-4 ring-primary/20"
                 priority
               />
             </div>
           )}
-          
+
+          {about.title && (
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
+              {about.title}
+            </h2>
+          )}
+
           <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-2xl mx-auto xl:mx-0">
             {about.description}
           </p>
@@ -171,7 +177,7 @@ export default function AboutClient({ data }: AboutClientProps) {
 
             {/* Card 3: Cat */}
             <div className="bg-white dark:bg-dark/50 p-4 sm:p-5 rounded-2xl transition-all duration-300 border border-gray-100 dark:border-gray-800 flex items-center relative pl-16 sm:pl-20 overflow-visible">
-              <div 
+              <div
                 className="absolute -left-6 sm:-left-8 top-1/2 -translate-y-1/2 w-20 h-20 sm:w-24 sm:h-24 cursor-pointer hover:rotate-6 hover:scale-105 transition-transform z-10"
                 onClick={() => {
                   const u = new SpeechSynthesisUtterance("Meow! Meow!");
@@ -183,9 +189,9 @@ export default function AboutClient({ data }: AboutClientProps) {
                 <svg viewBox="0 0 100 100" className="w-full h-full">
                   <g transform="rotate(10 50 50)">
                     <path d="M 65,95 Q 85,95 85,80 Q 70,80 65,85" fill="#fff" stroke="#1f2937" strokeWidth="3" />
-                    <path d="M 12,38 L 8,10 L 38,18 Z" fill="#fff" stroke="#1f2937" strokeWidth="3" strokeLinejoin="round"/>
+                    <path d="M 12,38 L 8,10 L 38,18 Z" fill="#fff" stroke="#1f2937" strokeWidth="3" strokeLinejoin="round" />
                     <path d="M 15,33 L 13,16 L 31,21 Z" fill="#ffd1dc" />
-                    <path d="M 62,18 L 92,10 L 88,38 Z" fill="#fff" stroke="#1f2937" strokeWidth="3" strokeLinejoin="round"/>
+                    <path d="M 62,18 L 92,10 L 88,38 Z" fill="#fff" stroke="#1f2937" strokeWidth="3" strokeLinejoin="round" />
                     <path d="M 65,22 L 85,16 L 82,34 Z" fill="#ffd1dc" />
                     <ellipse cx="50" cy="55" rx="42" ry="34" fill="#fff" stroke="#1f2937" strokeWidth="3" />
                     <circle cx="68" cy="45" r="5" fill="#1f2937" />
@@ -212,20 +218,20 @@ export default function AboutClient({ data }: AboutClientProps) {
         {/* Right: Map & Status */}
         <div className="w-full xl:pl-8 flex flex-col gap-6">
           <LocationMap />
-          
+
           {/* Status Card */}
           <div className="bg-white dark:bg-dark/50 p-6 rounded-2xl transition-all duration-300 border border-gray-100 dark:border-gray-800 flex items-center justify-between">
             <div className="flex items-center gap-4">
-               <div className="relative flex h-4 w-4 shrink-0">
-                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                 <span className="relative inline-flex rounded-full h-4 w-4 bg-primary"></span>
-               </div>
-               <div>
-                 <h3 className="text-gray-900 dark:text-white font-bold">Available for work</h3>
-                 <p className="text-gray-500 dark:text-gray-400 text-sm">Let's build something amazing.</p>
-               </div>
+              <div className="relative flex h-4 w-4 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-4 w-4 bg-primary"></span>
+              </div>
+              <div>
+                <h3 className="text-gray-900 dark:text-white font-bold">Available for work</h3>
+                <p className="text-gray-500 dark:text-gray-400 text-sm">Let's build something amazing.</p>
+              </div>
             </div>
-            
+
             <div className="text-right hidden sm:block pl-4 border-l border-gray-100 dark:border-gray-800">
               <p className="text-gray-400 dark:text-gray-500 text-xs font-semibold uppercase tracking-wider mb-1">Cairo Time</p>
               <CairoTime />
@@ -235,12 +241,12 @@ export default function AboutClient({ data }: AboutClientProps) {
           {/* Faith Card */}
           <div className="bg-white dark:bg-dark/50 p-6 rounded-2xl transition-all duration-300 border border-gray-100 dark:border-gray-800 flex items-center gap-4">
             <div className="shrink-0">
-              <Image 
-                src="/muslim_cat.png" 
-                alt="Muslim Cat Mascot" 
-                width={56} 
-                height={56} 
-                className="w-14 h-14 rounded-full object-cover ring-2 ring-primary/20" 
+              <Image
+                src="/muslim_cat.png"
+                alt="Muslim Cat Mascot"
+                width={56}
+                height={56}
+                className="w-14 h-14 rounded-full object-cover ring-2 ring-primary/20"
               />
             </div>
             <div>
