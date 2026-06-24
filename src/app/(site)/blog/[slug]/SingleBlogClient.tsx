@@ -91,7 +91,7 @@ const SingleBlogClient = ({
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 text-gray-900 dark:text-gray-100 py-10 px-4 sm:px-6 lg:px-8 selection:bg-primary selection:text-white">
+    <div className="min-h-screen bg-transparent transition-colors duration-300 text-gray-900 dark:text-gray-100 py-10 px-4 sm:px-6 lg:px-8 selection:bg-primary selection:text-white">
       <TableOfContents content={blogPost.content} lang={blogPost.lang} />
 
       <div className="max-w-4xl mx-auto lg:ml-80">

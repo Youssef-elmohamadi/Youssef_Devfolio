@@ -18,6 +18,8 @@ interface FormData {
 
 type FormStatus = "idle" | "loading" | "success" | "error";
 
+type FieldErrors = Partial<Record<keyof FormData, string[]>>;
+
 export default function ContactClientPage() {
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -25,25 +27,46 @@ export default function ContactClientPage() {
     message: "",
   });
   const [status, setStatus] = useState<FormStatus>("idle");
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [serverMessage, setServerMessage] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("loading");
+    setFieldErrors({});
+    setServerMessage("");
 
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Accept": "application/json",
         },
         body: JSON.stringify(formData),
       });
 
-      if (!response.ok) throw new Error("Failed to send message");
+      const data = await response.json();
 
+      if (response.status === 422 && data.errors) {
+        // Per-field validation errors from backend
+        setFieldErrors(data.errors);
+        setStatus("error");
+        return;
+      }
+
+      if (!response.ok) {
+        setServerMessage(data.message || "Failed to send message. Please try again.");
+        setStatus("error");
+        return;
+      }
+
+      // Success (201)
+      setServerMessage(data.message || "Message sent successfully!");
       setStatus("success");
       setFormData({ name: "", email: "", message: "" });
     } catch {
+      setServerMessage("Something went wrong. Please check your connection and try again.");
       setStatus("error");
     }
   };
@@ -51,6 +74,10 @@ export default function ContactClientPage() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    // Clear field-specific error when the user starts typing
+    if (fieldErrors[e.target.name as keyof FormData]) {
+      setFieldErrors((prev) => ({ ...prev, [e.target.name]: undefined }));
+    }
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
@@ -158,8 +185,11 @@ export default function ContactClientPage() {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-dark focus:ring-2 focus:ring-primary focus:border-transparent"
+                className={`w-full px-4 py-2 rounded-md border bg-white dark:bg-dark focus:ring-2 focus:ring-primary focus:border-transparent ${fieldErrors.name ? 'border-red-500 dark:border-red-500' : 'border-gray-300 dark:border-gray-700'}`}
               />
+              {fieldErrors.name && fieldErrors.name.map((err, i) => (
+                <p key={i} className="text-red-500 text-xs mt-1">{err}</p>
+              ))}
             </motion.div>
 
             <motion.div variants={fadeInUp}>
@@ -173,8 +203,11 @@ export default function ContactClientPage() {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-dark focus:ring-2 focus:ring-primary focus:border-transparent"
+                className={`w-full px-4 py-2 rounded-md border bg-white dark:bg-dark focus:ring-2 focus:ring-primary focus:border-transparent ${fieldErrors.email ? 'border-red-500 dark:border-red-500' : 'border-gray-300 dark:border-gray-700'}`}
               />
+              {fieldErrors.email && fieldErrors.email.map((err, i) => (
+                <p key={i} className="text-red-500 text-xs mt-1">{err}</p>
+              ))}
             </motion.div>
 
             <motion.div variants={fadeInUp}>
@@ -191,8 +224,11 @@ export default function ContactClientPage() {
                 onChange={handleChange}
                 required
                 rows={4}
-                className="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-dark focus:ring-2 focus:ring-primary focus:border-transparent"
+                className={`w-full px-4 py-2 rounded-md border bg-white dark:bg-dark focus:ring-2 focus:ring-primary focus:border-transparent ${fieldErrors.message ? 'border-red-500 dark:border-red-500' : 'border-gray-300 dark:border-gray-700'}`}
               />
+              {fieldErrors.message && fieldErrors.message.map((err, i) => (
+                <p key={i} className="text-red-500 text-xs mt-1">{err}</p>
+              ))}
             </motion.div>
 
             <motion.button
@@ -205,23 +241,23 @@ export default function ContactClientPage() {
               {status === "loading" ? "Sending..." : "Send Message"}
             </motion.button>
 
-            {status === "success" && (
+            {status === "success" && serverMessage && (
               <motion.p
                 className="text-green-500 text-center"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
               >
-                Message sent successfully!
+                {serverMessage}
               </motion.p>
             )}
 
-            {status === "error" && (
+            {status === "error" && serverMessage && (
               <motion.p
                 className="text-red-500 text-center"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
               >
-                Failed to send message. Please try again.
+                {serverMessage}
               </motion.p>
             )}
           </motion.form>

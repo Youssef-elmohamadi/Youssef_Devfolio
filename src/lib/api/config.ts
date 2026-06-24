@@ -30,8 +30,13 @@ export async function apiFetch(
     headers,
   });
   if (res.status === 401 || res.status === 419) {
+    console.error(`API Auth Error (${res.status}) on endpoint: ${endpoint}`);
     if (typeof window === "undefined") {
-      cookieStore?.delete(tokenKey);
+      try {
+        cookieStore?.delete(tokenKey);
+      } catch {
+        // Cookie deletion not allowed in Server Components — that's OK
+      }
       redirect("/admin/login");
     } else {
       localStorage.removeItem(tokenKey);

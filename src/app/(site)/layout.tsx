@@ -13,7 +13,7 @@ export default function SiteLayout({
       {/* Global Background Grid */}
       <DeveloperGrid />
       <Navbar />
-      <main className="min-h-screen pt-24 md:pt-16 relative z-10">{children}</main>
+      <main className="min-h-screen pb-28 pt-8 relative z-10">{children}</main>
       <Footer />
     </div>
   );
