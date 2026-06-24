@@ -79,7 +79,7 @@ export default function Projects({ projects = [] }: { projects?: Project[] }) {
                 {project.title}
               </h3>
 
-              <p className="text-gray-600 dark:text-gray-300 mb-5 text-sm leading-relaxed flex-grow">
+              <p className="text-gray-700 dark:text-gray-300 mb-5 text-sm leading-relaxed flex-grow">
                 {project.description}
               </p>
 

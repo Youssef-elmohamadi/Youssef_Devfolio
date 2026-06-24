@@ -71,6 +71,7 @@ export default function Navbar() {
               <a
                 key={item.name}
                 href={item.href}
+                aria-label={item.name}
                 target={item.href !== "#" && !item.href.startsWith("mailto:") ? "_blank" : "_self"}
                 rel={item.href !== "#" && !item.href.startsWith("mailto:") ? "noopener noreferrer" : ""}
               >
@@ -80,7 +81,7 @@ export default function Navbar() {
           }
 
           return (
-            <Link key={item.name} href={item.href}>
+            <Link key={item.name} href={item.href} aria-label={item.name} aria-current={isActive ? "page" : undefined}>
               {linkContent}
             </Link>
           );
@@ -92,6 +93,7 @@ export default function Navbar() {
         {/* Theme Toggle */}
         <motion.button
           onClick={toggleTheme}
+          aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
           className="relative group flex items-center justify-center p-2 sm:p-3 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors flex-shrink-0"
           onHoverStart={() => setHoveredIndex(99)}
           onHoverEnd={() => setHoveredIndex(null)}

@@ -67,27 +67,25 @@ export default async function Footer() {
           <div className="mb-4 md:mb-0">
             <Link
               href="/"
-              className="text-xl block dark:hidden font-bold text-primary"
+              aria-label="The Forge — Go to homepage"
+              className="inline-block font-bold text-primary"
             >
               <Image
                 src="/logo/light-logo.webp"
                 width={150}
                 height={100}
-                alt="the Forge Logo"
+                alt="The Forge Logo"
+                className="block dark:hidden"
               />
-            </Link>
-            <Link
-              href="/"
-              className="text-xl hidden dark:block font-bold text-primary"
-            >
               <Image
                 src="/logo/dark-logo.webp"
                 width={150}
                 height={100}
-                alt="the Forge Logo"
+                alt="The Forge Logo"
+                className="hidden dark:block"
               />
             </Link>
-            <p className="text-sm text-center md:text-left text-secondary mt-2">
+            <p className="text-sm text-center md:text-left text-gray-600 dark:text-gray-400 mt-2">
               © {new Date().getFullYear()} Youssef Elmohamadi{" "}
               <span className="text-primary">The Forge</span>. All rights
               reserved.
