@@ -31,35 +31,35 @@ export default function DeveloperGrid() {
         init={particlesInit}
         options={{
           fullScreen: { enable: false },
-          fpsLimit: 120,
+          fpsLimit: 30,
           particles: {
             color: { value: particleColor },
             links: {
               color: particleColor,
-              distance: 150,
+              distance: 130,
               enable: true,
-              opacity: isDark ? 0.15 : 0.1,
+              opacity: isDark ? 0.08 : 0.06,
               width: 1,
             },
             move: {
               enable: true,
-              speed: 0.8,
+              speed: 0.5,
               direction: "none",
               random: false,
               straight: false,
               outModes: { default: "bounce" },
             },
             number: {
-              density: { enable: true, area: 800 },
-              value: 60,
+              density: { enable: true, area: 1200 },
+              value: 30,
             },
             opacity: {
-              value: isDark ? 0.3 : 0.2,
+              value: isDark ? 0.2 : 0.12,
             },
             shape: { type: "circle" },
             size: { value: { min: 1, max: 2 } },
           },
-          detectRetina: true,
+          detectRetina: false,
         }}
         className="absolute inset-0"
       />

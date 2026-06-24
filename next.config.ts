@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  compress: true,
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/i,
@@ -21,11 +22,13 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
+    formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 60 * 60 * 24 * 7, // 7 days
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'khaled67.alwaysdata.net', // 👈 ضيف الدومين بتاعك هنا
-        pathname: '/**', // اسمح بكل المسارات
+        hostname: 'khaled67.alwaysdata.net',
+        pathname: '/**',
       },
       {
         protocol: 'http',
@@ -45,3 +48,4 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+

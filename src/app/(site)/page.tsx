@@ -41,13 +41,9 @@ export default async function Home() {
   try {
     const homeData = await getHomeData();
     profile = homeData.profile ?? null;
-    console.log(profile)
     socialLinks = homeData.SocialLink ?? [];
-    console.log(socialLinks)
     projects = homeData.Project ?? [];
-    console.log(projects)
     articles = homeData.Article ?? [];
-    console.log(articles)
   } catch (error) {
     console.error("Failed to fetch home data", error);
   }

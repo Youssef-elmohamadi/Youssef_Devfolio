@@ -25,14 +25,18 @@ export default function Projects({ projects = [] }: { projects?: Project[] }) {
         <div className="text-center mb-16">
           <motion.h2
             className="text-3xl md:text-4xl font-extrabold mb-4 tracking-tight text-gray-900 dark:text-white"
-            {...fadeInUp}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
           >
             Featured Projects
           </motion.h2>
           <motion.p
             className="text-gray-500 dark:text-gray-400 max-w-xl mx-auto text-base md:text-lg"
             initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ delay: 0.1, duration: 0.5 }}
           >
             A curated selection of digital experiences, applications, and developer tools I've built.
@@ -43,7 +47,8 @@ export default function Projects({ projects = [] }: { projects?: Project[] }) {
           className="grid grid-cols-1 md:grid-cols-3 gap-8"
           variants={staggerContainer}
           initial="initial"
-          animate="animate"
+          whileInView="animate"
+          viewport={{ once: true, amount: 0.1 }}
         >
           {projects.map((project) => (
             <motion.article

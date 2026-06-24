@@ -30,7 +30,6 @@ export async function apiFetch(
     headers,
   });
   if (res.status === 401 || res.status === 419) {
-    console.error(`API Auth Error (${res.status}) on endpoint: ${endpoint}`);
     if (typeof window === "undefined") {
       try {
         cookieStore?.delete(tokenKey);

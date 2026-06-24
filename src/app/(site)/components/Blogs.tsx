@@ -16,14 +16,18 @@ export default function Blogs({ articles = [] }: { articles?: any[] }) {
         <div className="text-center mb-16">
           <motion.h2
             className="text-3xl md:text-4xl font-bold mb-4 tracking-tight text-gray-900 dark:text-white"
-            {...fadeInUp}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
           >
             Latest Blog Posts
           </motion.h2>
           <motion.p
             className="text-gray-500 dark:text-gray-400 max-w-xl mx-auto text-base md:text-lg"
             initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ delay: 0.1, duration: 0.5 }}
           >
             Writing on web engineering, frontend frameworks, and the art of crafting web products.
@@ -34,7 +38,8 @@ export default function Blogs({ articles = [] }: { articles?: any[] }) {
           className="grid grid-cols-1 md:grid-cols-3 gap-8"
           variants={staggerContainer}
           initial="initial"
-          animate="animate"
+          whileInView="animate"
+          viewport={{ once: true, amount: 0.1 }}
         >
           {articles.map((blog) => (
             <motion.article
@@ -50,6 +55,8 @@ export default function Blogs({ articles = [] }: { articles?: any[] }) {
                     src={blog.feature_image}
                     alt={blog.title}
                     fill
+                    loading="lazy"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
@@ -83,8 +90,9 @@ export default function Blogs({ articles = [] }: { articles?: any[] }) {
         <motion.div
           className="text-center mt-16"
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
         >
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block">
             <Link
