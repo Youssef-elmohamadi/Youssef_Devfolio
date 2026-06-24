@@ -24,7 +24,7 @@ export default function DeveloperGrid() {
   const particleColor = isDark ? "#ffffff" : "#000000";
 
   return (
-    <div className="absolute inset-0 pointer-events-none z-[-2]">
+    <div className="fixed inset-0 pointer-events-none z-[-2]">
       {/* Particles (Moving Dots) */}
       <Particles
         id="tsparticles"
