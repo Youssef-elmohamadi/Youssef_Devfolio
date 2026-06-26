@@ -21,7 +21,7 @@ import {
   MessagesIcon,
 } from "../../icons/index";
 import SidebarWidget from "./SidebarWidget";
-import { FaSignOutAlt } from "react-icons/fa";
+import { FaSignOutAlt, FaTag } from "react-icons/fa";
 
 // 👇 استيراد الأكشن من الملف المنفصل
 import { logoutAction } from "@/actions/auth";
@@ -43,6 +43,11 @@ const navItems: NavItem[] = [
     icon: <PageIcon />,
     name: "Articles",
     path: "/admin/articles",
+  },
+  {
+    icon: <FaTag />,
+    name: "Categories",
+    path: "/admin/categories",
   },
   {
     icon: <UserIcon />,
@@ -327,25 +332,39 @@ const AppSidebar: React.FC = () => {
             <>
               <Image
                 className="dark:hidden"
-                src="/images/logo/logo.svg"
+                src="/logo/light-logo.webp"
                 alt="Logo"
-                width={150}
-                height={40}
+                width={120}
+                height={32}
+                style={{ objectFit: 'contain' }}
               />
               <Image
                 className="hidden dark:block"
-                src="/images/logo/logo-dark.svg"
+                src="/logo/dark-logo.webp"
                 alt="Logo"
-                width={150}
-                height={40}
+                width={120}
+                height={32}
+                style={{ objectFit: 'contain' }}
               />
             </>
           ) : (
             <Image
-              src="/images/logo/logo-icon.svg"
+              src="/logo/light-logo.webp"
               alt="Logo"
               width={32}
               height={32}
+              style={{ objectFit: 'contain' }}
+              className="dark:hidden"
+            />
+          )}
+          {!isExpanded && !isHovered && !isMobileOpen && (
+            <Image
+              src="/logo/dark-logo.webp"
+              alt="Logo"
+              width={32}
+              height={32}
+              style={{ objectFit: 'contain' }}
+              className="hidden dark:block"
             />
           )}
         </Link>

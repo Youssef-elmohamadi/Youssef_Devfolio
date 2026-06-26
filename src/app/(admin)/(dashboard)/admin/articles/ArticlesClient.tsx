@@ -1,7 +1,7 @@
 // app/admin/articles/ArticlesClient.tsx
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import {
@@ -16,6 +16,7 @@ import DataTable, { Column } from "@/app/(admin)/components/ui/DataTable";
 import { formatDate } from "@/utils/formatDate";
 import Link from "next/link";
 import { deleteArticleAction } from "@/actions/articles";
+import { getCategories } from "@/lib/api/categories";
 
 // 2. تعريف الأنواع بناءً على ريسبونس Laravel
 type Article = {
@@ -24,6 +25,7 @@ type Article = {
   feature_image: string | null;
   date: { raw: string };
   stats: { views: number; likes: number };
+  category_id?: number; // new field linking to category
 };
 
 type Meta = {
@@ -48,6 +50,20 @@ export default function ArticlesClient({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
+
+  useEffect(() => {
+    getCategories()
+      .then((data) => setCategories(data))
+      .catch(console.error);
+  }, []);
+
+  const getCategoryName = (id?: number) => {
+    if (!id) return "—";
+    const found = categories.find((c) => c.id === id);
+    return found ? found.name : `#${id}`;
+  };
   
   // 3. دالة تغيير الصفحة
   const handlePageChange = (newPage: number) => {
@@ -108,6 +124,15 @@ export default function ArticlesClient({
             <FaHeart className="text-red-400" /> {article.stats.likes}
           </span>
         </div>
+      ),
+    },
+    {
+      header: "Category",
+      className: "text-center",
+      render: (article) => (
+        <span className="px-2 py-1 rounded-full text-xs font-medium bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400">
+          {getCategoryName(article.category_id)}
+        </span>
       ),
     },
     {

@@ -1,12 +1,14 @@
 import { apiFetch } from "./config";
 
-export const getArticles = async (page: number, per_page=10) => {
+export const getArticles = async (page: number, per_page = 10, categoryId?: number) => {
   try {
-    const data = await apiFetch((process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net"), `/api/articles?page=${page}&per_page=${per_page}`, {
+    const query = new URLSearchParams({ page: page.toString(), per_page: per_page.toString() });
+    if (categoryId) query.append('category_id', categoryId.toString());
+    const data = await apiFetch((process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net"), `/api/articles?${query.toString()}`, {
       next: {
         tags: ['articles-list'],
-        revalidate: 3600*24, 
-       },
+        revalidate: 3600 * 24,
+      },
     });
 
     return data;
@@ -15,6 +17,7 @@ export const getArticles = async (page: number, per_page=10) => {
     throw new Error("Failed to load articles");
   }
 };
+
 
 export async function getArticleForEndUser(id: string) {
   try {

@@ -49,7 +49,7 @@ export async function apiFetch(
     console.log("API Fetch Error Response Text:", errorText);
     let errorJson: any = null;
     try {
-       errorJson = JSON.parse(errorText);
+      errorJson = JSON.parse(errorText);
     } catch (e) {
       throw new Error(`API Error: ${res.status}`);
     }
@@ -62,7 +62,7 @@ export async function apiFetch(
       };
     }
     throw new Error(errorJson.message || `API Error: ${res.status}`);
-      }
+  }
   
   return res.json();
 }

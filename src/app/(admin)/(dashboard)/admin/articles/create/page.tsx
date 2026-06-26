@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
@@ -13,9 +13,11 @@ import {
   FaVideo,
   FaTimes,
   FaExclamationCircle,
+  FaTag,
 } from "react-icons/fa";
 import Link from "next/link";
-import { createArticleAction } from "@/actions/articles"; // Import the Server Action
+import { createArticleAction } from "@/actions/articles";
+import { getCategories } from "@/lib/api/categories";
 
 // --- Types ---
 type MediaItem = {
@@ -33,14 +35,25 @@ type ContentBlock = {
   videos: MediaItem[];
 };
 
+type Category = { id: number; name: string };
+
 export default function CreateArticlePage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [serverError, setServerError] = useState<string | null>(null); // Global error state
+  const [serverError, setServerError] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [excerpt, setExcerpt] = useState("");
   const [lang, setLang] = useState("en");
   const [tags, setTags] = useState("");
+  const [categoryId, setCategoryId] = useState<number | "">("");
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  // Fetch categories on mount
+  useEffect(() => {
+    getCategories()
+      .then((data) => setCategories(data))
+      .catch(console.error);
+  }, []);
 
   // 📸 Feature Media
   const [featureImage, setFeatureImage] = useState<File | null>(null);
@@ -168,6 +181,9 @@ export default function CreateArticlePage() {
     // 1. Feature Media
     if (featureImage) formData.append("feature_image", featureImage);
     if (featureVideo) formData.append("feature_video", featureVideo);
+
+    // 1b. Category
+    if (categoryId) formData.append("category_id", categoryId.toString());
 
     // 2. Tags
     const tagsArray = tags
@@ -461,6 +477,24 @@ export default function CreateArticlePage() {
 
           {/* Settings */}
           <div className="bg-white dark:bg-[#0a0a0a] border border-gray-200 dark:border-gray-800 rounded-xl p-6 space-y-4">
+            {/* Category */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-1.5">
+                <FaTag className="text-[#ff6a00] text-xs" /> Category
+              </label>
+              <select
+                value={categoryId}
+                onChange={(e) => setCategoryId(e.target.value ? Number(e.target.value) : "")}
+                className="w-full bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-gray-900 dark:text-white outline-none focus:border-[#ff6a00]"
+              >
+                <option value="">— No Category —</option>
+                {categories.map((c) => (
+                  <option key={c.id} value={c.id}>{c.name}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Language */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Language

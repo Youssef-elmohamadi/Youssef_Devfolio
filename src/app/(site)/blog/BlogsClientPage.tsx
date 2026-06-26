@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
@@ -17,6 +17,8 @@ import { motion } from "framer-motion";
 import { fadeInUp, staggerContainer, cardHoverSmall } from "@/utils/animations";
 import { likeArticleAction } from "@/actions/articles";
 import { formatRelativeTime } from "@/utils/formatDate";
+import CategoryFilter from "@/components/CategoryFilter";
+import { getArticlesClient } from "@/lib/api/articles-client";
 
 // --- Blog Card Component ---
 const BlogCard = ({ blog }: { blog: any }) => {
@@ -65,11 +67,21 @@ const BlogCard = ({ blog }: { blog: any }) => {
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
+          {blog.category && (
+            <div className="absolute top-3 right-3 bg-white/90 dark:bg-black/70 backdrop-blur-md px-3 py-1 text-xs font-bold rounded-full text-primary shadow-sm border border-white/20">
+              {blog.category.name}
+            </div>
+          )}
         </div>
       )}
 
       <div className="p-5 flex flex-col flex-grow">
-        <div className="flex items-center gap-4 text-xs text-secondary/80 mb-3">
+        <div className="flex flex-wrap items-center gap-4 text-xs text-secondary/80 mb-3">
+          {blog.category && !blog.feature_image && (
+            <div className="flex items-center gap-1.5 text-primary font-bold bg-primary/10 px-2.5 py-1 rounded-md">
+              {blog.category.name}
+            </div>
+          )}
           <div className="flex items-center gap-1.5">
             <FaCalendarAlt className="text-primary/70" />
             <span>{formatRelativeTime(blog.date?.raw || blog.created_at || blog.date)}</span>
@@ -134,30 +146,59 @@ const BlogCard = ({ blog }: { blog: any }) => {
 // --- Main Client Page ---
 export default function BlogsClientPage({
   initialBlogs,
-  meta,
+  meta: initialMeta,
 }: {
   initialBlogs: any[];
-  meta: any; // استقبال الميتا داتا
+  meta: any;
 }) {
+  const [blogs, setBlogs] = useState(initialBlogs);
+  const [meta, setMeta] = useState(initialMeta);
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // دالة تغيير الصفحة
+  // Re-fetch whenever page or selected category changes
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      setIsLoading(true);
+      try {
+        const page = Number(searchParams.get("page")) || 1;
+        const data = await getArticlesClient(page, 10, selectedCategory);
+        setBlogs(data.data || []);
+        setMeta(data.meta || null);
+      } catch (err) {
+        console.error("Failed to fetch articles", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchBlogs();
+  }, [searchParams, selectedCategory]);
+
+  // Handle category change – reset to page 1
+  const handleCategoryChange = (id: number | null) => {
+    setSelectedCategory(id);
+    const params = new URLSearchParams();
+    params.set("page", "1");
+    if (id) params.set("category_id", id.toString());
+    router.push(`${pathname}?${params.toString()}`);
+  };
+
+  // Handle pagination
   const handlePageChange = (newPage: number) => {
     if (!meta || newPage < 1 || newPage > meta.last_page) return;
-
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", newPage.toString());
-
-    // التمرير للأعلى بسلاسة عند تغيير الصفحة
+    if (selectedCategory) params.set("category_id", selectedCategory.toString());
+    else params.delete("category_id");
     window.scrollTo({ top: 0, behavior: "smooth" });
-
     router.push(`${pathname}?${params.toString()}`);
   };
 
   return (
-    <div className="container md:pt-24  max-w-7xl mx-auto py-12 px-4">
+    <div className="container md:pt-24 max-w-7xl mx-auto py-12 px-4">
       <motion.h1
         className="text-4xl font-bold mb-12 text-center text-primary"
         initial={{ opacity: 0, y: -20 }}
@@ -167,13 +208,18 @@ export default function BlogsClientPage({
         Blog Posts
       </motion.h1>
 
+      {/* Category Filter */}
+      <div className="flex justify-center mb-10">
+        <CategoryFilter selectedId={selectedCategory} onChange={handleCategoryChange} />
+      </div>
+
       <motion.div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         variants={staggerContainer}
         initial="initial"
         animate="animate"
       >
-        {initialBlogs.map((blog) => (
+        {blogs.map((blog) => (
           <BlogCard key={blog.id} blog={blog} />
         ))}
       </motion.div>

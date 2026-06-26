@@ -86,18 +86,20 @@ const AppHeader: React.FC = () => {
 
           <Link href="/" className="lg:hidden">
             <Image
-              width={154}
-              height={32}
+              width={110}
+              height={26}
               className="dark:hidden"
-              src="./images/logo/logo.svg"
+              src="/logo/light-logo.webp"
               alt="Logo"
+              style={{ objectFit: 'contain' }}
             />
             <Image
-              width={154}
-              height={32}
+              width={110}
+              height={26}
               className="hidden dark:block"
-              src="./images/logo/logo-dark.svg"
+              src="/logo/dark-logo.webp"
               alt="Logo"
+              style={{ objectFit: 'contain' }}
             />
           </Link>
 
