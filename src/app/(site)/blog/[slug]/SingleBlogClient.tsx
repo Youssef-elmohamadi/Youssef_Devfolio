@@ -9,18 +9,27 @@ import {
   HeartIcon,
 } from "@heroicons/react/24/solid";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import TableOfContents from "../../components/BlogIndex";
 import { likeArticleAction } from "@/actions/articles";
 import SocialShareButtons from "../../components/SocialShareButtons";
 import CodeBlockWithPreview from "../../components/CodeBlockWithPreview";
+import ArticleTable from "../../components/ArticleTable";
 import { useTheme } from "@/app/context/ThemeContext";
 import { formatRelativeTime } from "@/utils/formatDate";
 
+const MermaidDiagram = dynamic(
+  () => import("../../components/MermaidDiagram"),
+  { ssr: false }
+);
+
 type BlogContentBlock = {
   id: number;
+  type?: string | null;
   title: string | null;
   text?: string;
   code?: string;
+  layout?: string | null;
   images?: string[];
   videos?: string[];
 };
@@ -33,9 +42,11 @@ const SingleBlogClient = ({
     excerpt: string;
     content: Array<{
       id: number;
+      type?: string | null;
       title: string | null;
       text?: string;
       code?: string;
+      layout?: string | null;
       images?: string[];
       videos?: string[];
     }>;
@@ -104,10 +115,10 @@ const SingleBlogClient = ({
           </div>
           <span className="font-medium">Go Back</span>
         </button>
-        <h1 className="text-3xl md:text-5xl font-extrabold mb-8 text-gray-900 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-primary dark:to-orange-400 leading-tight">
+        <h1 className="text-2xl md:text-4xl font-extrabold mb-8 text-gray-900 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-primary dark:to-orange-400 leading-tight">
           {blogPost.title}
         </h1>
-        <div className="bg-white/70 dark:bg-[#111] backdrop-blur-md rounded-2xl p-6 border border-gray-200 dark:border-gray-800 mb-12 shadow-xl dark:shadow-none transition-colors duration-300">
+        <div className="bg-white/70 dark:bg-gray-900  backdrop-blur-md rounded-2xl p-6 border border-gray-200 dark:border-gray-800 mb-12 shadow-xl dark:shadow-none transition-colors duration-300">
           <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6">
             <div className="flex flex-wrap items-center gap-4 text-gray-600 dark:text-gray-400 text-sm md:text-base">
               <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-800/50 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700">
@@ -130,11 +141,10 @@ const SingleBlogClient = ({
               <button
                 onClick={handleLike}
                 disabled={isLoading}
-                className={`flex items-center gap-1.5 transition-all transform active:scale-95 disabled:opacity-70 hover:scale-105 ${
-                  isLiked
-                    ? "text-red-500"
-                    : "text-gray-500 dark:text-gray-400 hover:text-red-400"
-                }`}
+                className={`flex items-center gap-1.5 transition-all transform active:scale-95 disabled:opacity-70 hover:scale-105 ${isLiked
+                  ? "text-red-500"
+                  : "text-gray-500 dark:text-gray-400 hover:text-red-400"
+                  }`}
                 title={isLiked ? "Unlike" : "Like"}
               >
                 <HeartIcon
@@ -159,83 +169,192 @@ const SingleBlogClient = ({
 
         {/* المقال */}
         <article
-          className={`prose prose-lg max-w-none ${
-            isRtl ? "text-right" : "text-left"
-          } dark:prose-invert prose-headings:text-gray-900 dark:prose-headings:text-gray-100 prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-a:text-primary hover:prose-a:text-orange-500 transition-colors duration-300`}
+          className={`prose prose-lg max-w-none ${isRtl ? "text-right" : "text-left"
+            } dark:prose-invert prose-headings:text-gray-900 dark:prose-headings:text-gray-100 prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-a:text-primary hover:prose-a:text-orange-500 transition-colors duration-300`}
           dir={isRtl ? "rtl" : "ltr"}
         >
-          {blogPost.content.map((block: BlogContentBlock) => (
-            <div key={block.id} className="mb-12 group/block">
-              {/* العناوين الفرعية */}
-              {block.title && (
-                <div className="relative">
-                  <h2
-                    id={block.id.toString()}
-                    className="text-2xl md:text-3xl font-bold mt-10 mb-6 flex items-center gap-3"
-                  >
-                    <span className="w-1.5 h-8 bg-primary rounded-full inline-block"></span>
-                    {block.title}
-                  </h2>
-                </div>
-              )}
-
-              {/* النصوص */}
-              {block.text && (
-                <p className="text-lg leading-8 mb-6 whitespace-pre-line">
-                  {block.text}
-                </p>
-              )}
-
-              {/* الأكواد البرمجية */}
-              {block.code && (
-                <CodeBlockWithPreview
-                  code={block.code}
-                  language="javascript"
-                  isDark={isDark}
-                />
-              )}
-
-              {/* الصور */}
-              {block.images && block.images.length > 0 && (
-                <div
-                  className={`grid gap-6 my-8 ${
-                    block.images.length > 1
-                      ? "grid-cols-1 md:grid-cols-2"
-                      : "grid-cols-1"
-                  }`}
-                >
-                  {block.images.map((img: string, idx: number) => (
-                    <div
-                      key={idx}
-                      className="relative rounded-2xl overflow-hidden dark:shadow-2xl border border-gray-200 dark:border-gray-800 group hover:border-primary/50 transition-all duration-300"
-                    >
-                      <Image
-                        src={img}
-                        alt={`content image ${idx + 1}`}
-                        width={800}
-                        height={500}
-                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+          {blogPost.content.map((block: BlogContentBlock) => {
+            // New typed blocks
+            if (block.type) {
+              switch (block.type) {
+                case "heading":
+                  return (
+                    <div key={block.id} className="mb-12 group/block">
+                      <div className="relative">
+                        <h2
+                          id={block.id.toString()}
+                          className="text-2xl md:text-3xl font-bold mt-10 mb-6 flex items-center gap-3"
+                        >
+                          <span className="w-1.5 h-8 bg-primary rounded-full inline-block"></span>
+                          {block.title}
+                        </h2>
+                      </div>
+                    </div>
+                  );
+                case "text":
+                  return (
+                    <div key={block.id} className="mb-12 group/block">
+                      <p className="text-lg leading-8 mb-6 whitespace-pre-line">
+                        {block.text}
+                      </p>
+                    </div>
+                  );
+                case "code":
+                  return (
+                    <div key={block.id} className="mb-12 group/block">
+                      <CodeBlockWithPreview
+                        code={block.code || ""}
+                        language="javascript"
+                        isDark={isDark}
                       />
                     </div>
-                  ))}
-                </div>
-              )}
+                  );
+                case "images":
+                  return (
+                    <div key={block.id} className="mb-12 group/block">
+                      {block.images && block.images.length > 0 && (
+                        <div
+                          className={`grid gap-6 my-8 ${block.layout === "3"
+                            ? "grid-cols-1 md:grid-cols-3"
+                            : block.layout === "2"
+                              ? "grid-cols-1 md:grid-cols-2"
+                              : "grid-cols-1"
+                            }`}
+                        >
+                          {block.images.map((img: string, idx: number) => (
+                            <div
+                              key={idx}
+                              className="relative rounded-2xl overflow-hidden dark:shadow-2xl border border-gray-200 dark:border-gray-800 group hover:border-primary/50 transition-all duration-300"
+                            >
+                              <Image
+                                src={img}
+                                alt={`content image ${idx + 1}`}
+                                width={800}
+                                height={500}
+                                className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                case "video":
+                  return (
+                    <div key={block.id} className="mb-12 group/block">
+                      {block.videos?.map((vid: string, idx: number) => (
+                        <div
+                          key={idx}
+                          className="rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 my-8 bg-black"
+                        >
+                          <video
+                            src={vid}
+                            controls
+                            className="w-full h-auto max-h-[500px]"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  );
+                case "diagram":
+                  return (
+                    <div key={block.id} className="mb-12 group/block">
+                      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#0a0a0a] p-6 overflow-auto my-8 shadow-sm transition-colors">
+                        <MermaidDiagram code={block.code || ""} isDark={isDark} />
+                      </div>
+                    </div>
+                  );
+                case "table": {
+                  let parsedTable = null;
+                  try {
+                    parsedTable = block.text ? JSON.parse(block.text) : null;
+                  } catch {
+                    parsedTable = null;
+                  }
+                  return parsedTable ? (
+                    <div key={block.id} className="mb-12 group/block my-8">
+                      <ArticleTable tableData={parsedTable} />
+                    </div>
+                  ) : null;
+                }
+                default:
+                  return null;
+              }
+            }
 
-              {/* الفيديوهات */}
-              {block.videos?.map((vid: string, idx: number) => (
-                <div
-                  key={idx}
-                  className="rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 my-8 bg-black"
-                >
-                  <video
-                    src={vid}
-                    controls
-                    className="w-full h-auto max-h-[500px]"
+            // Legacy blocks (no type field) - original fallback rendering
+            return (
+              <div key={block.id} className="mb-12 group/block">
+                {/* العناوين الفرعية */}
+                {block.title && (
+                  <div className="relative">
+                    <h2
+                      id={block.id.toString()}
+                      className="text-2xl md:text-3xl font-bold mt-10 mb-6 flex items-center gap-3"
+                    >
+                      <span className="w-1.5 h-8 bg-primary rounded-full inline-block"></span>
+                      {block.title}
+                    </h2>
+                  </div>
+                )}
+
+                {/* النصوص */}
+                {block.text && (
+                  <p className="text-lg leading-8 mb-6 whitespace-pre-line">
+                    {block.text}
+                  </p>
+                )}
+
+                {/* الأكواد البرمجية */}
+                {block.code && (
+                  <CodeBlockWithPreview
+                    code={block.code}
+                    language="javascript"
+                    isDark={isDark}
                   />
-                </div>
-              ))}
-            </div>
-          ))}
+                )}
+
+                {/* الصور */}
+                {block.images && block.images.length > 0 && (
+                  <div
+                    className={`grid gap-6 my-8 ${block.images.length > 1
+                      ? "grid-cols-1 md:grid-cols-2"
+                      : "grid-cols-1"
+                      }`}
+                  >
+                    {block.images.map((img: string, idx: number) => (
+                      <div
+                        key={idx}
+                        className="relative rounded-2xl overflow-hidden dark:shadow-2xl border border-gray-200 dark:border-gray-800 group hover:border-primary/50 transition-all duration-300"
+                      >
+                        <Image
+                          src={img}
+                          alt={`content image ${idx + 1}`}
+                          width={800}
+                          height={500}
+                          className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* الفيديوهات */}
+                {block.videos?.map((vid: string, idx: number) => (
+                  <div
+                    key={idx}
+                    className="rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 my-8 bg-black"
+                  >
+                    <video
+                      src={vid}
+                      controls
+                      className="w-full h-auto max-h-[500px]"
+                    />
+                  </div>
+                ))}
+              </div>
+            );
+          })}
         </article>
 
         {/* القسم السفلي */}

@@ -10,9 +10,11 @@ import ProgressBar from "./ProgressBar";
 interface TableOfContentsProps {
   content: Array<{
     id: number;
+    type?: string | null;
     title: string | null;
     text?: string;
     code?: string;
+    layout?: string | null;
     images?: string[];
     videos?: string[];
   }>;
@@ -25,7 +27,10 @@ const TableOfContents = ({ content, lang = "en" }: TableOfContentsProps) => {
   const [progress, setProgress] = useState(0);
 
   const isRtl = lang === "ar";
-  const headings = content?.filter((block) => block.title !== null);
+  // Support both new blocks (type=heading) and old blocks (title !== null)
+  const headings = content?.filter((block) =>
+    block.type ? block.type === "heading" : block.title !== null
+  );
   const headingRefs = useRef<Record<string, HTMLElement | null>>({});
   useEffect(() => {
     const callback = (entries: IntersectionObserverEntry[]) => {
@@ -163,7 +168,7 @@ const TableOfContents = ({ content, lang = "en" }: TableOfContentsProps) => {
           isRtl ? "right-8" : "left-8"
         }`}
       >
-        <div className="bg-white/80 dark:bg-[#111]/80 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 backdrop-blur-md shadow-sm dark:shadow-none">
+        <div className="bg-white/80 dark:bg-gray-900 /80 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 backdrop-blur-md shadow-sm dark:shadow-none">
           <h2
             className={`text-xs font-black uppercase tracking-widest mb-6 text-primary flex items-center gap-2 ${
               isRtl ? "flex-row-reverse" : "flex-row"
@@ -184,7 +189,7 @@ const TableOfContents = ({ content, lang = "en" }: TableOfContentsProps) => {
                     isRtl ? "text-right pr-4" : "text-left pl-4"
                   } ${
                     activeId === h.id.toString()
-                      ? "text-primary font-bold scale-105 origin-left"
+                      ? "text-primary font-semibold scale-105 origin-left"
                       : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 text-xs font-medium"
                   }`}
                 >

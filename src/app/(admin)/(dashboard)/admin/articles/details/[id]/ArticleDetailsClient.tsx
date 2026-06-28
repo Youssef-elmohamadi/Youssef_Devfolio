@@ -4,6 +4,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import {
   FaArrowLeft,
   FaEdit,
@@ -14,7 +15,13 @@ import {
   FaGlobe,
   FaTag,
 } from "react-icons/fa";
-import { formatDate } from "@/utils/formatDate"; // تأكد من مسار دالة التاريخ
+import { formatDate } from "@/utils/formatDate";
+import ArticleTable from "@/app/(site)/components/ArticleTable";
+
+const MermaidDiagram = dynamic(
+  () => import("@/app/(site)/components/MermaidDiagram"),
+  { ssr: false }
+);
 
 export default function ArticleDetailsClient({ article }: { article: any }) {
   return (
@@ -130,72 +137,165 @@ export default function ArticleDetailsClient({ article }: { article: any }) {
 
           {/* 5. Content Blocks (The Core Content) */}
           <div className="space-y-10 pt-4">
-            {article.content?.map((block: any, index: number) => (
-              <div key={block.id || index} className="space-y-4">
-                {/* Block Title */}
-                {block.title && (
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                    <span className="text-[#ff6a00]">#</span> {block.title}
-                  </h2>
-                )}
+            {article.content?.map((block: any, index: number) => {
+              // New typed blocks
+              if (block.type) {
+                switch (block.type) {
+                  case "heading":
+                    return (
+                      <div key={block.id || index}>
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                          <span className="text-[#ff6a00]">#</span> {block.title}
+                        </h2>
+                      </div>
+                    );
+                  case "text":
+                    return (
+                      <div key={block.id || index} className="prose dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
+                        {block.text}
+                      </div>
+                    );
+                  case "code":
+                    return (
+                      <div key={block.id || index} className="relative group rounded-lg overflow-hidden bg-[#1e1e1e] border border-gray-700 shadow-xl">
+                        <div className="flex items-center justify-between px-4 py-2 bg-[#2d2d2d] border-b border-gray-700">
+                          <span className="text-xs font-mono text-gray-400 flex items-center gap-2">
+                            <FaCode /> Code Snippet
+                          </span>
+                        </div>
+                        <pre className="p-4 overflow-x-auto text-sm font-mono text-green-400">
+                          <code>{block.code}</code>
+                        </pre>
+                      </div>
+                    );
+                  case "images":
+                    return (
+                      <div key={block.id || index} className={`grid gap-4 mt-4 ${
+                        block.layout === "3" ? "grid-cols-1 md:grid-cols-3" :
+                        block.layout === "2" ? "grid-cols-1 md:grid-cols-2" :
+                        "grid-cols-1"
+                      }`}>
+                        {block.images?.map((imgUrl: string, i: number) => (
+                          <div
+                            key={`img-${i}`}
+                            className="relative h-64 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm group"
+                          >
+                            <Image
+                              src={imgUrl}
+                              alt={`Content image ${i}`}
+                              fill
+                              className="object-cover transition-transform duration-500 group-hover:scale-105"
+                              unoptimized
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  case "video":
+                    return (
+                      <div key={block.id || index} className="space-y-4">
+                        {block.videos?.map((vidUrl: string, i: number) => (
+                          <div
+                            key={`vid-${i}`}
+                            className="relative h-64 rounded-xl overflow-hidden bg-black border border-gray-200 dark:border-gray-700 shadow-sm"
+                          >
+                            <video
+                              src={vidUrl}
+                              controls
+                              className="w-full h-full object-contain"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  case "diagram":
+                    return (
+                      <div key={block.id || index} className="rounded-xl border border-cyan-200 dark:border-cyan-900/40 bg-gray-50 dark:bg-gray-900/50 p-6 overflow-auto my-4">
+                        <MermaidDiagram code={block.code || ""} />
+                      </div>
+                    );
+                  case "table": {
+                    let parsedTable = null;
+                    try { parsedTable = block.text ? JSON.parse(block.text) : null; } catch { parsedTable = null; }
+                    return parsedTable ? (
+                      <div key={block.id || index} className="my-4">
+                        <ArticleTable tableData={parsedTable} />
+                      </div>
+                    ) : null;
+                  }
+                  default:
+                    return null;
+                }
+              }
 
-                {/* Block Text */}
-                {block.text && (
-                  <div className="prose dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
-                    {block.text}
-                  </div>
-                )}
+              // Legacy blocks (no type field) - fallback rendering
+              return (
+                <div key={block.id || index} className="space-y-4">
+                  {/* Block Title */}
+                  {block.title && (
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                      <span className="text-[#ff6a00]">#</span> {block.title}
+                    </h2>
+                  )}
 
-                {/* Block Code */}
-                {block.code && (
-                  <div className="relative group rounded-lg overflow-hidden bg-[#1e1e1e] border border-gray-700 shadow-xl">
-                    <div className="flex items-center justify-between px-4 py-2 bg-[#2d2d2d] border-b border-gray-700">
-                      <span className="text-xs font-mono text-gray-400 flex items-center gap-2">
-                        <FaCode /> Code Snippet
-                      </span>
+                  {/* Block Text */}
+                  {block.text && (
+                    <div className="prose dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
+                      {block.text}
                     </div>
-                    <pre className="p-4 overflow-x-auto text-sm font-mono text-green-400">
-                      <code>{block.code}</code>
-                    </pre>
-                  </div>
-                )}
+                  )}
 
-                {/* Block Media Gallery (Images & Videos) */}
-                {((block.images && block.images.length > 0) ||
-                  (block.videos && block.videos.length > 0)) && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                    {/* Images */}
-                    {block.images?.map((imgUrl: string, i: number) => (
-                      <div
-                        key={`img-${i}`}
-                        className="relative h-64 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm group"
-                      >
-                        <Image
-                          src={imgUrl}
-                          alt={`Content image ${i}`}
-                          fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
-                          unoptimized
-                        />
+                  {/* Block Code */}
+                  {block.code && (
+                    <div className="relative group rounded-lg overflow-hidden bg-[#1e1e1e] border border-gray-700 shadow-xl">
+                      <div className="flex items-center justify-between px-4 py-2 bg-[#2d2d2d] border-b border-gray-700">
+                        <span className="text-xs font-mono text-gray-400 flex items-center gap-2">
+                          <FaCode /> Code Snippet
+                        </span>
                       </div>
-                    ))}
-                    {/* Videos */}
-                    {block.videos?.map((vidUrl: string, i: number) => (
-                      <div
-                        key={`vid-${i}`}
-                        className="relative h-64 rounded-xl overflow-hidden bg-black border border-gray-200 dark:border-gray-700 shadow-sm"
-                      >
-                        <video
-                          src={vidUrl}
-                          controls
-                          className="w-full h-full object-contain"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
+                      <pre className="p-4 overflow-x-auto text-sm font-mono text-green-400">
+                        <code>{block.code}</code>
+                      </pre>
+                    </div>
+                  )}
+
+                  {/* Block Media Gallery (Images & Videos) */}
+                  {((block.images && block.images.length > 0) ||
+                    (block.videos && block.videos.length > 0)) && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                      {/* Images */}
+                      {block.images?.map((imgUrl: string, i: number) => (
+                        <div
+                          key={`img-${i}`}
+                          className="relative h-64 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm group"
+                        >
+                          <Image
+                            src={imgUrl}
+                            alt={`Content image ${i}`}
+                            fill
+                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                            unoptimized
+                          />
+                        </div>
+                      ))}
+                      {/* Videos */}
+                      {block.videos?.map((vidUrl: string, i: number) => (
+                        <div
+                          key={`vid-${i}`}
+                          className="relative h-64 rounded-xl overflow-hidden bg-black border border-gray-200 dark:border-gray-700 shadow-sm"
+                        >
+                          <video
+                            src={vidUrl}
+                            controls
+                            className="w-full h-full object-contain"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
