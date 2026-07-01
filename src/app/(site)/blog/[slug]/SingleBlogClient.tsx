@@ -11,7 +11,7 @@ import {
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import TableOfContents from "../../components/BlogIndex";
-import { likeArticleAction } from "@/actions/articles";
+import { likeArticleAction, viewArticleAction } from "@/actions/articles";
 import SocialShareButtons from "../../components/SocialShareButtons";
 import CodeBlockWithPreview from "../../components/CodeBlockWithPreview";
 import ArticleTable from "../../components/ArticleTable";
@@ -76,7 +76,8 @@ const SingleBlogClient = ({
     if (typeof window !== "undefined") {
       setCurrentUrl(window.location.href);
     }
-  }, []);
+    viewArticleAction(blogPost.id).catch(console.error);
+  }, [blogPost.id]);
 
   const handleLike = async () => {
     if (isLoading) return;

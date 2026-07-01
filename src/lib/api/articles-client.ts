@@ -25,7 +25,10 @@ export const getArticlesClient = async (
   if (categoryId) query.append("category_id", categoryId.toString());
 
   const res = await fetch(`${BASE_URL}/api/articles?${query.toString()}`, {
-    cache: "no-store",
+    next: {
+      tags: ['articles-list'],
+      revalidate: 3600 * 24,
+    },
   });
   if (!res.ok) throw new Error("Failed to fetch articles");
   return res.json() as Promise<{ data: any[]; meta: any }>;

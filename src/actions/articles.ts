@@ -1,4 +1,4 @@
-'use server' // هذا السطر ضروري جداً
+'use server' 
 
 import { revalidatePath, revalidateTag } from "next/cache";
 import { toglleLikeArticle } from "@/lib/api/articles";
@@ -87,5 +87,24 @@ export async function deleteArticleAction(id: number) {
   } catch (error: any) {
     console.error("Delete Action Error:", error);
     return { success: false, message: error.message || "Failed to delete" };
+  }
+}
+
+export async function viewArticleAction(id: string | number) {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net";
+    await fetch(`${baseUrl}/api/articles/${id}`, {
+      cache: "no-store"
+    });
+    
+    revalidateTag(`article-${id}`);
+    revalidateTag('articles-list');
+    revalidatePath(`/blog/${id}`);
+    revalidatePath("/blog");
+    
+    return { success: true };
+  } catch (error) {
+    console.error("View Action Error:", error);
+    return { success: false };
   }
 }
