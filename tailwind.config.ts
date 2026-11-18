@@ -9,6 +9,24 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontSize: {
+        hero: [
+          "clamp(2rem, 1.4rem + 2.4vw, 3.25rem)",
+          { lineHeight: "1.15", letterSpacing: "-0.02em" },
+        ],
+        section: [
+          "clamp(1.625rem, 1.2rem + 1.4vw, 2.25rem)",
+          { lineHeight: "1.2", letterSpacing: "-0.02em" },
+        ],
+        card: [
+          "clamp(1.25rem, 1.15rem + 0.4vw, 1.5rem)",
+          { lineHeight: "1.3", letterSpacing: "-0.01em" },
+        ],
+        subtitle: [
+          "clamp(1.125rem, 1rem + 0.5vw, 1.25rem)",
+          { lineHeight: "1.4", letterSpacing: "0em" },
+        ],
+      },
       fontFamily: {
         sans: [
           "var(--font-inter)",

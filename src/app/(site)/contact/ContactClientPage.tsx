@@ -85,9 +85,9 @@ export default function ContactClientPage() {
   };
 
   return (
-    <div className="container md:pt-24  max-w-7xl mx-auto py-12">
+    <div className="container md:pt-24 max-w-7xl mx-auto py-12">
       <motion.h1
-        className="text-4xl md:text-5xl font-heading font-bold mb-8 text-center text-gray-900 dark:text-white tracking-tight"
+        className="text-section font-heading font-bold mb-6 text-center text-gray-900 dark:text-white tracking-tight"
         {...fadeInUp}
       >
         Contact Me
@@ -97,7 +97,7 @@ export default function ContactClientPage() {
         {/* Contact Information */}
         <motion.div className="space-y-8" {...slideInLeft}>
           <motion.div {...fadeInUp}>
-            <h2 className="text-2xl md:text-3xl font-heading font-bold mb-4 text-gray-900 dark:text-white tracking-tight">
+            <h2 className="text-card font-heading font-bold mb-3 text-gray-900 dark:text-white tracking-tight">
               Get in Touch
             </h2>
             <p className="text-slate-600 dark:text-slate-400 text-base md:text-lg leading-relaxed max-w-xl">

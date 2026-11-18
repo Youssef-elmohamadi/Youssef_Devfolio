@@ -22,15 +22,15 @@ export default function RoleSwitcher() {
   }, []);
 
   return (
-    <div className="h-[40px] flex justify-center md:justify-start items-center overflow-hidden mb-6">
+    <div className="h-[36px] min-h-[36px] flex justify-center lg:justify-start items-center overflow-hidden mb-3">
       <AnimatePresence mode="wait">
         <motion.div
           key={index}
-          initial={{ y: 20, opacity: 0 }}
+          initial={{ y: 10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -20, opacity: 0 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="text-xl md:text-2xl font-medium tracking-normal text-slate-500 dark:text-slate-400"
+          exit={{ y: -10, opacity: 0 }}
+          transition={{ duration: 0.35, ease: "easeInOut" }}
+          className="text-lg md:text-xl font-medium tracking-normal text-slate-600 dark:text-slate-300 select-none"
         >
           {roles[index]}
         </motion.div>

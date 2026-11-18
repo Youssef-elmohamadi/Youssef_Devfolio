@@ -116,7 +116,7 @@ const SingleBlogClient = ({
           </div>
           <span className="font-medium">Go Back</span>
         </button>
-        <h1 className="text-3xl md:text-5xl font-heading font-bold mb-8 tracking-tight text-gray-900 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-primary dark:to-orange-400 leading-tight">
+        <h1 className="text-section md:text-[2.25rem] font-heading font-bold mb-6 tracking-tight text-gray-900 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-primary dark:to-orange-400 leading-[1.2]">
           {blogPost.title}
         </h1>
         <div className="bg-white/70 dark:bg-gray-900  backdrop-blur-md rounded-2xl p-6 border border-gray-200 dark:border-gray-800 mb-12 shadow-xl dark:shadow-none transition-colors duration-300">

@@ -47,10 +47,10 @@ export default function Newsletter() {
           <div className="relative z-10 max-w-5xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
               <div className="lg:col-span-6">
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 tracking-tight text-gray-900 dark:text-white">
+                <h2 className="text-section font-heading font-bold mb-3 tracking-tight text-gray-900 dark:text-white">
                   Subscribe to My Newsletter
                 </h2>
-                <p className="text-slate-600 dark:text-slate-400 text-base md:text-lg leading-relaxed">
+                <p className="text-slate-600 dark:text-slate-400 text-base md:text-lg leading-relaxed max-w-xl">
                   Get the latest updates on my projects, blog posts, and tech
                   insights delivered straight to your inbox.
                 </p>

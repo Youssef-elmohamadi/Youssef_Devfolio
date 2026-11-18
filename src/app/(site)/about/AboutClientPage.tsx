@@ -81,7 +81,7 @@ export default function AboutClient({ data }: AboutClientProps) {
     <div className="container max-w-7xl md:pt-24  mx-auto py-12 px-4 sm:px-6">
       {/* --- Header --- */}
       <motion.h1
-        className="text-4xl md:text-5xl font-heading font-bold mb-8 tracking-tight text-center text-gray-900 dark:text-white"
+        className="text-section font-heading font-bold mb-6 tracking-tight text-center text-gray-900 dark:text-white"
         {...fadeInDown}
       >
         About Me
@@ -113,7 +113,7 @@ export default function AboutClient({ data }: AboutClientProps) {
             </h2>
           )}
 
-          <p className="text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl mx-auto xl:mx-0">
+          <p className="text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-xl mx-auto xl:mx-0">
             {about.description}
           </p>
 
@@ -264,7 +264,7 @@ export default function AboutClient({ data }: AboutClientProps) {
       {/* --- Skills Section --- */}
       <motion.section className="mb-20" {...fadeIn} transition={{ delay: 0.2 }}>
         <motion.h2
-          className="text-3xl md:text-4xl font-heading font-bold mb-8 tracking-tight text-center text-gray-900 dark:text-white"
+          className="text-section font-heading font-bold mb-6 tracking-tight text-center text-gray-900 dark:text-white"
           {...fadeInUp}
         >
           Skills & Technologies
@@ -315,7 +315,7 @@ export default function AboutClient({ data }: AboutClientProps) {
       {/* --- Experience Section --- */}
       <motion.section className="mb-20" {...fadeIn} transition={{ delay: 0.4 }}>
         <motion.h2
-          className="text-3xl md:text-4xl font-heading font-bold mb-8 tracking-tight text-center text-gray-900 dark:text-white"
+          className="text-section font-heading font-bold mb-6 tracking-tight text-center text-gray-900 dark:text-white"
           {...fadeInUp}
         >
           Professional Experience
@@ -381,7 +381,7 @@ export default function AboutClient({ data }: AboutClientProps) {
       {/* --- Education Section --- */}
       <motion.section {...fadeIn} transition={{ delay: 0.6 }}>
         <motion.h2
-          className="text-3xl md:text-4xl font-heading font-bold mb-8 tracking-tight text-center text-gray-900 dark:text-white"
+          className="text-section font-heading font-bold mb-6 tracking-tight text-center text-gray-900 dark:text-white"
           {...fadeInUp}
         >
           Education

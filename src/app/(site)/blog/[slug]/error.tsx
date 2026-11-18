@@ -25,7 +25,7 @@ export default function Error({
         <div className="inline-flex p-4 rounded-full bg-red-100 dark:bg-red-900/20 text-red-500 mb-4">
           <ExclamationTriangleIcon className="w-12 h-12" />
         </div>
-        <h2 className="text-3xl md:text-5xl font-heading font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">
+        <h2 className="text-section font-heading font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500 mb-3">
           Something went wrong!
         </h2>
         <p className="text-gray-600 dark:text-gray-400 text-lg">

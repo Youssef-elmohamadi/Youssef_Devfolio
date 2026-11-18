@@ -93,7 +93,7 @@ const BlogCard = ({ blog }: { blog: any }) => {
         </div>
 
         <motion.h2
-          className="text-xl font-heading font-semibold mb-3 line-clamp-2 text-gray-900 dark:text-white"
+          className="text-card font-heading font-bold mb-2 line-clamp-2 text-gray-900 dark:text-white"
           whileHover={{ x: 5 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
@@ -200,7 +200,7 @@ export default function BlogsClientPage({
   return (
     <div className="container md:pt-24 max-w-7xl mx-auto py-12 px-4">
       <motion.h1
-        className="text-4xl md:text-5xl font-heading font-bold mb-12 text-center text-primary tracking-tight"
+        className="text-section font-heading font-bold mb-8 text-center text-primary tracking-tight"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}

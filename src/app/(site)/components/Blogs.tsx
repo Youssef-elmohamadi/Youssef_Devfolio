@@ -13,9 +13,9 @@ export default function Blogs({ articles = [] }: { articles?: any[] }) {
   return (
     <section className="py-24 relative overflow-hidden bg-transparent">
       <div className="container max-w-7xl mx-auto px-4 z-10 relative">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <motion.h2
-            className="text-3xl md:text-5xl font-heading font-bold mb-4 tracking-tight text-gray-900 dark:text-white"
+            className="text-section font-heading font-bold mb-3 tracking-tight text-gray-900 dark:text-white"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -24,7 +24,7 @@ export default function Blogs({ articles = [] }: { articles?: any[] }) {
             Latest Blog Posts
           </motion.h2>
           <motion.p
-            className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto text-base md:text-lg leading-relaxed"
+            className="text-slate-600 dark:text-slate-400 max-w-xl mx-auto text-base md:text-lg leading-relaxed"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -62,8 +62,8 @@ export default function Blogs({ articles = [] }: { articles?: any[] }) {
                 </div>
               )}
               <div className="p-6 flex flex-col flex-grow">
-                <Link href={`/blog/${blog.id}`} className="block mb-3">
-                  <h3 className="text-xl font-heading font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors duration-250">
+                <Link href={`/blog/${blog.id}`} className="block mb-2">
+                  <h3 className="text-card font-heading font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors duration-250">
                     {blog.title}
                   </h3>
                 </Link>

@@ -102,7 +102,7 @@ export default function Hero({ profile, socialLinks = [] }: HeroProps) {
             </motion.div>
 
             <motion.h1
-              className="text-5xl md:text-7xl font-heading font-bold mb-4 tracking-tight leading-[1.1] text-gray-900 dark:text-white"
+              className="text-hero font-heading font-bold mb-2 tracking-tight leading-[1.15] text-gray-900 dark:text-white"
               {...fadeInUp}
               transition={{ delay: 0.3 }}
             >
@@ -126,7 +126,7 @@ export default function Hero({ profile, socialLinks = [] }: HeroProps) {
             </motion.div>
 
             <motion.p
-              className="text-lg md:text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-xl leading-relaxed text-center lg:text-left font-normal"
+              className="text-base md:text-lg text-slate-600 dark:text-slate-400 mb-6 max-w-xl leading-relaxed text-center lg:text-left font-normal"
               {...fadeInUp}
               transition={{ delay: 0.5 }}
             >
