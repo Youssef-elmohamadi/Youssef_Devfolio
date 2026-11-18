@@ -1,4 +1,5 @@
 import { Inter, JetBrains_Mono } from "next/font/google";
+import Script from "next/script";
 import { ThemeContextProvider } from "./context/ThemeContext";
 import { SidebarProvider } from "./context/SidebarContext";
 import type { Metadata } from "next";
@@ -59,6 +60,20 @@ export default function RootLayout({
         <ThemeContextProvider>
           <SidebarProvider>{children}</SidebarProvider>
         </ThemeContextProvider>
+        <Script
+          id="bmc-widget"
+          src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
+          data-name="BMC-Widget"
+          data-cfasync="false"
+          data-id="elmohammadi"
+          data-description="Support me on Buy me a coffee!"
+          data-message=""
+          data-color="#FF813F"
+          data-position="Right"
+          data-x_margin="18"
+          data-y_margin="18"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );
