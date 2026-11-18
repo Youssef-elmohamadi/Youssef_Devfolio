@@ -115,7 +115,7 @@ const CreateEducationForm = () => {
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 items-start">
         {/* === Left: Input Form === */}
         <div className="bg-white dark:bg-[#111] p-8 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-sm relative overflow-hidden">
-          <h2 className="text-xl font-black text-gray-900 dark:text-white mb-8 flex items-center gap-3 relative z-10">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-8 flex items-center gap-3 relative z-10">
             <span className="p-2 bg-primary/10 rounded-lg text-primary">
               <AcademicCapIcon className="w-6 h-6" />
             </span>
@@ -295,7 +295,7 @@ const CreateEducationForm = () => {
                 <div className="text-xs font-bold uppercase tracking-wider text-primary mb-2">
                   {formState.duration || "202X - 202X"}
                 </div>
-                <h3 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight leading-tight">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight leading-tight">
                   {formState.degree || "Degree Title"}
                 </h3>
                 <p className="text-lg text-gray-500 dark:text-gray-400 font-medium mt-1 flex items-center gap-2">

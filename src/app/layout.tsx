@@ -1,4 +1,4 @@
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Plus_Jakarta_Sans, Cairo } from "next/font/google";
 import BuyMeACoffee from "@/components/BuyMeACoffee";
 import { ThemeContextProvider } from "./context/ThemeContext";
 import { SidebarProvider } from "./context/SidebarContext";
@@ -7,11 +7,27 @@ import type { Metadata } from "next";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
+});
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-heading",
+  weight: ["500", "600", "700", "800"],
+  display: "swap",
 });
 
 const jetBrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains-mono",
+  display: "swap",
+});
+
+const cairo = Cairo({
+  subsets: ["arabic", "latin"],
+  variable: "--font-cairo",
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -55,7 +71,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`bg-white transition-colors dark:bg-gray-900 dark:text-white ${inter.variable} ${jetBrainsMono.variable} antialiased`}
+        className={`bg-white font-sans text-gray-900 transition-colors dark:bg-gray-900 dark:text-gray-100 ${inter.variable} ${plusJakartaSans.variable} ${jetBrainsMono.variable} ${cairo.variable} antialiased`}
       >
         <ThemeContextProvider>
           <SidebarProvider>{children}</SidebarProvider>

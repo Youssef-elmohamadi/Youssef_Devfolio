@@ -102,7 +102,7 @@ export default function Hero({ profile, socialLinks = [] }: HeroProps) {
             </motion.div>
 
             <motion.h1
-              className="text-3xl md:text-5xl font-bold mb-3 tracking-tight text-gray-900 dark:text-white"
+              className="text-5xl md:text-7xl font-heading font-bold mb-4 tracking-tight leading-[1.1] text-gray-900 dark:text-white"
               {...fadeInUp}
               transition={{ delay: 0.3 }}
             >
@@ -126,7 +126,7 @@ export default function Hero({ profile, socialLinks = [] }: HeroProps) {
             </motion.div>
 
             <motion.p
-              className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-xl leading-relaxed text-center lg:text-left"
+              className="text-lg md:text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-xl leading-relaxed text-center lg:text-left font-normal"
               {...fadeInUp}
               transition={{ delay: 0.5 }}
             >
@@ -167,7 +167,7 @@ export default function Hero({ profile, socialLinks = [] }: HeroProps) {
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Link
                   href="/projects"
-                  className="bg-primary text-center inline-block w-full sm:w-auto text-white px-8 py-3 rounded-lg hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20 dark:shadow-primary/10"
+                  className="bg-primary font-medium tracking-wide text-center inline-block w-full sm:w-auto text-white px-8 py-3 rounded-lg hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20 dark:shadow-primary/10"
                 >
                   View Projects
                 </Link>
@@ -178,14 +178,14 @@ export default function Hero({ profile, socialLinks = [] }: HeroProps) {
                     href={profile.cv_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block text-center w-full sm:w-auto border border-gray-300 dark:border-gray-700 bg-transparent text-gray-700 dark:text-white px-8 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-white/5 transition-colors"
+                    className="inline-block font-medium tracking-wide text-center w-full sm:w-auto border border-gray-300 dark:border-gray-700 bg-transparent text-gray-700 dark:text-white px-8 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-white/5 transition-colors"
                   >
                     Download CV
                   </a>
                 ) : (
                   <Link
                     href="/youssef-cv"
-                    className="inline-block text-center w-full sm:w-auto border border-gray-300 dark:border-gray-700 bg-transparent text-gray-700 dark:text-white px-8 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-white/5 transition-colors"
+                    className="inline-block font-medium tracking-wide text-center w-full sm:w-auto border border-gray-300 dark:border-gray-700 bg-transparent text-gray-700 dark:text-white px-8 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-white/5 transition-colors"
                   >
                     Hire Me
                   </Link>

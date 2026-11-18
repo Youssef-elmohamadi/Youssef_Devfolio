@@ -170,7 +170,7 @@ const TableOfContents = ({ content, lang = "en" }: TableOfContentsProps) => {
       >
         <div className="bg-white/80 dark:bg-gray-900 /80 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 backdrop-blur-md shadow-sm dark:shadow-none">
           <h2
-            className={`text-xs font-black uppercase tracking-widest mb-6 text-primary flex items-center gap-2 ${
+            className={`text-xs font-bold uppercase tracking-wider mb-6 text-primary flex items-center gap-2 ${
               isRtl ? "flex-row-reverse" : "flex-row"
             }`}
           >

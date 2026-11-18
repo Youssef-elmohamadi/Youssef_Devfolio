@@ -30,7 +30,7 @@ export default function RoleSwitcher() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -20, opacity: 0 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="text-xl md:text-2xl font-medium text-gray-600 dark:text-gray-300"
+          className="text-xl md:text-2xl font-medium tracking-normal text-slate-500 dark:text-slate-400"
         >
           {roles[index]}
         </motion.div>

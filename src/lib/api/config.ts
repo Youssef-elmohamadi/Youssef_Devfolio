@@ -34,7 +34,6 @@ export async function apiFetch(
       try {
         cookieStore?.delete(tokenKey);
       } catch {
-        // Cookie deletion not allowed in Server Components — that's OK
       }
       redirect("/admin/login");
     } else {

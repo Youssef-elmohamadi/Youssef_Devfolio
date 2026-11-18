@@ -67,7 +67,7 @@ const ExperienceDetailsPage = async ({ params }: PageProps) => {
 
             <div className="flex-1 space-y-4">
               <div>
-                <h1 className="text-3xl md:text-4xl font-black text-gray-900 dark:text-white tracking-tight leading-tight">
+                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-tight leading-tight">
                   {experience.job_title}
                 </h1>
                 <p className="text-xl text-gray-500 dark:text-gray-400 font-medium mt-1">

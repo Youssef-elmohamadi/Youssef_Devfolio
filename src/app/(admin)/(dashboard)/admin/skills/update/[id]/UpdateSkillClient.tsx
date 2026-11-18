@@ -143,7 +143,7 @@ const EditSkillForm = ({ initialData }: { initialData: SkillData }) => {
         <div className="bg-white dark:bg-[#111] p-8 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-sm relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/5 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none"></div>
 
-          <h2 className="text-xl font-black text-gray-900 dark:text-white mb-8 flex items-center gap-3 relative z-10">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-8 flex items-center gap-3 relative z-10">
             <span className="p-2 bg-orange-500/10 rounded-lg text-orange-600">
               <PencilSquareIcon className="w-6 h-6" />
             </span>
@@ -306,7 +306,7 @@ const EditSkillForm = ({ initialData }: { initialData: SkillData }) => {
                 )}
               </div>
 
-              <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-2 tracking-tight">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">
                 {title || "Skill Category"}
               </h3>
               <div className="h-1 w-12 bg-orange-500 rounded-full mb-6"></div>

@@ -188,7 +188,7 @@ const EditProjectForm = ({ initialData }: { initialData: ProjectData }) => {
         <div className="bg-white dark:bg-[#111] p-8 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-sm relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none"></div>
 
-          <h2 className="text-xl font-black text-gray-900 dark:text-white mb-8 flex items-center gap-3 relative z-10">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-8 flex items-center gap-3 relative z-10">
             <span className="p-2 bg-primary/10 rounded-lg text-primary">
               <PencilSquareIcon className="w-6 h-6" />
             </span>

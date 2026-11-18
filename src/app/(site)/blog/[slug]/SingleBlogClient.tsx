@@ -116,7 +116,7 @@ const SingleBlogClient = ({
           </div>
           <span className="font-medium">Go Back</span>
         </button>
-        <h1 className="text-2xl md:text-4xl font-extrabold mb-8 text-gray-900 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-primary dark:to-orange-400 leading-tight">
+        <h1 className="text-3xl md:text-5xl font-heading font-bold mb-8 tracking-tight text-gray-900 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-primary dark:to-orange-400 leading-tight">
           {blogPost.title}
         </h1>
         <div className="bg-white/70 dark:bg-gray-900  backdrop-blur-md rounded-2xl p-6 border border-gray-200 dark:border-gray-800 mb-12 shadow-xl dark:shadow-none transition-colors duration-300">
@@ -170,8 +170,8 @@ const SingleBlogClient = ({
 
         {/* المقال */}
         <article
-          className={`prose prose-lg max-w-none ${isRtl ? "text-right" : "text-left"
-            } dark:prose-invert prose-headings:text-gray-900 dark:prose-headings:text-gray-100 prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-a:text-primary hover:prose-a:text-orange-500 transition-colors duration-300`}
+          className={`prose prose-lg max-w-none ${isRtl ? "text-right font-arabic" : "text-left font-sans"
+            } dark:prose-invert prose-headings:font-heading prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-gray-900 dark:prose-headings:text-gray-100 prose-p:text-slate-700 dark:prose-p:text-slate-300 prose-p:leading-relaxed prose-a:text-primary hover:prose-a:text-orange-500 transition-colors duration-300`}
           dir={isRtl ? "rtl" : "ltr"}
         >
           {blogPost.content.map((block: BlogContentBlock) => {

@@ -98,9 +98,7 @@ export async function viewArticleAction(id: string | number) {
     });
     
     revalidateTag(`article-${id}`);
-    revalidateTag('articles-list');
     revalidatePath(`/blog/${id}`);
-    revalidatePath("/blog");
     
     return { success: true };
   } catch (error) {

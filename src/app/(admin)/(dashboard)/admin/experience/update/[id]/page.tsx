@@ -26,7 +26,7 @@ const UpdateExperiencePage = async ({ params }: PageProps) => {
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div>
-          <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight mb-2">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white tracking-tight mb-2">
             Edit Experience
           </h1>
           <p className="text-lg text-gray-500 dark:text-gray-400">

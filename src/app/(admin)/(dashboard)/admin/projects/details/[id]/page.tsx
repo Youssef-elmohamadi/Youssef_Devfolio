@@ -92,7 +92,7 @@ const ProjectDetailsPage = async ({ params }: PageProps) => {
                 </span>
               )}
             </div>
-            <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight leading-tight mb-2 drop-shadow-md">
+            <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight mb-2 drop-shadow-md">
               {project.title}
             </h1>
             <div className="flex items-center gap-2 text-white/80 font-medium text-sm">

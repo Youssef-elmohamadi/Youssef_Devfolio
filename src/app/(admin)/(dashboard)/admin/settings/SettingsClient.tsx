@@ -396,7 +396,7 @@ const SettingsForm = ({ initialData, socialLinks: initialSocialLinks, supportedP
                     </div>
                   </div>
 
-                  <h1 className="text-2xl font-black text-gray-900 dark:text-white mb-1">
+                  <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
                     {formState.name || "Your Name"}
                   </h1>
 

@@ -47,10 +47,10 @@ export default function Newsletter() {
           <div className="relative z-10 max-w-5xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
               <div className="lg:col-span-6">
-                <h2 className="text-2xl md:text-3xl font-extrabold mb-4 tracking-tight text-gray-900 dark:text-white">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 tracking-tight text-gray-900 dark:text-white">
                   Subscribe to My Newsletter
                 </h2>
-                <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base leading-relaxed">
+                <p className="text-slate-600 dark:text-slate-400 text-base md:text-lg leading-relaxed">
                   Get the latest updates on my projects, blog posts, and tech
                   insights delivered straight to your inbox.
                 </p>
@@ -74,7 +74,7 @@ export default function Newsletter() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="bg-primary text-white font-semibold px-8 py-3.5 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 dark:shadow-primary/10 hover:shadow-primary/30 disabled:opacity-50 text-sm whitespace-nowrap active:scale-98"
+                    className="bg-primary text-white font-medium tracking-wide px-8 py-3.5 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 dark:shadow-primary/10 hover:shadow-primary/30 disabled:opacity-50 text-sm whitespace-nowrap active:scale-98"
                   >
                     {loading ? "Submitting..." : "Subscribe"}
                   </button>

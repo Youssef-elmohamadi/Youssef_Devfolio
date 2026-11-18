@@ -15,7 +15,7 @@ export default function Blogs({ articles = [] }: { articles?: any[] }) {
       <div className="container max-w-7xl mx-auto px-4 z-10 relative">
         <div className="text-center mb-16">
           <motion.h2
-            className="text-3xl md:text-4xl font-bold mb-4 tracking-tight text-gray-900 dark:text-white"
+            className="text-3xl md:text-5xl font-heading font-bold mb-4 tracking-tight text-gray-900 dark:text-white"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -24,7 +24,7 @@ export default function Blogs({ articles = [] }: { articles?: any[] }) {
             Latest Blog Posts
           </motion.h2>
           <motion.p
-            className="text-gray-500 dark:text-gray-400 max-w-xl mx-auto text-base md:text-lg"
+            className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto text-base md:text-lg leading-relaxed"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -63,12 +63,12 @@ export default function Blogs({ articles = [] }: { articles?: any[] }) {
               )}
               <div className="p-6 flex flex-col flex-grow">
                 <Link href={`/blog/${blog.id}`} className="block mb-3">
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors duration-250">
+                  <h3 className="text-xl font-heading font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors duration-250">
                     {blog.title}
                   </h3>
                 </Link>
                 
-                <p className="text-gray-600 dark:text-gray-300 mb-6 text-sm leading-relaxed flex-grow">
+                <p className="text-slate-600 dark:text-slate-400 mb-6 text-sm leading-relaxed flex-grow">
                   {blog.excerpt}
                 </p>
                 

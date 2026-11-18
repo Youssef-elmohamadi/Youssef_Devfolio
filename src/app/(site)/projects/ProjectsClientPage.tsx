@@ -85,14 +85,14 @@ const ProjectCard = ({ project }: { project: Project }) => {
       <div className="p-6 flex flex-col flex-grow">
         {/* العناوين */}
         <motion.h2
-          className="text-xl font-bold mb-2 line-clamp-1 text-gray-900 dark:text-white"
+          className="text-xl font-heading font-semibold mb-2 line-clamp-1 text-gray-900 dark:text-white"
           whileHover={{ x: 5 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
           {project.title}
         </motion.h2>
 
-        <p className="text-secondary mb-4 text-sm line-clamp-3 leading-relaxed flex-grow">
+        <p className="text-slate-600 dark:text-slate-400 mb-4 text-sm line-clamp-3 leading-relaxed flex-grow">
           {project.description}
         </p>
 
@@ -167,7 +167,7 @@ export default function ProjectsClientPage({
   return (
     <div className="container md:pt-24  max-w-7xl mx-auto py-12 px-4">
       <motion.h1
-        className="text-4xl font-bold mb-6 text-center text-gray-900 dark:text-white"
+        className="text-4xl md:text-5xl font-heading font-bold mb-6 tracking-tight text-center text-gray-900 dark:text-white"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -176,7 +176,7 @@ export default function ProjectsClientPage({
       </motion.h1>
 
       <motion.p
-        className="text-center text-secondary mb-16 max-w-2xl mx-auto text-lg"
+        className="text-center text-slate-600 dark:text-slate-400 mb-16 max-w-2xl mx-auto text-base md:text-lg leading-relaxed"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}

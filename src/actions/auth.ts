@@ -19,17 +19,15 @@ export async function loginAction(prevState: any, formData: FormData) {
       }
     );
 
-    console.log("API Response:", response); // 👈 دي أهم سطر عشان نعرف شكل الداتا
+    console.log("API Response:", response);
 console.log("Token to save:", response.token)
 
-    // 2. تخزين التوكين في كوكيز آمنة
-    // هذا الكود يعمل على السيرفر، لذا هو آمن
     const cookieStore = await cookies();
     
     cookieStore.set("admin_token", response.token, {
-      httpOnly: false, // يمنع الوصول إليه عبر الجافاسكريبت
-      secure: process.env.NODE_ENV === "production", // يعمل فقط على HTTPS في البرودكشن
-      sameSite: "strict", // حماية من CSRF
+      httpOnly: false,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict", 
       maxAge: 60 * 60 * 24 * 7, 
       path: "/",
     });

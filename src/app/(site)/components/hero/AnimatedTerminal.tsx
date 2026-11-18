@@ -54,7 +54,7 @@ export default function AnimatedTerminal() {
       </div>
 
       {/* Terminal Body */}
-      <div className="p-6 font-mono text-sm leading-relaxed text-gray-300 min-h-[300px]">
+      <div className="p-6 font-mono text-sm leading-7 text-gray-300 min-h-[300px]">
         {terminalCode.slice(0, visibleLines).map((line, index) => (
           <motion.div
             key={index}

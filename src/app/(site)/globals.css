@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@config "../../../tailwind.config.ts";
 
 @theme {
   --color-primary: #ff6a00;
@@ -8,8 +9,10 @@
   --color-text: #000000;
   --color-bg: #ffffff;
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), var(--font-cairo), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-heading: var(--font-heading), var(--font-cairo), ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-arabic: var(--font-cairo), sans-serif;
 
   --animation-fade-in: fadeIn 0.5s ease-in-out;
   --animation-slide-up: slideUp 0.5s ease-in-out;
@@ -23,14 +26,18 @@
     line-height: 1.6;
   }
 
+  [dir="rtl"],
+  :lang(ar) {
+    font-family: var(--font-arabic), var(--font-sans), sans-serif;
+  }
+
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    @apply font-bold tracking-tight text-gray-900 dark:text-white;
-    letter-spacing: -0.04em;
+    @apply font-heading font-bold tracking-tight text-gray-900 dark:text-white;
   }
 }
 
@@ -44,7 +51,7 @@ a {
   }
 
   .btn {
-    @apply px-4 py-2 rounded-md font-medium transition-colors duration-200;
+    @apply px-4 py-2 rounded-md font-medium tracking-wide transition-colors duration-200;
   }
 
   .btn-primary {
@@ -56,7 +63,11 @@ a {
   }
 
   .section-title {
-    @apply text-3xl font-bold mb-8 text-center;
+    @apply text-3xl md:text-5xl font-heading font-bold tracking-tight mb-4 text-center text-gray-900 dark:text-white;
+  }
+
+  .section-subtitle {
+    @apply text-base md:text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto text-center leading-relaxed mb-12;
   }
 }
 

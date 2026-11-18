@@ -1,4 +1,3 @@
-// app/blog/page.tsx
 import React from "react";
 import BlogsClientPage from "./BlogsClientPage";
 import { generateSEO } from "@/utils/seo";

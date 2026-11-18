@@ -81,7 +81,7 @@ export default function AboutClient({ data }: AboutClientProps) {
     <div className="container max-w-7xl md:pt-24  mx-auto py-12 px-4 sm:px-6">
       {/* --- Header --- */}
       <motion.h1
-        className="text-4xl font-bold mb-8 text-center text-gray-900 dark:text-white"
+        className="text-4xl md:text-5xl font-heading font-bold mb-8 tracking-tight text-center text-gray-900 dark:text-white"
         {...fadeInDown}
       >
         About Me
@@ -108,12 +108,12 @@ export default function AboutClient({ data }: AboutClientProps) {
           )}
 
           {about.title && (
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
+            <h2 className="text-2xl md:text-3xl font-heading font-bold text-gray-900 dark:text-white tracking-tight">
               {about.title}
             </h2>
           )}
 
-          <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-2xl mx-auto xl:mx-0">
+          <p className="text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl mx-auto xl:mx-0">
             {about.description}
           </p>
 
@@ -264,7 +264,7 @@ export default function AboutClient({ data }: AboutClientProps) {
       {/* --- Skills Section --- */}
       <motion.section className="mb-20" {...fadeIn} transition={{ delay: 0.2 }}>
         <motion.h2
-          className="text-2xl font-bold mb-8 text-center text-gray-800 dark:text-gray-100"
+          className="text-3xl md:text-4xl font-heading font-bold mb-8 tracking-tight text-center text-gray-900 dark:text-white"
           {...fadeInUp}
         >
           Skills & Technologies
@@ -315,7 +315,7 @@ export default function AboutClient({ data }: AboutClientProps) {
       {/* --- Experience Section --- */}
       <motion.section className="mb-20" {...fadeIn} transition={{ delay: 0.4 }}>
         <motion.h2
-          className="text-2xl font-bold mb-8 text-center text-gray-800 dark:text-gray-100"
+          className="text-3xl md:text-4xl font-heading font-bold mb-8 tracking-tight text-center text-gray-900 dark:text-white"
           {...fadeInUp}
         >
           Professional Experience
@@ -381,7 +381,7 @@ export default function AboutClient({ data }: AboutClientProps) {
       {/* --- Education Section --- */}
       <motion.section {...fadeIn} transition={{ delay: 0.6 }}>
         <motion.h2
-          className="text-2xl font-bold mb-8 text-center text-gray-800 dark:text-gray-100"
+          className="text-3xl md:text-4xl font-heading font-bold mb-8 tracking-tight text-center text-gray-900 dark:text-white"
           {...fadeInUp}
         >
           Education

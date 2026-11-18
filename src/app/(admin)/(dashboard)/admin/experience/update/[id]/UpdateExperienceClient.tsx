@@ -158,7 +158,7 @@ const EditExperienceForm = ({
           {/* Decor */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none"></div>
 
-          <h2 className="text-xl font-black text-gray-900 dark:text-white mb-8 flex items-center gap-3 relative z-10">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-8 flex items-center gap-3 relative z-10">
             <span className="p-2 bg-primary/10 rounded-lg text-primary">
               <PencilSquareIcon className="w-6 h-6" />
             </span>
@@ -350,7 +350,7 @@ const EditExperienceForm = ({
               {/* Header */}
               <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4 mb-6">
                 <div>
-                  <h3 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight mb-1">
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight mb-1">
                     {formState.job_title || "Job Title"}
                   </h3>
                   <div className="flex items-center gap-2 text-primary font-bold">

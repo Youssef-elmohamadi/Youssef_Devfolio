@@ -169,7 +169,7 @@ const CreateProjectForm = () => {
         
         {/* === Left: Editor Form === */}
         <div className="bg-white dark:bg-[#111] p-8 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-sm">
-          <h2 className="text-xl font-black text-gray-900 dark:text-white mb-8 flex items-center gap-3">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-8 flex items-center gap-3">
             <span className="p-2 bg-primary/10 rounded-lg text-primary">
               <CodeBracketIcon className="w-6 h-6" />
             </span>

@@ -72,7 +72,7 @@ const SkillDetailsPage = async ({ params }: PageProps) => {
               </div>
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-4 tracking-tight">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight">
               {skill.title}
             </h1>
 

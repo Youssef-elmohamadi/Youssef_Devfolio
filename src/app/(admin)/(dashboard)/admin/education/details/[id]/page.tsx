@@ -73,7 +73,7 @@ const education = educationRes?.data;
             {/* Header Info */}
             <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-10">
               <div>
-                <h1 className="text-3xl md:text-4xl font-black text-gray-900 dark:text-white tracking-tight leading-tight mb-2">
+                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-tight leading-tight mb-2">
                   {education.degree}
                 </h1>
                 <div className="flex items-center gap-2 text-xl text-gray-500 dark:text-gray-400 font-medium">
