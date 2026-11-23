@@ -1,7 +1,12 @@
 import "./globals.css";
+import dynamic from "next/dynamic";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import DeveloperGrid from "./components/hero/DeveloperGrid";
+
+const DeveloperGrid = dynamic(
+  () => import("./components/hero/DeveloperGrid"),
+  { ssr: false }
+);
 
 export default function SiteLayout({
   children,

@@ -73,7 +73,9 @@ const BlogCard = ({
   return (
     <motion.article
       className="bg-white dark:bg-dark/50 rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-800 flex flex-col h-full group"
-      variants={fadeInUp}
+      variants={priority ? undefined : fadeInUp}
+      initial={priority ? false : "initial"}
+      animate={priority ? undefined : "animate"}
       {...cardHoverSmall}
     >
       {blog.feature_image && (
@@ -83,6 +85,8 @@ const BlogCard = ({
             alt={title}
             fill
             priority={priority}
+            fetchPriority={priority ? "high" : "auto"}
+            loading={priority ? "eager" : "lazy"}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             quality={75}
             className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -283,7 +287,7 @@ export default function BlogsClientPage({
               blog={blog}
               t={t}
               locale={locale}
-              priority={idx < 2}
+              priority={idx === 0}
             />
           ))}
         </motion.div>
