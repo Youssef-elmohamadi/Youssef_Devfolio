@@ -13,10 +13,10 @@ export async function createEduecationAction(formData: FormData) {
       "admin_token"            
     );
 
-        revalidateTag('educations-list');
-        revalidateTag("about-data");
-         revalidatePath("/admin/educations");
-         revalidatePath("/about");
+    revalidateTag("educations-list");
+    revalidateTag("about-data");
+    revalidatePath("/admin/education");
+    revalidatePath("/about");
 
     return { success: true, message: "educations created successfully", data: response };
 
@@ -40,10 +40,11 @@ export async function updateEducationsAction(id: number, formData: FormData) {
     );
 
     revalidateTag("educations-list");
-    revalidateTag("about-data")
+    revalidateTag("about-data");
     revalidateTag(`education-${id}`); 
-    revalidatePath("/admin/educations");
-    revalidatePath(`/educations/details/${id}`);
+    revalidatePath("/admin/education");
+    revalidatePath(`/admin/education/details/${id}`);
+    revalidatePath(`/admin/education/update/${id}`);
     revalidatePath("/about");
 
     return { success: true, message: "education updated successfully" };

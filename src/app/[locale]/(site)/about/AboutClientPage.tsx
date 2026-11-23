@@ -19,6 +19,7 @@ import {
   fadeInDown,
   fadeIn,
 } from "@/utils/animations";
+import { unwrapField } from "@/utils/slug";
 import LocationMap from "../components/LocationMap";
 
 // --- Subcomponents ---
@@ -75,12 +76,12 @@ interface Experience {
 
 interface Education {
   id: number;
-  degree: string;
-  university: string;
-  location: string;
-  duration: string;
-  grade: string;
-  description: string;
+  degree: string | Record<string, string>;
+  university: string | Record<string, string>;
+  location: string | Record<string, string>;
+  duration: string | Record<string, string>;
+  grade?: string | Record<string, string>;
+  description?: string | Record<string, string>;
 }
 
 interface AboutData {
@@ -575,11 +576,18 @@ export default function AboutClient({ data }: AboutClientProps) {
             </div>
 
             {education.map((edu) => {
+              const rawDesc = unwrapField(edu.description, locale);
               const cleanDescription =
-                edu.description &&
-                !edu.description.toLowerCase().includes("brief description")
-                  ? edu.description
+                rawDesc &&
+                !rawDesc.toLowerCase().includes("brief description")
+                  ? rawDesc
                   : t("experienceEducation.fallbackEduDescription");
+
+              const degreeTitle = unwrapField(edu.degree, locale);
+              const uniName = unwrapField(edu.university, locale);
+              const locName = unwrapField(edu.location, locale);
+              const durationStr = unwrapField(edu.duration, locale);
+              const gradeStr = unwrapField(edu.grade, locale);
 
               return (
                 <motion.div
@@ -589,24 +597,26 @@ export default function AboutClient({ data }: AboutClientProps) {
                 >
                   <div className="flex items-start justify-between gap-2 mb-2">
                     <h4 className="text-lg font-heading font-bold text-gray-900 dark:text-white">
-                      {edu.degree}
+                      {degreeTitle}
                     </h4>
                   </div>
 
                   <div className="flex items-center gap-2 mb-3 text-sm font-medium text-slate-700 dark:text-slate-300">
                     <FaUniversity className="text-primary shrink-0" />
                     <span>
-                      {edu.university}, {edu.location}
+                      {uniName}{locName ? `, ${locName}` : ""}
                     </span>
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2 mb-4">
-                    <span className="text-xs font-mono text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/80 px-2.5 py-1 rounded-md">
-                      {edu.duration}
-                    </span>
-                    {edu.grade && (
+                    {durationStr && (
+                      <span className="text-xs font-mono text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/80 px-2.5 py-1 rounded-md">
+                        {durationStr}
+                      </span>
+                    )}
+                    {gradeStr && (
                       <span className="text-xs font-semibold px-2.5 py-1 bg-primary/10 text-primary rounded-md">
-                        {t("experienceEducation.grade", { grade: edu.grade })}
+                        {t("experienceEducation.grade", { grade: gradeStr })}
                       </span>
                     )}
                   </div>

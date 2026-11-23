@@ -23,8 +23,8 @@ type Education = {
   degree: string | Record<string, string>;
   university: string | Record<string, string>;
   location: string | Record<string, string>;
-  duration: string;
-  grade: string;
+  duration: string | Record<string, string>;
+  grade: string | Record<string, string>;
   description?: string | Record<string, string>;
 };
 
@@ -70,7 +70,7 @@ export default function EducationClient({
               {unwrapField(edu.degree, locale)}
             </span>
             <span className="text-xs text-gray-500 dark:text-gray-400">
-              {edu.grade}
+              {unwrapField(edu.grade, locale)}
             </span>
           </div>
         </div>
@@ -96,7 +96,7 @@ export default function EducationClient({
       header: locale === "ar" ? "المدة" : "Duration",
       render: (edu) => (
         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
-          {edu.duration}
+          {unwrapField(edu.duration, locale)}
         </span>
       ),
     },

@@ -41,8 +41,8 @@ interface EducationData {
   degree: string | Record<string, string>;
   university: string | Record<string, string>;
   location: string | Record<string, string>;
-  duration: string;
-  grade: string;
+  duration: string | Record<string, string>;
+  grade: string | Record<string, string>;
   description: string | Record<string, string>;
 }
 
@@ -59,11 +59,9 @@ const EditEducationForm = ({ initialData }: { initialData: EducationData }) => {
   const [degree, setDegree] = useState(parseInitialTranslatable(initialData.degree));
   const [university, setUniversity] = useState(parseInitialTranslatable(initialData.university));
   const [location, setLocation] = useState(parseInitialTranslatable(initialData.location));
+  const [duration, setDuration] = useState(parseInitialTranslatable(initialData.duration));
+  const [grade, setGrade] = useState(parseInitialTranslatable(initialData.grade));
   const [description, setDescription] = useState(parseInitialTranslatable(initialData.description));
-
-  // Non-translatable State
-  const [duration, setDuration] = useState(initialData.duration || "");
-  const [grade, setGrade] = useState(initialData.grade || "");
 
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
   const formRef = useRef<HTMLFormElement>(null);
@@ -72,7 +70,7 @@ const EditEducationForm = ({ initialData }: { initialData: EducationData }) => {
     const errors: Record<string, string[]> = {};
     if (!degree.en.trim()) errors.degree = ["Degree title (English) is required"];
     if (!university.en.trim()) errors.university = ["University / Institute (English) is required"];
-    if (!duration.trim()) errors.duration = ["Duration is required"];
+    if (!duration.en.trim()) errors.duration = ["Duration (English) is required"];
 
     if (Object.keys(errors).length > 0) {
       setFieldErrors(errors);
@@ -99,8 +97,10 @@ const EditEducationForm = ({ initialData }: { initialData: EducationData }) => {
       formData.append("description[en]", description.en.trim());
       if (description.ar.trim()) formData.append("description[ar]", description.ar.trim());
 
-      formData.append("duration", duration.trim());
-      if (grade.trim()) formData.append("grade", grade.trim());
+      formData.append("duration[en]", duration.en.trim());
+      if (duration.ar.trim()) formData.append("duration[ar]", duration.ar.trim());
+      if (grade.en.trim()) formData.append("grade[en]", grade.en.trim());
+      if (grade.ar.trim()) formData.append("grade[ar]", grade.ar.trim());
 
       const result = await updateEducationsAction(initialData.id, formData);
 
@@ -122,6 +122,8 @@ const EditEducationForm = ({ initialData }: { initialData: EducationData }) => {
   const previewDegree = degree[activeLang]?.trim() || degree.en || "Degree Title";
   const previewUniversity = university[activeLang]?.trim() || university.en || "University / Institute";
   const previewLocation = location[activeLang]?.trim() || location.en || "Cairo, Egypt";
+  const previewDuration = duration[activeLang]?.trim() || duration.en || "2022 - 2026";
+  const previewGrade = grade[activeLang]?.trim() || grade.en || "";
   const previewDescription = description[activeLang]?.trim() || description.en || "";
 
   return (
@@ -159,11 +161,11 @@ const EditEducationForm = ({ initialData }: { initialData: EducationData }) => {
               activeLang={activeLang}
               onChange={setActiveLang}
               completion={{
-                en: Boolean(degree.en.trim() && university.en.trim()),
-                ar: Boolean(degree.ar.trim() && university.ar.trim()),
+                en: Boolean(degree.en.trim() && university.en.trim() && duration.en.trim()),
+                ar: Boolean(degree.ar.trim() && university.ar.trim() && duration.ar.trim()),
               }}
               hasErrors={{
-                en: Boolean(fieldErrors.degree || fieldErrors.university),
+                en: Boolean(fieldErrors.degree || fieldErrors.university || fieldErrors.duration),
                 ar: false,
               }}
             />
@@ -239,18 +241,19 @@ const EditEducationForm = ({ initialData }: { initialData: EducationData }) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-xs font-bold uppercase tracking-wider text-gray-500 ms-1">
-                  Duration *
+                  Duration ({activeLang.toUpperCase()}) {activeLang === "en" && <span className="text-red-500">*</span>}
                 </label>
                 <div className="relative group">
                   <CalendarDaysIcon className="w-5 h-5 text-gray-400 absolute start-4 top-1/2 -translate-y-1/2 group-focus-within:text-primary transition-colors" />
                   <input
                     type="text"
-                    value={duration}
+                    value={duration[activeLang]}
+                    dir={activeLang === "ar" ? "rtl" : "ltr"}
                     onChange={(e) => {
-                      setDuration(e.target.value);
+                      setDuration((prev) => ({ ...prev, [activeLang]: e.target.value }));
                       if (fieldErrors.duration) setFieldErrors((prev) => ({ ...prev, duration: [] }));
                     }}
-                    placeholder="e.g. 2022 - 2026"
+                    placeholder={activeLang === "ar" ? "مثال: أكتوبر 2022 - يوليو 2026" : "e.g. Oct 2022 - Jul 2026"}
                     className="w-full bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl py-4 ps-12 pe-4 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all font-medium"
                   />
                 </div>
@@ -261,15 +264,16 @@ const EditEducationForm = ({ initialData }: { initialData: EducationData }) => {
 
               <div className="space-y-2">
                 <label className="text-xs font-bold uppercase tracking-wider text-gray-500 ms-1">
-                  Grade / Score
+                  Grade / Score ({activeLang.toUpperCase()})
                 </label>
                 <div className="relative group">
                   <TrophyIcon className="w-5 h-5 text-gray-400 absolute start-4 top-1/2 -translate-y-1/2 group-focus-within:text-primary transition-colors" />
                   <input
                     type="text"
-                    value={grade}
-                    onChange={(e) => setGrade(e.target.value)}
-                    placeholder="e.g. 3.8 GPA or Very Good"
+                    value={grade[activeLang]}
+                    dir={activeLang === "ar" ? "rtl" : "ltr"}
+                    onChange={(e) => setGrade((prev) => ({ ...prev, [activeLang]: e.target.value }))}
+                    placeholder={activeLang === "ar" ? "مثال: جيد جداً أو 3.8 GPA" : "e.g. Very Good or 3.8 GPA"}
                     className="w-full bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl py-4 ps-12 pe-4 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all font-medium"
                   />
                 </div>
@@ -345,19 +349,19 @@ const EditEducationForm = ({ initialData }: { initialData: EducationData }) => {
             <div className="flex flex-wrap items-center gap-3 text-xs font-medium text-gray-500 dark:text-gray-400 mb-6 border-y border-gray-100 dark:border-gray-800/60 py-3">
               <span className="flex items-center gap-1.5">
                 <CalendarDaysIcon className="w-4 h-4 text-gray-400" />
-                {duration || "Duration"}
+                {previewDuration || "Duration"}
               </span>
               <span>•</span>
               <span className="flex items-center gap-1.5">
                 <MapPinIcon className="w-4 h-4 text-gray-400" />
                 {previewLocation}
               </span>
-              {grade && (
+              {previewGrade && (
                 <>
                   <span>•</span>
                   <span className="flex items-center gap-1.5 text-green-600 dark:text-green-400 font-bold">
                     <TrophyIcon className="w-4 h-4" />
-                    {grade}
+                    {previewGrade}
                   </span>
                 </>
               )}

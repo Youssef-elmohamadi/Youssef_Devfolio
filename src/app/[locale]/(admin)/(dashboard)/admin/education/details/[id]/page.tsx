@@ -34,6 +34,8 @@ const EducationDetailsPage = async ({ params }: PageProps) => {
   const degreeStr = unwrapField(education.degree, locale);
   const universityStr = unwrapField(education.university, locale);
   const locationStr = unwrapField(education.location, locale);
+  const durationStr = unwrapField(education.duration, locale);
+  const gradeStr = unwrapField(education.grade, locale);
   const descriptionStr = unwrapField(education.description, locale);
 
   return (
@@ -88,14 +90,14 @@ const EducationDetailsPage = async ({ params }: PageProps) => {
               </div>
 
               {/* Grade Badge */}
-              {education.grade && (
+              {gradeStr && (
                 <div className="flex flex-col items-end">
                   <span className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">
                     Grade Achieved
                   </span>
                   <div className="px-4 py-2 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded-xl font-bold flex items-center gap-2 border border-green-100 dark:border-green-800">
                     <TrophyIcon className="w-5 h-5" />
-                    {education.grade}
+                    {gradeStr}
                   </div>
                 </div>
               )}
@@ -112,7 +114,7 @@ const EducationDetailsPage = async ({ params }: PageProps) => {
                     Duration
                   </p>
                   <p className="font-semibold text-gray-900 dark:text-white">
-                    {education.duration}
+                    {durationStr}
                   </p>
                 </div>
               </div>
