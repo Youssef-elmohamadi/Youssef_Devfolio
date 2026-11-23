@@ -139,7 +139,7 @@ export default function AboutClient({ data }: AboutClientProps) {
              + Small Stats Row (Years experience, Projects built, Technologies)
          ========================================================================= */}
       <motion.section
-        className="mb-16 bg-white dark:bg-dark/50 p-6 sm:p-8 lg:p-10 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm"
+        className="mb-16 p-6 sm:p-8 lg:p-10 rounded-3xl border border-gray-300 dark:border-gray-800 shadow-sm"
         {...fadeInUp}
       >
         <div className="flex flex-col md:flex-row items-center md:items-start gap-8 lg:gap-12">
