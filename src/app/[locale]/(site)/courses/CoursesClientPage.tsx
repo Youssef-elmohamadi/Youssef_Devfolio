@@ -439,7 +439,7 @@ export default function CoursesClientPage({
       </div>
 
       {/* ── Unified Filters Box (Clean & Uncluttered) ────────────── */}
-      <div className="bg-white/90 dark:bg-[#0c1424]/90 backdrop-blur-xl rounded-2xl border border-gray-200/90 dark:border-gray-800/90 p-4 sm:p-5 shadow-xl space-y-4">
+      <div className="bg-white/90 dark:bg-[#0c1424]/90 backdrop-blur-xl rounded-2xl border border-gray-200/90 dark:border-gray-800/90 p-4 sm:p-5 space-y-4">
         {/* Row 1: Search + Select Dropdowns (Desktop) / Filter Button (Mobile) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 items-center">
           {/* Search Box + Mobile Filter Button */}
