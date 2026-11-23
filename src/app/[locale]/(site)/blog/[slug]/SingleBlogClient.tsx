@@ -147,25 +147,25 @@ const SingleBlogClient = ({
           </div>
           <span className="font-medium">{tCommon("back")}</span>
         </button>
-        <h1 className="text-section md:text-[2.25rem] font-heading font-bold mb-6 tracking-tight text-gray-900 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-primary dark:to-orange-400 leading-[1.2]">
+        <h1 className="text-2xl sm:text-3xl md:text-[2rem] font-heading font-bold mb-5 tracking-tight text-gray-900 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-primary dark:to-orange-400 leading-[1.25]">
           {resolvedTitle}
         </h1>
-        <div className="bg-white/70 dark:bg-gray-900  backdrop-blur-md rounded-2xl p-6 border border-gray-200 dark:border-gray-800 mb-12 shadow-xl dark:shadow-none transition-colors duration-300">
-          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6">
-            <div className="flex flex-wrap items-center gap-4 text-gray-600 dark:text-gray-400 text-sm md:text-base">
-              <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-800/50 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700">
-                <CalendarIcon className="h-4 w-4 text-primary" />
-                <span>{formatRelativeTime(blogPost.date?.raw || blogPost.created_at, locale)}</span>
+        <div className="bg-white/70 dark:bg-gray-900/80 backdrop-blur-md rounded-xl sm:rounded-2xl p-2.5 sm:p-3.5 border border-gray-200 dark:border-gray-800 mb-8 shadow-sm transition-colors duration-300">
+          <div className="flex flex-row items-center justify-between gap-2">
+            <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400 text-xs sm:text-sm">
+              <div className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-800/60 px-2 sm:px-2.5 py-1 rounded-lg border border-gray-200/80 dark:border-gray-700/80">
+                <CalendarIcon className="h-3.5 w-3.5 text-primary shrink-0" />
+                <span className="whitespace-nowrap">{formatRelativeTime(blogPost.date?.raw || blogPost.created_at, locale)}</span>
               </div>
-              <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-800/50 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700">
-                <ClockIcon className="h-4 w-4 text-primary" />
-                <span>{tBlog("readTime", { minutes: 5 })}</span>
+              <div className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-800/60 px-2 sm:px-2.5 py-1 rounded-lg border border-gray-200/80 dark:border-gray-700/80">
+                <ClockIcon className="h-3.5 w-3.5 text-primary shrink-0" />
+                <span className="whitespace-nowrap">{tBlog("readTime", { minutes: 5 })}</span>
               </div>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 sm:gap-4 shrink-0 text-xs sm:text-sm">
               <div className="flex items-center gap-1.5 text-gray-600 dark:text-gray-400">
-                <EyeIcon className="h-5 w-5 text-blue-500 dark:text-blue-400" />
+                <EyeIcon className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                 <span className="font-mono font-bold">
                   {blogPost.stats.views.toLocaleString()}
                 </span>
@@ -173,14 +173,15 @@ const SingleBlogClient = ({
               <button
                 onClick={handleLike}
                 disabled={isLoading}
-                className={`flex items-center gap-1.5 transition-all transform active:scale-95 disabled:opacity-70 hover:scale-105 ${isLiked
-                  ? "text-red-500"
-                  : "text-gray-500 dark:text-gray-400 hover:text-red-400"
-                  }`}
+                className={`flex items-center gap-1.5 transition-all transform active:scale-95 disabled:opacity-70 hover:scale-105 ${
+                  isLiked
+                    ? "text-red-500"
+                    : "text-gray-500 dark:text-gray-400 hover:text-red-400"
+                }`}
                 title={isLiked ? "Unlike" : "Like"}
               >
                 <HeartIcon
-                  className={`h-6 w-6 ${isLiked ? "fill-current" : ""}`}
+                  className={`h-4 w-4 sm:h-5 sm:w-5 ${isLiked ? "fill-current" : ""}`}
                 />
                 <span className="font-mono font-bold">
                   {likesCount.toLocaleString()}
@@ -188,20 +189,11 @@ const SingleBlogClient = ({
               </button>
             </div>
           </div>
-
-          <div className="w-full h-px bg-gray-200 dark:bg-gray-800 my-4" />
-
-          <SocialShareButtons
-            title={resolvedTitle}
-            description={resolvedExcerpt}
-            url={currentUrl}
-            isRtl={isRtl}
-          />
         </div>
 
         {/* المقال */}
         <article
-          className={`prose prose-lg max-w-none ${isRtl ? "text-right font-arabic" : "text-left font-sans"
+          className={`prose prose-base max-w-none ${isRtl ? "text-right font-arabic" : "text-left font-sans"
             } dark:prose-invert prose-headings:font-heading prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-gray-900 dark:prose-headings:text-gray-100 prose-p:text-slate-700 dark:prose-p:text-slate-300 prose-p:leading-relaxed prose-a:text-primary hover:prose-a:text-orange-500 transition-colors duration-300`}
           dir={isRtl ? "rtl" : "ltr"}
         >
@@ -227,13 +219,13 @@ const SingleBlogClient = ({
                   switch (block.type) {
                     case "heading":
                       return (
-                        <div key={block.id} className="mb-12 group/block">
+                        <div key={block.id} className="mb-8 group/block">
                           <div className="relative">
                             <h2
                               id={block.id.toString()}
-                              className="text-2xl md:text-3xl font-bold mt-10 mb-6 flex items-center gap-3"
+                              className="text-xl sm:text-2xl font-bold mt-8 mb-4 flex items-center gap-2.5"
                             >
-                              <span className="w-1.5 h-8 bg-primary rounded-full inline-block"></span>
+                              <span className="w-1.5 h-6 bg-primary rounded-full inline-block"></span>
                               {block.title}
                             </h2>
                           </div>
@@ -241,8 +233,8 @@ const SingleBlogClient = ({
                       );
                     case "text":
                       return (
-                        <div key={block.id} className="mb-12 group/block">
-                          <p className="text-lg leading-8 mb-6 whitespace-pre-line">
+                        <div key={block.id} className="mb-6 group/block">
+                          <p className="text-[15px] sm:text-base leading-7 mb-4 whitespace-pre-line text-slate-700 dark:text-slate-300">
                             {block.text}
                           </p>
                         </div>
@@ -332,15 +324,15 @@ const SingleBlogClient = ({
 
                 // Legacy blocks (no type field) - original fallback rendering
                 return (
-                  <div key={block.id} className="mb-12 group/block">
+                  <div key={block.id} className="mb-8 group/block">
                     {/* العناوين الفرعية */}
                     {block.title && (
                       <div className="relative">
                         <h2
                           id={block.id.toString()}
-                          className="text-2xl md:text-3xl font-bold mt-10 mb-6 flex items-center gap-3"
+                          className="text-xl sm:text-2xl font-bold mt-8 mb-4 flex items-center gap-2.5"
                         >
-                          <span className="w-1.5 h-8 bg-primary rounded-full inline-block"></span>
+                          <span className="w-1.5 h-6 bg-primary rounded-full inline-block"></span>
                           {block.title}
                         </h2>
                       </div>
@@ -348,7 +340,7 @@ const SingleBlogClient = ({
 
                     {/* النصوص */}
                     {block.text && (
-                      <p className="text-lg leading-8 mb-6 whitespace-pre-line">
+                      <p className="text-[15px] sm:text-base leading-7 mb-4 whitespace-pre-line text-slate-700 dark:text-slate-300">
                         {block.text}
                       </p>
                     )}

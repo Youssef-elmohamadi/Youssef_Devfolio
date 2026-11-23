@@ -99,15 +99,14 @@ const TableOfContents = ({ content, lang = "en" }: TableOfContentsProps) => {
       {/* Mobile Toggle Button */}
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed bottom-6 z-50 p-3.5 rounded-full bg-primary text-white shadow-xl lg:hidden hover:bg-orange-600 transition-colors ${
-          isRtl ? "left-6" : "right-6"
-        }`}
+        aria-label={isOpen ? (isRtl ? "إغلاق الفهرس" : "Close Table of Contents") : (isRtl ? "فهرس المقال" : "Table of Contents")}
+        className="blog-toc-btn fixed bottom-[122px] end-4 sm:bottom-20 sm:end-6 z-40 sm:z-50 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-primary text-white shadow-xl hover:bg-orange-600 transition-all duration-300 flex items-center justify-center border border-white/20 lg:hidden"
         whileTap={{ scale: 0.9 }}
       >
         {isOpen ? (
-          <XMarkIcon className="h-6 w-6" />
+          <XMarkIcon className="h-5 w-5 sm:h-6 sm:w-6" />
         ) : (
-          <ListBulletIcon className="h-6 w-6" />
+          <ListBulletIcon className="h-5 w-5 sm:h-6 sm:w-6" />
         )}
       </motion.button>
 
@@ -118,25 +117,34 @@ const TableOfContents = ({ content, lang = "en" }: TableOfContentsProps) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
+            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm lg:hidden"
             onClick={() => setIsOpen(false)}
           >
             <motion.aside
               initial={{ x: isRtl ? "100%" : "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: isRtl ? "100%" : "-100%" }}
-              className={`fixed top-0 bottom-0 w-72 bg-white dark:bg-[#111] p-6 shadow-2xl overflow-y-auto ${
+              className={`fixed top-0 bottom-0 w-72 max-w-[80vw] bg-white dark:bg-[#111] p-6 shadow-2xl overflow-y-auto ${
                 isRtl ? "right-0" : "left-0"
               }`}
               onClick={(e) => e.stopPropagation()}
             >
-              <h2
-                className={`text-xl font-bold mb-6 text-primary border-b border-gray-100 dark:border-gray-800 pb-4 ${
-                  isRtl ? "text-right" : "text-left"
-                }`}
-              >
-                {isRtl ? "المحتويات" : "Table of Contents"}
-              </h2>
+              <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-4 mb-6">
+                <h2
+                  className={`text-xl font-bold text-primary ${
+                    isRtl ? "text-right" : "text-left"
+                  }`}
+                >
+                  {isRtl ? "المحتويات" : "Table of Contents"}
+                </h2>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="p-1 rounded-lg text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
+                  aria-label={isRtl ? "إغلاق" : "Close"}
+                >
+                  <XMarkIcon className="h-5 w-5" />
+                </button>
+              </div>
               <ul className="space-y-4">
                 {headings.map((h) => (
                   <li key={h.id}>
