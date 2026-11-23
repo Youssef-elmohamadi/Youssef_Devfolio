@@ -64,9 +64,9 @@ export default async function Footer() {
 
   return (
     <footer className="bg-white dark:bg-dark border-t border-gray-200 dark:border-gray-800 relative z-10">
-      <div className="container max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-28 sm:pb-32">
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <div className="mb-4 md:mb-0">
+      <div className="container max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-4 pb-20 sm:py-5 sm:pb-24">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-3 md:gap-0">
+          <div className="text-center md:text-start">
             <Link
               href="/"
               aria-label={t("brandAria")}
@@ -74,25 +74,25 @@ export default async function Footer() {
             >
               <Image
                 src="/logo/light-logo.webp"
-                width={150}
-                height={100}
+                width={120}
+                height={35}
                 alt="The Forge Logo"
-                className="block dark:hidden"
+                className="h-7 sm:h-8 w-auto block dark:hidden"
               />
               <Image
                 src="/logo/dark-logo.webp"
-                width={150}
-                height={100}
+                width={120}
+                height={35}
                 alt="The Forge Logo"
-                className="hidden dark:block"
+                className="h-7 sm:h-8 w-auto hidden dark:block"
               />
             </Link>
-            <p className="text-sm text-center md:text-start text-gray-600 dark:text-gray-400 mt-2">
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
               {t("rights", { year: new Date().getFullYear() })}
             </p>
           </div>
 
-          <div className="flex gap-6">
+          <div className="flex gap-4 sm:gap-5">
             {displayLinks.map((link) => {
               const IconComponent = getPlatformIcon(link.platform);
               return (
@@ -102,9 +102,9 @@ export default async function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={link.platform_name || link.platform}
-                  className="text-secondary hover:text-primary transition-colors text-2xl"
+                  className="text-secondary hover:text-primary transition-colors"
                 >
-                  <IconComponent className="h-6 w-6" />
+                  <IconComponent className="h-5 w-5" />
                 </a>
               );
             })}

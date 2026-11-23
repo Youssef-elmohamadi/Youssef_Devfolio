@@ -2,9 +2,21 @@ const TITLE_DICTIONARY: Record<string, { en: string; ar: string }> = {
   // Articles
   "Understanding State Snapshots & Batching in React": {
     en: "Understanding State Snapshots & Batching in React",
-    ar: "فهم لقطات الحالة والتجميع في React",
+    ar: "فهم الـ State Snapshots والـ Batching في React",
+  },
+  "فهم الـ State Snapshots والـ Batching في React": {
+    en: "Understanding State Snapshots & Batching in React",
+    ar: "فهم الـ State Snapshots والـ Batching في React",
+  },
+  "فهم لقطات الحالة والتجميع في React": {
+    en: "Understanding State Snapshots & Batching in React",
+    ar: "فهم الـ State Snapshots والـ Batching في React",
   },
   "useRef in React: The Magic Behind That Tiny Object": {
+    en: "useRef in React: The Magic Behind That Tiny Object",
+    ar: "useRef في React: السحر وراء هذا الكائن",
+  },
+  "useRef في React: السحر وراء هذا الكائن": {
     en: "useRef in React: The Magic Behind That Tiny Object",
     ar: "useRef في React: السحر وراء هذا الكائن",
   },
@@ -12,7 +24,15 @@ const TITLE_DICTIONARY: Record<string, { en: string; ar: string }> = {
     en: "The Next.js 15 SEO Nightmare: Metadata Bug",
     ar: "حل مشكلة Streaming Metadata في Next.js 15",
   },
+  "حل مشكلة Streaming Metadata في Next.js 15": {
+    en: "The Next.js 15 SEO Nightmare: Metadata Bug",
+    ar: "حل مشكلة Streaming Metadata في Next.js 15",
+  },
   "Understanding React Fiber": {
+    en: "Understanding React Fiber",
+    ar: "فهم معمارية React Fiber",
+  },
+  "فهم معمارية React Fiber": {
     en: "Understanding React Fiber",
     ar: "فهم معمارية React Fiber",
   },
@@ -20,6 +40,85 @@ const TITLE_DICTIONARY: Record<string, { en: string; ar: string }> = {
     en: "Improving React Performance with useTransition",
     ar: "تحسين أداء React باستخدام useTransition",
   },
+  "تحسين أداء React باستخدام useTransition": {
+    en: "Improving React Performance with useTransition",
+    ar: "تحسين أداء React باستخدام useTransition",
+  },
+
+  // Article Headings & Sections
+  "مقدمة": {
+    en: "Introduction",
+    ar: "مقدمة",
+  },
+  "Introduction": {
+    en: "Introduction",
+    ar: "مقدمة",
+  },
+  "يعني إيه State Snapshot؟": {
+    en: "What is a State Snapshot?",
+    ar: "يعني إيه State Snapshot؟",
+  },
+  "What is a State Snapshot?": {
+    en: "What is a State Snapshot?",
+    ar: "يعني إيه State Snapshot؟",
+  },
+  "ليه React مش بتحدّث الـ UI بشكل فوري؟": {
+    en: "Why Doesn't React Update UI Immediately?",
+    ar: "ليه React مش بتحدّث الـ UI بشكل فوري؟",
+  },
+  "Why Doesn't React Update UI Immediately?": {
+    en: "Why Doesn't React Update UI Immediately?",
+    ar: "ليه React مش بتحدّث الـ UI بشكل فوري؟",
+  },
+  "إمتى React بتجمع تحديثات الـ State مع بعض (Batching)؟": {
+    en: "When Does React Batch State Updates?",
+    ar: "إمتى React بتجمع تحديثات الـ State مع بعض (Batching)؟",
+  },
+  "When Does React Batch State Updates?": {
+    en: "When Does React Batch State Updates?",
+    ar: "إمتى React بتجمع تحديثات الـ State مع بعض (Batching)؟",
+  },
+  "تحديث نفس الـ State أكتر من مرة.": {
+    en: "Updating the Same State Multiple Times",
+    ar: "تحديث نفس الـ State أكتر من مرة.",
+  },
+  "تحديث نفس الـ State أكتر من مرة": {
+    en: "Updating the Same State Multiple Times",
+    ar: "تحديث نفس الـ State أكتر من مرة",
+  },
+  "Updating the Same State Multiple Times": {
+    en: "Updating the Same State Multiple Times",
+    ar: "تحديث نفس الـ State أكتر من مرة",
+  },
+  "الحل: استخدام دوال التحديث (Updater Functions)": {
+    en: "Solution: Using Updater Functions",
+    ar: "الحل: استخدام دوال التحديث (Updater Functions)",
+  },
+  "Solution: Using Updater Functions": {
+    en: "Solution: Using Updater Functions",
+    ar: "الحل: استخدام دوال التحديث (Updater Functions)",
+  },
+  "الفرق بين الطريقتين.": {
+    en: "The Difference Between Both Approaches",
+    ar: "الفرق بين الطريقتين.",
+  },
+  "الفرق بين الطريقتين": {
+    en: "The Difference Between Both Approaches",
+    ar: "الفرق بين الطريقتين",
+  },
+  "The Difference Between Both Approaches": {
+    en: "The Difference Between Both Approaches",
+    ar: "الفرق بين الطريقتين",
+  },
+  "الخلاصة النهائية": {
+    en: "Final Summary",
+    ar: "الخلاصة النهائية",
+  },
+  "Final Summary": {
+    en: "Final Summary",
+    ar: "الخلاصة النهائية",
+  },
+
   // Courses
   "بناء تطبيقات الويب الحديثة باستخدام ASP.NET Core 8 و Clean Architecture": {
     en: "Building Modern Web Apps with ASP.NET Core 8 & Clean Architecture",

@@ -380,5 +380,11 @@
       "noMessages": "No messages found.",
       "deleteSuccess": "Message deleted successfully."
     }
+  },
+  "articleHelper": {
+    "title": "Did you enjoy this?",
+    "text": "Support us with a kind message or buy us a coffee",
+    "buyCoffee": "Buy a coffee",
+    "sendMessage": "Send a message"
   }
 }
