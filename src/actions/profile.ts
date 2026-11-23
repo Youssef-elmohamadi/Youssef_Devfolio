@@ -1,6 +1,6 @@
 'use server'
 import { apiFetch } from "@/lib/api/config";
-import { revalidatePath, revalidateTag } from "next/dist/server/web/spec-extension/revalidate";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function saveProfileData(formData: FormData, id?: number) {
   try {

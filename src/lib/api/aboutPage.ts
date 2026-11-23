@@ -9,7 +9,7 @@ export const getAboutData = async (locale: string = "en") => {
         headers: { "Accept-Language": locale },
         next: {
           tags: ["about-data", `about-data:${locale}`],
-          revalidate: 3600 * 24,
+          revalidate: 60,
         },
       },
       undefined,

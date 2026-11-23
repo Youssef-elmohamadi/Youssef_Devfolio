@@ -1,6 +1,6 @@
 'use server'
 import { apiFetch } from "@/lib/api/config";
-import { revalidatePath, revalidateTag } from "next/dist/server/web/spec-extension/revalidate";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function pushAboutData(formData: FormData) {
   try {
@@ -14,9 +14,14 @@ export async function pushAboutData(formData: FormData) {
       "admin_token"            
     );
 
-             revalidatePath("/admin/about");
-             revalidatePath("/about");
-             revalidateTag("home-data");
+    revalidateTag("about-data");
+    revalidateTag("about-data:en");
+    revalidateTag("about-data:ar");
+    revalidateTag("home-data");
+    revalidatePath("/admin/about");
+    revalidatePath("/about");
+    revalidatePath("/en/about");
+    revalidatePath("/ar/about");
 
     return { success: true, message: "About data pushed successfully", data: response };
 
