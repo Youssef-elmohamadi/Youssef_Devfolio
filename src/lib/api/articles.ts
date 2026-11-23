@@ -1,15 +1,31 @@
 import { apiFetch } from "./config";
 
-export const getArticles = async (page: number, per_page = 10, categoryId?: number) => {
+export const getArticles = async (
+  page: number,
+  per_page = 10,
+  categoryId?: number,
+  locale: string = "en"
+) => {
   try {
-    const query = new URLSearchParams({ page: page.toString(), per_page: per_page.toString() });
-    if (categoryId) query.append('category_id', categoryId.toString());
-    const data = await apiFetch((process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net"), `/api/articles?${query.toString()}`, {
-      next: {
-        tags: ['articles-list'],
-        revalidate: 3600 * 24,
-      },
+    const query = new URLSearchParams({
+      page: page.toString(),
+      per_page: per_page.toString(),
+      lang: locale,
     });
+    if (categoryId) query.append("category_id", categoryId.toString());
+    const data = await apiFetch(
+      process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net",
+      `/api/articles?${query.toString()}`,
+      {
+        headers: { "Accept-Language": locale },
+        next: {
+          tags: ["articles-list", `articles-list:${locale}`],
+          revalidate: 3600 * 24,
+        },
+      },
+      undefined,
+      locale
+    );
 
     return data;
   } catch (error) {
@@ -19,15 +35,18 @@ export const getArticles = async (page: number, per_page = 10, categoryId?: numb
 };
 
 
-export async function getArticleForEndUser(id: string) {
+export async function getArticleForEndUser(id: string, locale: string = "en") {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net";
-    const res = await fetch(`${baseUrl}/api/articles/${id}`, {
-      next: { revalidate: 3600,
-       tags: ['articles-list',`article-${id}`],
-                
-       },
-      
+    const res = await fetch(`${baseUrl}/api/articles/${id}?lang=${encodeURIComponent(locale)}`, {
+      headers: {
+        Accept: "application/json",
+        "Accept-Language": locale,
+      },
+      next: {
+        revalidate: 3600,
+        tags: ["articles-list", `articles-list:${locale}`, `article-${id}`, `article-${locale}-${id}`],
+      },
     });
     if (!res.ok) return null;
     const json = await res.json();
@@ -55,7 +74,7 @@ export async function getArticleForEdit(id: string) {
   try {
     const res = await apiFetch(
       (process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net"),
-      `/api/articles/${id}`,
+      `/api/articles/${id}?translations=all`,
       { cache: "no-store" }, 
       "admin_token",
     );

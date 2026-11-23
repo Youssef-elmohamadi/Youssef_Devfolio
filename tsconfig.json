@@ -19,7 +19,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/app/(site)/*": ["./src/app/[locale]/(site)/*"],
+      "@/app/(admin)/*": ["./src/app/[locale]/(admin)/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "generate-sitemap.js"],

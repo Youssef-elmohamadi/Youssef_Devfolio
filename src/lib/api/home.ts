@@ -43,16 +43,23 @@ export type HomeData = {
   Article: HomeArticle[];
 };
 
-export async function getHomeData(): Promise<HomeData> {
+export async function getHomeData(locale: string = "en"): Promise<HomeData> {
   const baseUrl =
     process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net";
 
-  const json = await apiFetch(baseUrl, "/api/Home", {
-    next: {
-      tags: ["home-data"],
-      revalidate: 300,
-    },
-  } as RequestInit & { next: { tags: string[]; revalidate: number } });
+  const json = await apiFetch(
+    baseUrl,
+    `/api/Home?lang=${encodeURIComponent(locale)}`,
+    {
+      headers: { "Accept-Language": locale },
+      next: {
+        tags: ["home-data", `home-data:${locale}`],
+        revalidate: 300,
+      },
+    } as RequestInit & { next: { tags: string[]; revalidate: number } },
+    undefined,
+    locale
+  );
 
   return json.data as HomeData;
 }

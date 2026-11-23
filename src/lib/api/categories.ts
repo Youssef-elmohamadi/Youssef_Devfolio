@@ -1,12 +1,19 @@
 import axios from "axios";
+import { unwrapField, normalizeSlug } from "@/utils/slug";
 
 type Category = { id: number; name: string; slug?: string };
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net";
 
-export const getCategories = async (): Promise<Category[]> => {
-  const { data } = await axios.get(`${BASE_URL}/api/categories`);
-  return data;
+export const getCategories = async (locale: string = "en"): Promise<Category[]> => {
+  const { data } = await axios.get(`${BASE_URL}/api/categories?lang=${encodeURIComponent(locale)}`, {
+    headers: { "Accept-Language": locale },
+  });
+  return (data || []).map((c: any) => ({
+    ...c,
+    name: unwrapField(c.name, locale),
+    slug: normalizeSlug(c.slug),
+  }));
 };
 
 export const createCategory = async (payload: Partial<Category>) => {

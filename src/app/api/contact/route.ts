@@ -8,15 +8,21 @@ const API_BASE =
 export async function POST(req: Request) {
   try {
     const body = await req.json();
+    const reqLang =
+      req.headers.get("accept-language") || body.locale || body.lang || "en";
 
-    const res = await fetch(`${API_BASE}/api/contact`, {
-      method: "POST",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
+    const res = await fetch(
+      `${API_BASE}/api/contact?lang=${encodeURIComponent(reqLang)}`,
+      {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Accept-Language": reqLang,
+        },
+        body: JSON.stringify(body),
+      }
+    );
 
     const data = await res.json();
 

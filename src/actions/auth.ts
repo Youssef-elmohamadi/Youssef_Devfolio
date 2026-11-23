@@ -35,6 +35,7 @@ console.log("Token to save:", response.token)
   } catch (error: any) {
     return {
       error: error?.response?.data?.message || "Invalid credentials",
+      errors: (error?.errors || {}) as Record<string, string[]>,
     };
   }
   redirect("/admin");

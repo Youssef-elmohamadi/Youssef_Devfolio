@@ -1,14 +1,21 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 import { apiFetch } from "../config";
 
-export const getProjects = async (page: number, per_page=10) => {
+export const getProjects = async (page: number, per_page = 10, locale: string = "en") => {
   try {
-    const data = await apiFetch((process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net"), `/api/projects?page=${page}&per_page=${per_page}`, {
-      next: {
-        tags: ['projects-list'],
-        revalidate: 3600*24,
-       },
-    });
+    const data = await apiFetch(
+      process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net",
+      `/api/projects?page=${page}&per_page=${per_page}&lang=${encodeURIComponent(locale)}`,
+      {
+        headers: { "Accept-Language": locale },
+        next: {
+          tags: ["projects-list", `projects-list:${locale}`],
+          revalidate: 3600 * 24,
+        },
+      },
+      undefined,
+      locale
+    );
 
     return data;
   } catch (error) {
@@ -22,7 +29,7 @@ export async function getProjectForEdit(id: string) {
   try {
     const res = await apiFetch(
       (process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net"),
-      `/api/projects/${id}`,
+      `/api/projects/${id}?translations=all`,
       { cache: "no-store" }, 
       "admin_token",
     );

@@ -1,0 +1,384 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "about": "نبذة عني",
+    "projects": "المشاريع",
+    "courses": "الكورسات",
+    "blog": "المقالات",
+    "contact": "تواصل معي",
+    "themeLight": "التبديل إلى الوضع الفاتح",
+    "themeDark": "التبديل إلى الوضع الليلي"
+  },
+  "common": {
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ ما",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "search": "بحث...",
+    "readMore": "اقرأ المزيد",
+    "back": "رجوع",
+    "viewAll": "عرض الكل",
+    "close": "إغلاق",
+    "lightMode": "الوضع الفاتح",
+    "darkMode": "الوضع الليلي",
+    "switchLanguage": "English"
+  },
+  "footer": {
+    "rights": "© {year} يوسف المحمدي The Forge. جميع الحقوق محفوظة.",
+    "brandAria": "The Forge — الذهاب إلى الصفحة الرئيسية"
+  },
+  "home": {
+    "hero": {
+      "greeting": "أهلاً، أنا <highlight>{name}</highlight>",
+      "fallbackDescription": "مطور واجهات أمامية (React, Next.js) | طالب علوم حاسب. مرحباً بك في مساحتي الرقمية، حيث تتحول الأفكار إلى واقع برمجي ملموس.",
+      "viewProjects": "استعراض المشاريع",
+      "downloadCv": "تحميل السيرة الذاتية",
+      "hireMe": "وظّفني",
+      "roles": [
+        "مطور Fullstack",
+        "متخصص React",
+        "متخصص .NET",
+        "مهندس Next.js",
+        "شغوف بتصميم UI/UX"
+      ],
+      "terminal": {
+        "commandWhoami": "$ whoami",
+        "outputName": "> Youssef Elmohamadi",
+        "outputRole": "> Fullstack Developer",
+        "commandSkills": "$ cat skills.json",
+        "commandCraft": "$ npm run craft",
+        "outputCrafting": "> أصنع تجارب رقمية مميزة..."
+      }
+    },
+    "featuredProjects": {
+      "title": "أبرز المشاريع",
+      "subtitle": "مجموعة مختارة من التطبيقات والتجارب الرقمية والأدوات التي قمت بتطويرها.",
+      "code": "الكود المصدري",
+      "liveDemo": "معاينة مباشرة"
+    },
+    "featuredBlogs": {
+      "title": "أحدث المقالات",
+      "subtitle": "كتابات في هندسة الويب، أطر عمل الواجهات الأمامية، وفن بناء المنتجات البرمجية الحديثة.",
+      "readTime": "{minutes, plural, zero {أقل من دقيقة للقراءة} one {دقيقة للقراءة} two {دقيقتان للقراءة} few {# دقائق للقراءة} many {# دقيقة للقراءة} other {# دقيقة للقراءة}}",
+      "viewAll": "عرض كل المقالات"
+    },
+    "newsletter": {
+      "title": "اشترك في نشرتي البريدية",
+      "subtitle": "احصل على آخر المستجدات حول مشاريعي ومقالاتي التقنية مباشرة في بريدك الإلكتروني.",
+      "placeholder": "أدخل بريدك الإلكتروني",
+      "button": "اشتراك",
+      "submitting": "جاري الإرسال...",
+      "successTitle": "تم الاشتراك بنجاح!",
+      "successMessage": "شكراً لاشتراكك في النشرة البريدية! تمت إضافة بريدك الإلكتروني وستصلك أحدث التحديثات قريباً.",
+      "close": "إغلاق",
+      "genericError": "حدث خطأ أثناء الاشتراك."
+    }
+  },
+  "about": {
+    "title": "نبذة عني",
+    "subtitle": "مهندس برمجيات شغوف بالكود النظيف والمعماريات الحديثة.",
+    "failedLoad": "فشل تحميل بيانات الملف التعريفي.",
+    "tryAgain": "يرجى المحاولة مرة أخرى لاحقاً.",
+    "stats": {
+      "yearsExperience": "سنوات خبرة",
+      "yearsValue": "+2",
+      "projectsBuilt": "مشاريع منجزة",
+      "projectsValue": "+20",
+      "technologies": "تقنيات وأدوات"
+    },
+    "bento": {
+      "map": {
+        "locating": "جاري تحديد موقعك...",
+        "fallback": "أنا من القاهرة، مصر. تشرفت بمعرفتك!",
+        "distance": "أنا من القاهرة، مصر، على بُعد حوالي {distance} كم من موقعك الحالي وفقاً لعنوان الـ IP الخاص بك.",
+        "markerForge": "مساحتنا",
+        "markerYou": "أنت",
+        "markerTogether": "أنت ويوسف"
+      },
+      "pronunciation": {
+        "name": "يوسف",
+        "pronounced": "يُنطق \"Yoo-sef\"",
+        "clickToListen": "اضغط على مكبر الصوت للاستماع",
+        "ariaListen": "نطق اسم يوسف"
+      },
+      "height": {
+        "title": "طولي 182 سم.",
+        "subtitle": "لسبب ما، هذا الرقم يفاجئ الكثيرين! 😅"
+      },
+      "cat": {
+        "title": "في مفارقة عجيبة، أنا عاشق للقطط مع حساسية شديدة تجاهها!",
+        "subtitle": "أعوّض ذلك باقتناء ملابس تحمل رسومات القطط! 🐱",
+        "ariaMeow": "اضغط لسماع مواء!"
+      },
+      "proudMuslim": {
+        "title": "مسلم فخور",
+        "subtitle": "أهتدي بقيم ديني وأسعى للإتقان والإحسان في كل سطر برمجيات أكتبه."
+      },
+      "availableForWork": {
+        "title": "متاح للعمل",
+        "subtitle": "دعنا نبني شيئاً مبهراً معاً.",
+        "cairoTime": "توقيت القاهرة (GMT+2)"
+      }
+    },
+    "skills": {
+      "title": "المهارات والتقنيات",
+      "subtitle": "الأدوات وأطر العمل ولغات البرمجة التي أعتمد عليها في بناء منتجات رقمية حديثة وقابلة للتوسع.",
+      "competencies": "{count, plural, zero {لا توجد مهارات} one {مهارة واحدة} two {مهارتان} few {# مهارات} many {# مهارة} other {# مهارة}}"
+    },
+    "experienceEducation": {
+      "title": "الخبرات والتعليم",
+      "subtitle": "مسيرتي المهنية في هندسة البرمجيات وخلفيتي الأكاديمية.",
+      "experienceTitle": "الخبرة المهنية",
+      "current": "حالياً",
+      "hideResponsibilities": "إخفاء المسؤوليات",
+      "viewResponsibilities": "عرض المسؤوليات",
+      "educationTitle": "التعليم والشهادات",
+      "grade": "التقدير: {grade}",
+      "fallbackEduDescription": "دراسة علوم الحاسب الأساسية بما يشمل هياكل البيانات، الخوارزميات، هندسة البرمجيات، قواعد البيانات، ومعماريات الويب الحديثة."
+    }
+  },
+  "contact": {
+    "title": "تواصل معي",
+    "subtitle": "يسعدني دائماً تواصلك لأي استفسارات أو فرص تعاون.",
+    "getInTouch": "تواصل معي مباشرة",
+    "description": "أرحب دائماً بمناقشة المشاريع الجديدة، الأفكار الإبداعية، أو فرص العمل المشتركة وتحقيق الرؤى التقنية.",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "location": "الموقع",
+    "locationValue": "أرض اللواء، محافظة الجيزة، مصر",
+    "name": "الاسم",
+    "emailLabel": "البريد الإلكتروني",
+    "message": "الرسالة",
+    "send": "إرسال الرسالة",
+    "sending": "جاري الإرسال...",
+    "success": "تم إرسال رسالتك بنجاح! سأتواصل معك قريباً.",
+    "error": "فشل إرسال الرسالة، يرجى المحاولة مرة أخرى.",
+    "connectionError": "حدث خطأ ما. يرجى التحقق من اتصالك بالإنترنت والمحاولة مجدداً."
+  },
+  "coffee": {
+    "support": "ادعمني بفنجان قهوة!"
+  },
+  "courses": {
+    "title": "الكورسات والشروحات المكتوبة",
+    "subtitle": "أدلة هندسية عملية مبنية على أفضل المعماريات البرمجية الحديثة.",
+    "curriculumBadge": "منهج تفاعلي متكامل",
+    "searchPlaceholder": "ابحث عن كورس أو موضوع...",
+    "allLevels": "جميع المستويات",
+    "allStatuses": "جميع الحالات",
+    "allSubjects": "جميع الموضوعات",
+    "allSubjectsPill": "الكل",
+    "subjectsTitle": "الموضوعات",
+    "tagsTitle": "الوسوم #",
+    "notStarted": "لم تبدأ بعد · {completed} من {total} محاضرات",
+    "inProgress": "قيد التعلم · {completed} من {total} محاضرات",
+    "completedAll": "مكتمل · {completed} من {total} محاضرات",
+    "moreCoursesSoon": "المزيد من الكورسات قريباً",
+    "moreCoursesSoonDesc": "شروحات جديدة تُضاف تباعاً.",
+    "coursesCountSummary": "{count, plural, zero {لا توجد كورسات} one {كورس واحد} two {كورسين} few {# كورسات} many {# كورس} other {# كورس}}",
+    "lecturesCountSummary": "{count, plural, zero {لا توجد محاضرات} one {محاضرة واحدة} two {محاضرتان} few {# محاضرات} many {# محاضرة} other {# محاضرة}}",
+    "levels": {
+      "beginner": "مبتدئ",
+      "intermediate": "متوسط",
+      "advanced": "متقدم"
+    },
+    "statuses": {
+      "ongoing": "قيد الإنشاء",
+      "completed": "مكتمل"
+    },
+    "filterByTag": "فلترة حسب الوسم:",
+    "filtersModalTitle": "الفلاتر",
+    "clearAll": "مسح الكل",
+    "showResults": "عرض النتائج ({count})",
+    "sortName": "الاسم",
+    "filterLevelTitle": "المستوى",
+    "filterStatusTitle": "الحالة",
+    "filterSortTitle": "الترتيب",
+    "sortNewest": "الأحدث أولاً",
+    "sortOldest": "الأقدم أولاً",
+    "sortTitle": "أبجدياً (أ-ي)",
+    "showingResults": "عرض {count} من إجمالي {total} كورس",
+    "updatingResults": "جاري تحديث النتائج...",
+    "noCourses": "لم يتم العثور على أي كورسات",
+    "noCoursesDesc": "لم نتمكن من العثور على كورسات تطابق معايير البحث الحالية. جرب تعديل كلمات البحث أو تصفير الفلاتر.",
+    "resetFilters": "إعادة ضبط الفلاتر",
+    "lecturesCount": "{count, plural, zero {لا توجد محاضرات} one {محاضرة واحدة} two {محاضرتان} few {# محاضرات} many {# محاضرة} other {# محاضرة}}",
+    "readingTime": "{minutes, plural, zero {أقل من دقيقة للقراءة} one {دقيقة للقراءة} two {دقيقتان للقراءة} few {# دقائق للقراءة} many {# دقيقة للقراءة} other {# دقيقة للقراءة}}",
+    "views": "{count, plural, zero {لا توجد مشاهدات} one {مشاهدة واحدة} two {مشاهدتان} few {# مشاهدات} many {# مشاهدة} other {# مشاهدة}}",
+    "yourProgress": "تقدمك في الكورس",
+    "startCourse": "بدء الكورس",
+    "continueCourse": "متابعة الكورس",
+    "backToCourses": "العودة للكورسات",
+    "showMore": "عرض المزيد",
+    "showLess": "عرض أقل",
+    "readingTimeShort": "وقت القراءة",
+    "backToLectures": "الرجوع للمحاضرات",
+    "courseOutline": "فهرس المحاضرات",
+    "totalReadingTimeTitle": "إجمالي وقت القراءة",
+    "levelTitle": "المستوى",
+    "notStartedPill": "لم تبدأ",
+    "completedPill": "مكتملة",
+    "courseProgress": "تقدمك في الكورس",
+    "completedLecturesOf": "أكملت {completed} من {total} محاضرات",
+    "readyToStartSub": "جاهز للبداية؟ ابدأ بالمحاضرة الأولى.",
+    "continueLearningSub": "أحسنت! واصل التعلم من حيث توقفت.",
+    "allLecturesDoneSub": "تهانينا! لقد أكملت جميع محاضرات هذا الكورس.",
+    "subjectLabel": "الموضوع",
+    "levelLabel": "المستوى",
+    "statusLabel": "الحالة",
+    "startCourseBtn": "ابدأ الكورس",
+    "continueCourseBtn": "تابع الكورس",
+    "breadcrumbsCourses": "الكورسات",
+    "minSuffix": "دقائق",
+    "noLecturesSoon": "لم تُنشر أي محاضرات لهذا الكورس حتى الآن. ترقب قريباً!",
+    "markCompleted": "تحديد كمكتمل",
+    "completed": "مكتمل ✓",
+    "markedCompleted": "تم إكمال المحاضرة ✓",
+    "finishedReading": "هل أنهيت قراءة هذه المحاضرة؟",
+    "finishedReadingDesc": "حددها كمكتملة لمتابعة تقدمك وإنجازك في مسار الكورس.",
+    "previousLecture": "المحاضرة السابقة",
+    "nextLecture": "المحاضرة التالية",
+    "courseCompleted": "اكتمل الكورس",
+    "returnToSummary": "العودة لملخص الكورس",
+    "lectureNumber": "المحاضرة {number}",
+    "onThisPage": "فهرس المحاضرة",
+    "share": "مشاركة",
+    "availableEnglishOnly": "متاح باللغة الإنجليزية فقط",
+    "availableArabicOnly": "متاح باللغة العربية فقط",
+    "notFound": "الكورس غير موجود"
+  },
+  "blog": {
+    "title": "المقالات والتدوينات",
+    "subtitle": "شروحات متعمقة في هندسة البرمجيات والمعماريات والأداء.",
+    "allCategories": "جميع التصنيفات",
+    "noArticles": "لم يتم العثور على مقالات للعرض.",
+    "readTime": "{minutes, plural, zero {أقل من دقيقة للقراءة} one {دقيقة للقراءة} two {دقيقتان للقراءة} few {# دقائق للقراءة} many {# دقيقة للقراءة} other {# دقيقة للقراءة}}",
+    "views": "{count, plural, zero {لا توجد مشاهدات} one {مشاهدة واحدة} two {مشاهدتان} few {# مشاهدات} many {# مشاهدة} other {# مشاهدة}}",
+    "previous": "السابق",
+    "next": "التالي",
+    "notFound": "المقال غير موجود"
+  },
+  "projects": {
+    "title": "أبرز المشاريع",
+    "subtitle": "مجموعة مختارة من أحدث أعمالي البرمجية وتطبيقات الويب الحديثة.",
+    "viewCode": "الكود المصدري",
+    "liveDemo": "المعاينة المباشرة",
+    "noProjects": "لم يتم العثور على مشاريع للعرض.",
+    "previous": "السابق",
+    "next": "التالي"
+  },
+  "admin": {
+    "dashboard": "لوحة التحكم",
+    "courses": "إدارة الكورسات",
+    "lectures": "إدارة المحاضرات",
+    "articles": "إدارة المقالات",
+    "projects": "إدارة المشاريع",
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج",
+    "auth": {
+      "signIn": "تسجيل الدخول",
+      "signInSubtitle": "أدخل بريدك الإلكتروني وكلمة المرور لتسجيل الدخول",
+      "welcomeTitle": "مرحباً بك في لوحة الإدارة",
+      "welcomeSubtitle": "مرحباً بك في لوحة تحكم المسؤول. يرجى تسجيل الدخول للمتابعة.",
+      "signInWithGoogle": "الدخول بواسطة Google",
+      "signInWithX": "الدخول بواسطة X",
+      "or": "أو",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "info@gmail.com",
+      "password": "كلمة المرور",
+      "passwordPlaceholder": "أدخل كلمة المرور",
+      "keepLoggedIn": "تذكر تسجيل دخولي",
+      "forgotPassword": "هل نسيت كلمة المرور؟",
+      "signingIn": "جاري الدخول...",
+      "signInBtn": "تسجيل الدخول"
+    },
+    "nav": {
+      "home": "لوحة التحكم",
+      "articles": "المقالات",
+      "courses": "الكورسات",
+      "categories": "التصنيفات",
+      "about": "من أنا",
+      "skills": "مهاراتي",
+      "experience": "خبراتي",
+      "education": "تعليمي",
+      "projects": "مشاريعي",
+      "messages": "الرسائل",
+      "settings": "إعدادات الحساب",
+      "logout": "تسجيل الخروج"
+    },
+    "table": {
+      "noData": "لا توجد بيانات",
+      "noRecords": "لا توجد أي سجلات لعرضها في الوقت الحالي.",
+      "showing": "عرض {count, plural, zero {لا توجد سجلات} one {سجل واحد} two {سجلين} few {# سجلات} many {# سجلاً} other {# سجل}}",
+      "actions": "إجراءات",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "view": "عرض",
+      "searchPlaceholder": "ابحث أو اكتب أمرًا..."
+    },
+    "form": {
+      "tabs": {
+        "en": "الإنجليزية (English)",
+        "ar": "العربية"
+      },
+      "completion": {
+        "allDone": "جميع الترجمات مكتملة",
+        "partial": "{count} من أصل {total} لغات مكتملة",
+        "missing": "الترجمة بـ {lang} غير مكتملة",
+        "hasErrors": "يوجد أخطاء في هذا التبويب"
+      },
+      "slug": {
+        "label": "الرابط اللطيف (Slug)",
+        "autoGenerate": "توليد تلقائي",
+        "regenerate": "إعادة توليد",
+        "placeholder": "رابط-لطيف-بدون-مسافات",
+        "conflictWarning": "يجب ألا يحتوي الرابط على مسافات أو رموز خاصة غير مدعومة",
+        "emptyWarning": "الرابط مطلوب لتوجيه الروابط العامة"
+      },
+      "editor": {
+        "write": "كتابة",
+        "preview": "معاينة",
+        "split": "عرض منقسم",
+        "uploading": "جاري رفع الصورة...",
+        "toolbar": {
+          "h1": "عنوان 1",
+          "h2": "عنوان 2",
+          "h3": "عنوان 3",
+          "bold": "عريض",
+          "italic": "مائل",
+          "code": "كتلة كود",
+          "mermaid": "رسم بياني Mermaid",
+          "katex": "معادلة رياضية KaTeX",
+          "table": "جدول",
+          "image": "إدراج صورة"
+        }
+      },
+      "common": {
+        "save": "حفظ",
+        "saving": "جاري الحفظ...",
+        "cancel": "إلغاء",
+        "back": "رجوع",
+        "create": "إنشاء",
+        "update": "تحديث",
+        "deleteConfirm": "هل أنت متأكد من رغبتك في حذف هذا العنصر؟",
+        "deleteWarning": "هذا الإجراء لا يمكن التراجع عنه.",
+        "success": "تم حفظ التغييرات بنجاح",
+        "error": "حدث خطأ أثناء حفظ التغييرات"
+      }
+    },
+    "messages": {
+      "title": "صندوق الرسائل",
+      "subtitle": "عرض وإدارة رسائل التواصل الواردة من زوار معرض أعمالك.",
+      "language": "اللغة",
+      "sender": "المرسل",
+      "email": "البريد الإلكتروني",
+      "date": "التاريخ",
+      "read": "مقروءة",
+      "unread": "غير مقروءة",
+      "details": "تفاصيل الرسالة",
+      "noMessages": "لا توجد رسائل حالياً.",
+      "deleteSuccess": "تم حذف الرسالة بنجاح."
+    }
+  }
+}

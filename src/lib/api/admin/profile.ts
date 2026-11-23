@@ -18,7 +18,7 @@ export async function getProfileData() {
   try {
     const res = await apiFetch(
       (process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net"),
-      `/api/profiles`,
+      `/api/profiles?translations=all`,
       { cache: "no-store" }, 
       "admin_token"
     );

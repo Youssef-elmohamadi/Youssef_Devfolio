@@ -21,7 +21,7 @@ export async function getEducationsForEdit(id: string) {
   try {
     const res = await apiFetch(
       (process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net"),
-      `/api/education/${id}`,
+      `/api/education/${id}?translations=all`,
       { cache: "no-store" }, 
       "admin_token",
     );

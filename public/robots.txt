@@ -2,6 +2,12 @@
 User-agent: *
 Allow: /
 
+# Admin & Internal API routes across all locales
+Disallow: /admin/
+Disallow: /en/admin/
+Disallow: /ar/admin/
+Disallow: /api/
+
 # Host
 Host: https://the-forge-one.vercel.app
 

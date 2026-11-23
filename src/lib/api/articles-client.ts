@@ -16,17 +16,23 @@ const BASE_URL =
 export const getArticlesClient = async (
   page: number,
   per_page = 10,
-  categoryId?: number | null
+  categoryId?: number | null,
+  locale: string = "en"
 ) => {
   const query = new URLSearchParams({
     page: page.toString(),
     per_page: per_page.toString(),
+    lang: locale,
   });
   if (categoryId) query.append("category_id", categoryId.toString());
 
   const res = await fetch(`${BASE_URL}/api/articles?${query.toString()}`, {
+    headers: {
+      Accept: "application/json",
+      "Accept-Language": locale,
+    },
     next: {
-      tags: ['articles-list'],
+      tags: ["articles-list", `articles-list:${locale}`],
       revalidate: 3600 * 24,
     },
   });

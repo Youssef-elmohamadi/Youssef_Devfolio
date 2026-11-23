@@ -8,6 +8,7 @@ export type ContactMessage = {
   name: string;
   email: string;
   message: string;
+  locale?: string;
   is_read: boolean;
   created_at: string;
   updated_at: string;

@@ -5,6 +5,7 @@ import { getCategories } from "@/lib/api/categories";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDownIcon, CheckIcon } from "@heroicons/react/24/outline";
 import { useClickAway } from "react-use";
+import { useLocale, useTranslations } from "next-intl";
 
 type Category = { id: number; name: string; slug?: string };
 
@@ -17,17 +18,19 @@ export const CategoryFilter = ({ selectedId, onChange }: Props) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const locale = useLocale();
+  const t = useTranslations("blog");
 
   useClickAway(dropdownRef, () => {
     setIsOpen(false);
   });
 
   useEffect(() => {
-    // Fetch all categories from the backend API.
-    getCategories()
+    // Fetch all categories from the backend API with locale.
+    getCategories(locale)
       .then(setCategories)
       .catch((err) => console.error("Failed to load categories", err));
-  }, []);
+  }, [locale]);
 
   const selectedCategory = selectedId 
     ? categories.find(c => c.id === selectedId) 
@@ -40,7 +43,7 @@ export const CategoryFilter = ({ selectedId, onChange }: Props) => {
         className="w-full flex items-center justify-between rounded-xl border border-white/20 bg-white/40 dark:bg-black/40 backdrop-blur-md px-4 py-3 text-sm font-medium text-gray-800 dark:text-gray-100 shadow-sm transition-all hover:bg-white/60 dark:hover:bg-black/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
       >
         <span className="truncate">
-          {selectedCategory ? selectedCategory.name : "All Categories"}
+          {selectedCategory ? selectedCategory.name : t("allCategories")}
         </span>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
@@ -71,7 +74,7 @@ export const CategoryFilter = ({ selectedId, onChange }: Props) => {
                     : "text-gray-700 dark:text-gray-200 hover:bg-gray-100/50 dark:hover:bg-gray-800/50"
                 }`}
               >
-                <span>All Categories</span>
+                <span>{t("allCategories")}</span>
                 {selectedId === null && <CheckIcon className="w-4 h-4" />}
               </button>
 

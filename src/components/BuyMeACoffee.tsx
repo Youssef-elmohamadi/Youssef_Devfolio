@@ -1,47 +1,26 @@
 "use client";
 
-import { useEffect } from "react";
+import { motion } from "framer-motion";
+import { FaCoffee } from "react-icons/fa";
+import { useTranslations } from "next-intl";
 
 export default function BuyMeACoffee() {
-  useEffect(() => {
-    // Check if script or button is already injected
-    if (document.getElementById("bmc-wbtn")) return;
+  const t = useTranslations("coffee");
 
-    const script = document.createElement("script");
-    script.setAttribute("id", "bmc-widget-script");
-    script.setAttribute("data-name", "BMC-Widget");
-    script.setAttribute("data-cfasync", "false");
-    script.src = "https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js";
-    script.setAttribute("data-id", "elmohammadi");
-    script.setAttribute("data-description", "Support me on Buy me a coffee!");
-    script.setAttribute("data-message", "");
-    script.setAttribute("data-color", "#FF813F");
-    script.setAttribute("data-position", "Right");
-    script.setAttribute("data-x_margin", "18");
-    script.setAttribute("data-y_margin", "18");
-    script.async = true;
-
-    script.onload = () => {
-      // Trigger DOMContentLoaded manually if it already fired
-      const evt = document.createEvent("Event");
-      evt.initEvent("DOMContentLoaded", false, false);
-      window.dispatchEvent(evt);
-    };
-
-    document.head.appendChild(script);
-
-    return () => {
-      // Cleanup on unmount if needed
-      const btn = document.getElementById("bmc-wbtn");
-      if (btn) btn.remove();
-      const iframe = document.getElementById("bmc-iframe");
-      if (iframe) iframe.remove();
-      const closeBtn = document.getElementById("bmc-close-btn");
-      if (closeBtn && closeBtn.parentElement) closeBtn.parentElement.remove();
-      const scriptTag = document.getElementById("bmc-widget-script");
-      if (scriptTag) scriptTag.remove();
-    };
-  }, []);
-
-  return null;
+  return (
+    <motion.a
+      href="https://www.buymeacoffee.com/elmohammadi"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={t("support")}
+      title={t("support")}
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      whileHover={{ scale: 1.1, rotate: 6 }}
+      whileTap={{ scale: 0.9 }}
+      className="fixed bottom-4 end-4 sm:bottom-6 sm:end-6 z-40 sm:z-50 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-tr from-amber-500 to-orange-500 text-white flex items-center justify-center shadow-xl hover:shadow-orange-500/35 transition-all border border-white/20"
+    >
+      <FaCoffee className="w-5 h-5 text-white" />
+    </motion.a>
+  );
 }

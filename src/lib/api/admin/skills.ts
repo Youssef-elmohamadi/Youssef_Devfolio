@@ -22,7 +22,7 @@ export async function getSkillForEdit(id: string) {
   try {
     const res = await apiFetch(
       (process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net"),
-      `/api/skills/${id}`,
+      `/api/skills/${id}?translations=all`,
       { cache: "no-store" }, 
       "admin_token",
     );

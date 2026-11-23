@@ -1,50 +1,46 @@
-// lib/utils.ts أو utils/formatDate.ts
-
-export const formatDate = (dateString: string): string => {
+export const formatDate = (dateString: string, locale: string = "en"): string => {
   if (!dateString) return "-";
   
   const date = new Date(dateString);
+  if (isNaN(date.getTime())) return "-";
   
-  // صيغة: Jan 19, 2026
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short", // Jan, Feb... (ممكن تخليها 'long' لو عايز January)
-    day: "numeric", // 19
-    year: "numeric", // 2026
+  return new Intl.DateTimeFormat(locale === "ar" ? "ar-EG" : "en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
   }).format(date);
 };
 
-export const formatRelativeTime = (dateString: string | undefined): string => {
+export const formatRelativeTime = (dateString: string | undefined, locale: string = "en"): string => {
   if (!dateString) return "-";
   const date = new Date(dateString);
-  const now = new Date();
-  const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-  
   if (isNaN(date.getTime())) return "-";
 
-  if (diffInSeconds < 60) {
-    return "just now";
-  }
+  const now = new Date();
+  const diffInSeconds = Math.floor((date.getTime() - now.getTime()) / 1000);
+  
+  const rtf = new Intl.RelativeTimeFormat(locale === "ar" ? "ar-EG" : "en-US", { numeric: "auto" });
 
-  const minutes = Math.floor(diffInSeconds / 60);
-  if (minutes < 60) {
-    return `${minutes} ${minutes === 1 ? "minute" : "minutes"} ago`;
+  const absDiff = Math.abs(diffInSeconds);
+  if (absDiff < 60) {
+    return rtf.format(Math.round(diffInSeconds), "second");
   }
-
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) {
-    return `${hours} ${hours === 1 ? "hour" : "hours"} ago`;
+  const diffInMinutes = Math.round(diffInSeconds / 60);
+  if (Math.abs(diffInMinutes) < 60) {
+    return rtf.format(diffInMinutes, "minute");
   }
-
-  const days = Math.floor(hours / 24);
-  if (days < 30) {
-    return `${days} ${days === 1 ? "day" : "days"} ago`;
+  const diffInHours = Math.round(diffInMinutes / 60);
+  if (Math.abs(diffInHours) < 24) {
+    return rtf.format(diffInHours, "hour");
   }
-
-  const months = Math.floor(days / 30);
-  if (months < 12) {
-    return `${months} ${months === 1 ? "month" : "months"} ago`;
+  const diffInDays = Math.round(diffInHours / 24);
+  if (Math.abs(diffInDays) < 30) {
+    return rtf.format(diffInDays, "day");
   }
-
-  const years = Math.floor(months / 12);
-  return `${years} ${years === 1 ? "year" : "years"} ago`;
+  const diffInMonths = Math.round(diffInDays / 30);
+  if (Math.abs(diffInMonths) < 12) {
+    return rtf.format(diffInMonths, "month");
+  }
+  const diffInYears = Math.round(diffInDays / 365);
+  return rtf.format(diffInYears, "year");
 };
