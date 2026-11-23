@@ -112,9 +112,6 @@ const EditSkillForm = ({ initialData }: { initialData: SkillData }) => {
       if (title.ar.trim()) formData.append("title[ar]", title.ar.trim());
       formData.append("icon", svgCode);
 
-      // Important for Laravel/PHP Backends receiving FormData via POST for Updates
-      formData.append("_method", "PUT");
-
       // Append skills array
       skillsList.forEach((skill) => {
         formData.append("skills[]", skill);

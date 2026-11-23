@@ -103,7 +103,6 @@ export default function CategoriesClient({
     if (editName.ar.trim()) {
       formData.append("name[ar]", editName.ar.trim());
     }
-    formData.append("_method", "PUT");
 
     startTransition(async () => {
       const result = await updateCategoryAction(id, formData);
