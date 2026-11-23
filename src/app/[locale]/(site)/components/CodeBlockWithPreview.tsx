@@ -62,7 +62,7 @@ export default function CodeBlockWithPreview({
     runnable && language === "javascript" ? "React / JSX" : language;
 
   return (
-    <div className="relative my-8 rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-800">
+    <div dir="ltr" className="relative my-8 rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-800 text-left">
       {/* ── Code block header ──────────────────────────────────────────────── */}
       <div className="flex items-center justify-between px-4 py-2 bg-gray-100 dark:bg-[#1f2129] border-b border-gray-200 dark:border-gray-800 text-xs text-gray-500 dark:text-gray-400">
         <div className="flex items-center gap-2.5">
@@ -81,7 +81,7 @@ export default function CodeBlockWithPreview({
       </div>
 
       {/* ── Syntax-highlighted code ─────────────────────────────────────────── */}
-      <div className="relative text-[11px] sm:text-xs md:text-sm font-mono leading-relaxed [&_code]:!font-mono [&_pre]:!font-mono">
+      <div dir="ltr" className="relative text-[11px] sm:text-xs md:text-sm font-mono leading-relaxed text-left [&_code]:!font-mono [&_pre]:!font-mono">
         <SyntaxHighlighter
           language={language}
           style={isDark ? dracula : oneLight}
@@ -90,11 +90,15 @@ export default function CodeBlockWithPreview({
             padding: "1rem",
             fontSize: "inherit",
             lineHeight: "1.6",
+            textAlign: "left",
+            direction: "ltr",
           }}
           codeTagProps={{
             style: {
               fontSize: "inherit",
               lineHeight: "1.6",
+              direction: "ltr",
+              textAlign: "left",
             },
           }}
           lineNumberStyle={{
@@ -109,7 +113,7 @@ export default function CodeBlockWithPreview({
           {code}
         </SyntaxHighlighter>
 
-        {/* Existing copy button — always present */}
+        {/* Existing copy button — always present on top-right */}
         <CodeCopyButton code={code} />
       </div>
 

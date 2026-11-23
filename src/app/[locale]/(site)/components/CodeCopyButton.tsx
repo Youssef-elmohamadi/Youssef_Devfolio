@@ -15,7 +15,7 @@ const CodeCopyButton = ({ code }: { code: string }) => {
   return (
     <button
       onClick={handleCopy}
-      className="absolute top-2.5 sm:top-3 end-2 sm:end-3 z-10 text-gray-400 hover:text-gray-900 dark:hover:text-white p-1.5 sm:p-2 bg-gray-200/60 dark:bg-gray-800/60 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg backdrop-blur-xs transition-colors shadow-xs"
+      className="absolute top-2.5 sm:top-3 right-2 sm:right-3 z-10 text-gray-400 hover:text-gray-900 dark:hover:text-white p-1.5 sm:p-2 bg-gray-200/60 dark:bg-gray-800/60 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg backdrop-blur-xs transition-colors shadow-xs"
       title="Copy Code"
     >
       {isCopied ? (
