@@ -124,6 +124,8 @@ function CourseCardItem({
                 src={course.cover_image}
                 alt={course.title}
                 fill
+                sizes="80px"
+                quality={75}
                 className="object-cover group-hover:scale-105 transition-transform"
               />
             </div>

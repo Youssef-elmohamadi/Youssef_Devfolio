@@ -21,13 +21,28 @@ import { likeArticleAction } from "@/actions/articles";
 import { formatRelativeTime } from "@/utils/formatDate";
 import CategoryFilter from "@/components/CategoryFilter";
 import { getArticlesClient } from "@/lib/api/articles-client";
+import { unwrapField } from "@/utils/slug";
 
 // --- Blog Card Component ---
-const BlogCard = ({ blog, t }: { blog: any; t: any }) => {
+const BlogCard = ({
+  blog,
+  t,
+  locale,
+  priority = false,
+}: {
+  blog: any;
+  t: any;
+  locale: string;
+  priority?: boolean;
+}) => {
   const [isLiked, setIsLiked] = useState(blog.stats?.liked || false);
   const [likesCount, setLikesCount] = useState(blog.stats?.likes || 0);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
+  const title = unwrapField(blog.title, locale);
+  const excerpt = unwrapField(blog.excerpt, locale);
+  const categoryName = blog.category ? unwrapField(blog.category.name, locale) : null;
 
   const handleLike = async () => {
     if (isLoading) return;
@@ -65,13 +80,16 @@ const BlogCard = ({ blog, t }: { blog: any; t: any }) => {
         <div className="relative h-48 w-full overflow-hidden">
           <Image
             src={blog.feature_image}
-            alt={blog.title}
+            alt={title}
             fill
+            priority={priority}
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            quality={75}
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
-          {blog.category && (
+          {categoryName && (
             <div className="absolute top-3 right-3 bg-white/90 dark:bg-black/70 backdrop-blur-md px-3 py-1 text-xs font-bold rounded-full text-primary shadow-sm border border-white/20">
-              {blog.category.name}
+              {categoryName}
             </div>
           )}
         </div>
@@ -79,14 +97,14 @@ const BlogCard = ({ blog, t }: { blog: any; t: any }) => {
 
       <div className="p-5 flex flex-col flex-grow">
         <div className="flex flex-wrap items-center gap-4 text-xs text-secondary/80 mb-3">
-          {blog.category && !blog.feature_image && (
+          {categoryName && !blog.feature_image && (
             <div className="flex items-center gap-1.5 text-primary font-bold bg-primary/10 px-2.5 py-1 rounded-md">
-              {blog.category.name}
+              {categoryName}
             </div>
           )}
           <div className="flex items-center gap-1.5">
             <FaCalendarAlt className="text-primary/70" />
-            <span>{formatRelativeTime(blog.date?.raw || blog.created_at || blog.date)}</span>
+            <span>{formatRelativeTime(blog.date?.raw || blog.created_at || blog.date, locale)}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <FaClock className="text-primary/70" />
@@ -103,12 +121,12 @@ const BlogCard = ({ blog, t }: { blog: any; t: any }) => {
             href={`/blog/${blog.id}`}
             className="hover:text-primary transition-colors"
           >
-            {blog.title}
+            {title}
           </Link>
         </motion.h2>
 
         <p className="text-slate-600 dark:text-slate-400 mb-6 text-sm line-clamp-3 leading-relaxed">
-          {blog.excerpt}
+          {excerpt}
         </p>
 
         <div className="mt-auto pt-4 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between">
@@ -238,8 +256,14 @@ export default function BlogsClientPage({
           initial="initial"
           animate="animate"
         >
-          {blogs.map((blog) => (
-            <BlogCard key={blog.id} blog={blog} t={t} />
+          {blogs.map((blog, idx) => (
+            <BlogCard
+              key={blog.id}
+              blog={blog}
+              t={t}
+              locale={locale}
+              priority={idx < 2}
+            />
           ))}
         </motion.div>
       )}
