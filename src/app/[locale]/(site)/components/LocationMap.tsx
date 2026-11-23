@@ -134,29 +134,66 @@ export default function LocationMap() {
           {/* Markers */}
           {distance !== null && distance < 50 ? (
             <Marker coordinates={YOUSSEF_COORDS}>
-              <circle r={6} fill="var(--color-primary, #f97316)" />
-              <circle r={20} fill="var(--color-primary, #f97316)" opacity={0.3} />
-              <circle r={12} fill="#10b981" opacity={0.5} />
+              {/* Subtle ground shadow & pulse */}
+              <ellipse cx={0} cy={1} rx={10} ry={3.5} fill="#000000" opacity={0.35} />
+              <circle r={3.5} fill="var(--color-primary, #f97316)" />
+              <circle r={10} fill="#10b981" opacity={0.4} />
+
+              {/* Sitting Character */}
+              <image
+                href="/images/sit%20character.png"
+                x={-17}
+                y={-32}
+                width={34}
+                height={34}
+                className="pointer-events-none select-none drop-shadow-md"
+              />
+
               <text
                 textAnchor="middle"
-                y={-25}
-                className="fill-[#1f2937] dark:fill-white font-bold text-[10px]"
-                style={{ fontFamily: "system-ui" }}
+                y={-36}
+                className="fill-[#1f2937] dark:fill-white font-bold text-[9px] select-none"
+                style={{
+                  fontFamily: "system-ui",
+                  paintOrder: "stroke fill",
+                  stroke: resolvedTheme === "dark" ? "#1a1b26" : "#ffffff",
+                  strokeWidth: 2.5,
+                  strokeLinejoin: "round",
+                }}
               >
                 {t("markerTogether")}
               </text>
             </Marker>
           ) : (
             <>
-              {/* Youssef Marker */}
+              {/* Youssef Marker with Sitting Character */}
               <Marker coordinates={YOUSSEF_COORDS}>
-                <circle r={6} fill="var(--color-primary, #f97316)" />
-                <circle r={14} fill="var(--color-primary, #f97316)" opacity={0.3} />
+                {/* Subtle ground shadow & pulse */}
+                <ellipse cx={0} cy={1} rx={10} ry={3.5} fill="#000000" opacity={0.35} />
+                <circle r={3.5} fill="var(--color-primary, #f97316)" />
+                <circle r={8} fill="var(--color-primary, #f97316)" opacity={0.25} />
+
+                {/* Sitting Character */}
+                <image
+                  href="/images/sit%20character.png"
+                  x={-17}
+                  y={-32}
+                  width={34}
+                  height={34}
+                  className="pointer-events-none select-none drop-shadow-md"
+                />
+
                 <text
                   textAnchor="middle"
-                  y={-20}
-                  className="fill-[#1f2937] dark:fill-white font-bold text-[8px]"
-                  style={{ fontFamily: "system-ui" }}
+                  y={-36}
+                  className="fill-[#1f2937] dark:fill-white font-bold text-[8.5px] select-none"
+                  style={{
+                    fontFamily: "system-ui",
+                    paintOrder: "stroke fill",
+                    stroke: resolvedTheme === "dark" ? "#1a1b26" : "#ffffff",
+                    strokeWidth: 2.5,
+                    strokeLinejoin: "round",
+                  }}
                 >
                   {t("markerForge")}
                 </text>
@@ -169,9 +206,15 @@ export default function LocationMap() {
                   <circle r={14} fill="#10b981" opacity={0.3} />
                   <text
                     textAnchor="middle"
-                    y={25}
-                    className="fill-[#1f2937] dark:fill-white font-bold text-[8px]"
-                    style={{ fontFamily: "system-ui" }}
+                    y={22}
+                    className="fill-[#1f2937] dark:fill-white font-bold text-[8.5px] select-none"
+                    style={{
+                      fontFamily: "system-ui",
+                      paintOrder: "stroke fill",
+                      stroke: resolvedTheme === "dark" ? "#1a1b26" : "#ffffff",
+                      strokeWidth: 2.5,
+                      strokeLinejoin: "round",
+                    }}
                   >
                     {t("markerYou")}
                   </text>
