@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from '@/i18n/routing';
 import Image from "next/image";
 import { useSearchParams } from 'next/navigation';
@@ -167,23 +167,40 @@ const BlogCard = ({
 export default function BlogsClientPage({
   initialBlogs,
   meta: initialMeta,
+  initialCategories = [],
 }: {
   initialBlogs: any[];
   meta: any;
+  initialCategories?: any[];
 }) {
   const [blogs, setBlogs] = useState(initialBlogs);
   const [meta, setMeta] = useState(initialMeta);
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const searchParams = useSearchParams();
+  const initialCategory = searchParams.get("category_id")
+    ? Number(searchParams.get("category_id"))
+    : null;
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(initialCategory);
   const [isLoading, setIsLoading] = useState(false);
+  const isFirstRender = useRef(true);
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const t = useTranslations("blog");
   const locale = useLocale();
   const isRtl = locale === "ar";
 
-  // Re-fetch whenever page or selected category changes
+  // Sync state if server passes fresh data on SSR navigation
   useEffect(() => {
+    setBlogs(initialBlogs);
+    setMeta(initialMeta);
+  }, [initialBlogs, initialMeta]);
+
+  // Re-fetch only when user interacts (not on initial mount!)
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
     const fetchBlogs = async () => {
       setIsLoading(true);
       try {
@@ -233,7 +250,11 @@ export default function BlogsClientPage({
 
       {/* Category Filter */}
       <div className="flex justify-center mb-10">
-        <CategoryFilter selectedId={selectedCategory} onChange={handleCategoryChange} />
+        <CategoryFilter
+          selectedId={selectedCategory}
+          onChange={handleCategoryChange}
+          initialCategories={initialCategories}
+        />
       </div>
 
       {isLoading ? (

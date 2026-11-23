@@ -12,10 +12,11 @@ type Category = { id: number; name: string; slug?: string };
 interface Props {
   selectedId: number | null;
   onChange: (id: number | null) => void;
+  initialCategories?: Category[];
 }
 
-export const CategoryFilter = ({ selectedId, onChange }: Props) => {
-  const [categories, setCategories] = useState<Category[]>([]);
+export const CategoryFilter = ({ selectedId, onChange, initialCategories = [] }: Props) => {
+  const [categories, setCategories] = useState<Category[]>(initialCategories);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const locale = useLocale();
@@ -26,11 +27,15 @@ export const CategoryFilter = ({ selectedId, onChange }: Props) => {
   });
 
   useEffect(() => {
+    if (initialCategories.length > 0) {
+      setCategories(initialCategories);
+      return;
+    }
     // Fetch all categories from the backend API with locale.
     getCategories(locale)
       .then(setCategories)
       .catch((err) => console.error("Failed to load categories", err));
-  }, [locale]);
+  }, [locale, initialCategories]);
 
   const selectedCategory = selectedId 
     ? categories.find(c => c.id === selectedId) 

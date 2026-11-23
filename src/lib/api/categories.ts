@@ -6,14 +6,28 @@ type Category = { id: number; name: string; slug?: string };
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://khaled67.alwaysdata.net";
 
 export const getCategories = async (locale: string = "en"): Promise<Category[]> => {
-  const { data } = await axios.get(`${BASE_URL}/api/categories?lang=${encodeURIComponent(locale)}`, {
-    headers: { "Accept-Language": locale },
-  });
-  return (data || []).map((c: any) => ({
-    ...c,
-    name: unwrapField(c.name, locale),
-    slug: normalizeSlug(c.slug),
-  }));
+  try {
+    const res = await fetch(`${BASE_URL}/api/categories?lang=${encodeURIComponent(locale)}`, {
+      headers: {
+        Accept: "application/json",
+        "Accept-Language": locale,
+      },
+      next: {
+        revalidate: 3600 * 24,
+        tags: ["categories-list", `categories-list:${locale}`],
+      },
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return (data || []).map((c: any) => ({
+      ...c,
+      name: unwrapField(c.name, locale),
+      slug: normalizeSlug(c.slug),
+    }));
+  } catch (err) {
+    console.error("Failed to load categories", err);
+    return [];
+  }
 };
 
 export const createCategory = async (payload: Partial<Category>) => {

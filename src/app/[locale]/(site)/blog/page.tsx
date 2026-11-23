@@ -3,10 +3,11 @@ import type { Metadata } from "next";
 import BlogsClientPage from "./BlogsClientPage";
 import { generateSEO } from "@/utils/seo";
 import { getArticles } from "@/lib/api/articles";
+import { getCategories } from "@/lib/api/categories";
 
 type Props = {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ page?: string }>;
+  searchParams: Promise<{ page?: string; category_id?: string }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -52,15 +53,23 @@ export default async function Blog({ params, searchParams }: Props) {
   const { locale } = await params;
   const sp = await searchParams;
   const page = typeof sp.page === "string" ? Number(sp.page) : 1;
+  const categoryId = typeof sp.category_id === "string" ? Number(sp.category_id) : undefined;
 
-  const response = await getArticles(page, 10, undefined, locale);
+  const [response, categories] = await Promise.all([
+    getArticles(page, 10, categoryId, locale),
+    getCategories(locale).catch(() => []),
+  ]);
 
-  const articles = response.data || [];
-  const meta = response.meta || null;
+  const articles = response?.data || [];
+  const meta = response?.meta || null;
 
   return (
     <main>
-      <BlogsClientPage initialBlogs={articles} meta={meta} />
+      <BlogsClientPage
+        initialBlogs={articles}
+        meta={meta}
+        initialCategories={categories}
+      />
     </main>
   );
 }
