@@ -31,6 +31,14 @@ const ExperienceDetailsPage = async ({ params }: PageProps) => {
   const jobTitleStr = unwrapField(experience.job_title, locale);
   const companyStr = unwrapField(experience.company, locale);
   const locationStr = unwrapField(experience.location, locale);
+  const durationStr = unwrapField(experience.duration, locale);
+
+  const rawTasks = experience.tasks;
+  const tasksList: string[] = Array.isArray(rawTasks)
+    ? rawTasks
+    : (rawTasks && typeof rawTasks === "object"
+        ? (rawTasks[locale] || rawTasks.en || [])
+        : []);
 
   return (
     <div className="min-h-screen bg-gray-50/50 dark:bg-black p-6 lg:p-10 flex flex-col items-center">
@@ -84,7 +92,7 @@ const ExperienceDetailsPage = async ({ params }: PageProps) => {
               <div className="flex flex-wrap gap-3">
                 <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 text-sm font-semibold text-gray-700 dark:text-gray-300">
                   <CalendarDaysIcon className="w-4 h-4 text-gray-400" />
-                  {experience.duration}
+                  {durationStr}
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 text-sm font-semibold text-gray-700 dark:text-gray-300">
                   <MapPinIcon className="w-4 h-4 text-gray-400" />
@@ -102,9 +110,9 @@ const ExperienceDetailsPage = async ({ params }: PageProps) => {
                 Key Responsibilities & Achievements
               </h3>
 
-              {experience.tasks && experience.tasks.length > 0 ? (
+              {tasksList.length > 0 ? (
                 <div className="space-y-4">
-                  {experience.tasks.map((task: string, index: number) => (
+                  {tasksList.map((task: string, index: number) => (
                     <div
                       key={index}
                       className="flex items-start gap-4 p-4 rounded-2xl bg-gray-50 dark:bg-[#161616] border border-gray-100 dark:border-gray-800/80 hover:border-primary/20 transition-colors"

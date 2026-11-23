@@ -67,11 +67,11 @@ interface Skill {
 
 interface Experience {
   id: number;
-  job_title: string;
-  company: string;
-  location: string;
-  duration: string;
-  tasks: string[];
+  job_title: string | Record<string, string>;
+  company: string | Record<string, string>;
+  location: string | Record<string, string>;
+  duration: string | Record<string, string>;
+  tasks: string[] | Record<string, string[]>;
 }
 
 interface Education {
@@ -86,8 +86,8 @@ interface Education {
 
 interface AboutData {
   about: {
-    title: string;
-    description: string;
+    title: string | Record<string, string>;
+    description: string | Record<string, string>;
     image_url?: string;
   };
   skills: Skill[];
@@ -106,8 +106,10 @@ export default function AboutClient({ data }: AboutClientProps) {
 
   // 1. Sort Experience newest to oldest (Sep 2025 – Present first)
   const sortedExperience = [...experience].sort((a, b) => {
-    const aIsPresent = a.duration?.toLowerCase().includes("present");
-    const bIsPresent = b.duration?.toLowerCase().includes("present");
+    const aDur = (unwrapField(a.duration, locale) || "").toLowerCase();
+    const bDur = (unwrapField(b.duration, locale) || "").toLowerCase();
+    const aIsPresent = aDur.includes("present") || aDur.includes("حالي") || aDur.includes("الآن");
+    const bIsPresent = bDur.includes("present") || bDur.includes("حالي") || bDur.includes("الآن");
     if (aIsPresent && !bIsPresent) return -1;
     if (!aIsPresent && bIsPresent) return 1;
     return b.id - a.id;
@@ -146,7 +148,7 @@ export default function AboutClient({ data }: AboutClientProps) {
             <div className="relative shrink-0">
               <Image
                 src={about.image_url}
-                alt={about.title || "Youssef Elmohamadi"}
+                alt={unwrapField(about.title, locale) || "Youssef Elmohamadi"}
                 width={200}
                 height={200}
                 className="rounded-2xl w-36 h-36 sm:w-44 sm:h-44 md:w-52 md:h-52 object-cover ring-4 ring-primary/20 shadow-xl"
@@ -159,10 +161,10 @@ export default function AboutClient({ data }: AboutClientProps) {
           <div className="flex flex-col justify-between flex-grow text-center md:text-start">
             <div>
               <h2 className="text-section font-heading font-bold text-gray-900 dark:text-white tracking-tight mb-3">
-                {about.title || "Hi there!"}
+                {unwrapField(about.title, locale) || "Hi there!"}
               </h2>
               <p className="text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-3xl">
-                {about.description}
+                {unwrapField(about.description, locale)}
               </p>
             </div>
 
@@ -479,8 +481,22 @@ export default function AboutClient({ data }: AboutClientProps) {
             </div>
 
             {sortedExperience.map((exp) => {
-              const isCurrent = exp.duration?.toLowerCase().includes("present");
+              const jobTitleStr = unwrapField(exp.job_title, locale);
+              const companyStr = unwrapField(exp.company, locale);
+              const locationStr = unwrapField(exp.location, locale);
+              const durationStr = unwrapField(exp.duration, locale);
+              const isCurrent =
+                durationStr?.toLowerCase().includes("present") ||
+                durationStr?.includes("حالي") ||
+                durationStr?.includes("الآن");
               const isOpen = openExpId === exp.id;
+
+              const rawTasks = exp.tasks;
+              const tasksList: string[] = Array.isArray(rawTasks)
+                ? rawTasks
+                : (rawTasks && typeof rawTasks === "object"
+                    ? ((rawTasks as any)[locale] || (rawTasks as any).en || [])
+                    : []);
 
               return (
                 <motion.div
@@ -493,7 +509,7 @@ export default function AboutClient({ data }: AboutClientProps) {
                     <div>
                       <div className="flex items-center gap-2 flex-wrap">
                         <h4 className="text-lg font-heading font-bold text-gray-900 dark:text-white">
-                          {exp.job_title}
+                          {jobTitleStr}
                         </h4>
                         {isCurrent && (
                           <span className="inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
@@ -503,24 +519,24 @@ export default function AboutClient({ data }: AboutClientProps) {
                         )}
                       </div>
                       <p className="text-sm font-medium text-primary mt-0.5">
-                        {exp.company}
+                        {companyStr}
                       </p>
                     </div>
 
                     <div className="flex items-center gap-2 text-xs font-mono text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/80 px-3 py-1.5 rounded-lg shrink-0">
                       <FaCalendarAlt className="text-primary/70" />
-                      <span>{exp.duration}</span>
+                      <span>{durationStr}</span>
                     </div>
                   </div>
 
                   {/* Location Meta */}
                   <div className="flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500 mb-4">
                     <FaMapMarkerAlt />
-                    <span>{exp.location}</span>
+                    <span>{locationStr}</span>
                   </div>
 
                   {/* Accordion Trigger Button */}
-                  {exp.tasks && exp.tasks.length > 0 && (
+                  {tasksList.length > 0 && (
                     <>
                       <button
                         onClick={() => toggleAccordion(exp.id)}
@@ -528,7 +544,7 @@ export default function AboutClient({ data }: AboutClientProps) {
                       >
                         <span>
                           {isOpen ? t("experienceEducation.hideResponsibilities") : t("experienceEducation.viewResponsibilities")} (
-                          {exp.tasks.length})
+                          {tasksList.length})
                         </span>
                         <motion.div
                           animate={{ rotate: isOpen ? 180 : 0 }}
@@ -549,7 +565,7 @@ export default function AboutClient({ data }: AboutClientProps) {
                             className="overflow-hidden"
                           >
                             <ul className="space-y-2 pt-3 text-sm text-slate-600 dark:text-slate-400">
-                              {exp.tasks.map((task, idx) => (
+                              {tasksList.map((task, idx) => (
                                 <li key={idx} className="flex items-start gap-2.5">
                                   <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2 shrink-0" />
                                   <span className="leading-relaxed">{task}</span>

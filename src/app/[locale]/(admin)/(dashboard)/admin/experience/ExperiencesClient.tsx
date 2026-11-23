@@ -22,9 +22,9 @@ type Experience = {
   id: number;
   job_title: string | Record<string, string>;
   company: string | Record<string, string>;
-  duration: string;
+  duration: string | Record<string, string>;
   location: string | Record<string, string>;
-  tasks: string[];
+  tasks: string[] | Record<string, string[]>;
 };
 
 type Meta = {
@@ -73,7 +73,7 @@ export default function ExperiencesClient({
       header: locale === "ar" ? "المدة" : "Duration",
       render: (experience) => (
         <span className="text-xs font-semibold px-2 py-1 bg-blue-100 text-blue-700 rounded-full dark:bg-blue-900/30 dark:text-blue-400">
-          {experience.duration}
+          {unwrapField(experience.duration, locale)}
         </span>
       ),
     },

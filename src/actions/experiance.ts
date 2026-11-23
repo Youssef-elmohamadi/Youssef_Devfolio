@@ -15,8 +15,8 @@ export async function createExperianceAction(formData: FormData) {
 
         revalidateTag('experiences-list');
         revalidateTag("about-data");
-         revalidatePath("/admin/experiences");
-         revalidatePath("/about");
+        revalidatePath("/admin/experience");
+        revalidatePath("/about");
 
     return { success: true, message: "experiences created successfully", data: response };
 
@@ -39,11 +39,11 @@ export async function updateExperianceAction(id: number, formData: FormData) {
       "admin_token"
     );
 
-    revalidateTag("experieences-list");
-    revalidateTag("about-data")
+    revalidateTag("experiences-list");
+    revalidateTag("about-data");
     revalidateTag(`experience-${id}`); 
-    revalidatePath("/admin/experiences");
-    revalidatePath(`/experiences/details/${id}`);
+    revalidatePath("/admin/experience");
+    revalidatePath(`/admin/experience/details/${id}`);
     revalidatePath("/about");
 
     return { success: true, message: "experience updated successfully" };
@@ -65,7 +65,7 @@ export async function deleteExperienceAction(id: number) {
     );
     revalidateTag("experiences-list");
     revalidateTag("about-data");
-    revalidatePath("/admin/experiences");
+    revalidatePath("/admin/experience");
     revalidatePath("/about");
     return { success: true, message: "Experience deleted successfully" };
   } catch (error: any) {

@@ -29,11 +29,14 @@ const CreateExperienceForm = () => {
   const [jobTitle, setJobTitle] = useState({ en: "", ar: "" });
   const [company, setCompany] = useState({ en: "", ar: "" });
   const [location, setLocation] = useState({ en: "", ar: "" });
-  const [duration, setDuration] = useState("");
+  const [duration, setDuration] = useState({ en: "", ar: "" });
 
-  // Tasks Logic
+  // Tasks Logic per language
   const [currentTask, setCurrentTask] = useState("");
-  const [tasksList, setTasksList] = useState<string[]>([]);
+  const [tasksByLang, setTasksByLang] = useState<{ en: string[]; ar: string[] }>({
+    en: [],
+    ar: [],
+  });
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -41,7 +44,10 @@ const CreateExperienceForm = () => {
   const handleAddTask = (e?: React.MouseEvent) => {
     e?.preventDefault();
     if (currentTask.trim()) {
-      setTasksList([...tasksList, currentTask.trim()]);
+      setTasksByLang((prev) => ({
+        ...prev,
+        [activeLang]: [...(prev[activeLang] || []), currentTask.trim()],
+      }));
       setCurrentTask("");
       setFieldErrors((prev) => ({ ...prev, tasks: [] }));
     }
@@ -55,15 +61,20 @@ const CreateExperienceForm = () => {
   };
 
   const removeTask = (indexToRemove: number) => {
-    setTasksList(tasksList.filter((_, index) => index !== indexToRemove));
+    setTasksByLang((prev) => ({
+      ...prev,
+      [activeLang]: (prev[activeLang] || []).filter((_, index) => index !== indexToRemove),
+    }));
   };
 
   const validateForm = () => {
     const errors: Record<string, string[]> = {};
     if (!jobTitle.en.trim()) errors.job_title = ["Job Title (English) is required"];
     if (!company.en.trim()) errors.company = ["Company Name (English) is required"];
-    if (!duration.trim()) errors.duration = ["Duration is required"];
-    if (tasksList.length === 0) errors.tasks = ["Add at least one task/responsibility"];
+    if (!duration.en.trim()) errors.duration = ["Duration (English) is required"];
+    if (!tasksByLang.en || tasksByLang.en.length === 0) {
+      errors.tasks = ["Add at least one task/responsibility (English)"];
+    }
     
     if (Object.keys(errors).length > 0) {
       setFieldErrors(errors);
@@ -87,11 +98,14 @@ const CreateExperienceForm = () => {
       if (company.ar.trim()) formData.append("company[ar]", company.ar.trim());
       formData.append("location[en]", location.en.trim());
       if (location.ar.trim()) formData.append("location[ar]", location.ar.trim());
-      formData.append("duration", duration.trim());
+      formData.append("duration[en]", duration.en.trim());
+      if (duration.ar.trim()) formData.append("duration[ar]", duration.ar.trim());
 
-      // Append tasks array for Backend (tasks[])
-      tasksList.forEach((task) => {
-        formData.append("tasks[]", task);
+      (tasksByLang.en || []).forEach((task) => {
+        formData.append("tasks[en][]", task);
+      });
+      (tasksByLang.ar || []).forEach((task) => {
+        formData.append("tasks[ar][]", task);
       });
 
       const result = await createExperianceAction(formData);
@@ -104,8 +118,8 @@ const CreateExperienceForm = () => {
         setJobTitle({ en: "", ar: "" });
         setCompany({ en: "", ar: "" });
         setLocation({ en: "", ar: "" });
-        setDuration("");
-        setTasksList([]);
+        setDuration({ en: "", ar: "" });
+        setTasksByLang({ en: [], ar: [] });
       } else {
         setStatus({ type: "error", message: result.message });
       }
@@ -119,6 +133,9 @@ const CreateExperienceForm = () => {
   const previewJobTitle = jobTitle[activeLang]?.trim() || jobTitle.en || "Job Title";
   const previewCompany = company[activeLang]?.trim() || company.en || "Company Name";
   const previewLocation = location[activeLang]?.trim() || location.en || "Cairo, Egypt";
+  const previewDuration = duration[activeLang]?.trim() || duration.en || "Jan 2023 - Present";
+  const currentTasksList = tasksByLang[activeLang] || [];
+  const previewTasks = currentTasksList.length > 0 ? currentTasksList : tasksByLang.en || [];
 
   return (
     <div className="w-full">
@@ -156,11 +173,11 @@ const CreateExperienceForm = () => {
               activeLang={activeLang}
               onChange={setActiveLang}
               completion={{
-                en: Boolean(jobTitle.en.trim() && company.en.trim()),
-                ar: Boolean(jobTitle.ar.trim() && company.ar.trim()),
+                en: Boolean(jobTitle.en.trim() && company.en.trim() && duration.en.trim() && (tasksByLang.en?.length || 0) > 0),
+                ar: Boolean(jobTitle.ar.trim() && company.ar.trim() && duration.ar.trim() && (tasksByLang.ar?.length || 0) > 0),
               }}
               hasErrors={{
-                en: Boolean(fieldErrors.job_title || fieldErrors.company),
+                en: Boolean(fieldErrors.job_title || fieldErrors.company || fieldErrors.duration || fieldErrors.tasks),
                 ar: false,
               }}
             />
@@ -230,17 +247,20 @@ const CreateExperienceForm = () => {
 
             {/* Duration */}
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-wider text-gray-500 ms-1">Duration *</label>
+              <label className="text-xs font-bold uppercase tracking-wider text-gray-500 ms-1">
+                Duration ({activeLang.toUpperCase()}) {activeLang === "en" && <span className="text-red-500">*</span>}
+              </label>
               <div className="relative group">
                 <CalendarIcon className="w-5 h-5 text-gray-400 absolute start-4 top-1/2 -translate-y-1/2 group-focus-within:text-primary transition-colors" />
                 <input
                   type="text"
-                  value={duration}
+                  value={duration[activeLang]}
+                  dir={activeLang === "ar" ? "rtl" : "ltr"}
                   onChange={(e) => {
-                    setDuration(e.target.value);
+                    setDuration((prev) => ({ ...prev, [activeLang]: e.target.value }));
                     if (fieldErrors.duration) setFieldErrors((prev) => ({ ...prev, duration: [] }));
                   }}
-                  placeholder="e.g. Jan 2023 - Present"
+                  placeholder={activeLang === "ar" ? "مثال: سبتمبر 2025 - أبريل 2026" : "e.g. Sep 2025 – Apr 2026"}
                   className="w-full bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl py-4 ps-12 pe-4 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all font-medium"
                 />
               </div>
@@ -249,16 +269,19 @@ const CreateExperienceForm = () => {
 
             {/* Tasks Input */}
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-wider text-gray-500 ms-1">Key Responsibilities / Tasks</label>
+              <label className="text-xs font-bold uppercase tracking-wider text-gray-500 ms-1">
+                Key Responsibilities / Tasks ({activeLang.toUpperCase()}) {activeLang === "en" && <span className="text-red-500">*</span>}
+              </label>
               <div className="flex gap-2">
                 <div className="relative flex-1">
                   <ListBulletIcon className="w-5 h-5 text-gray-400 absolute start-4 top-1/2 -translate-y-1/2 group-focus-within:text-primary transition-colors" />
                   <input
                     type="text"
                     value={currentTask}
+                    dir={activeLang === "ar" ? "rtl" : "ltr"}
                     onChange={(e) => setCurrentTask(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    placeholder="Type a task and hit Enter..."
+                    placeholder={activeLang === "ar" ? "اكتب المهمة واضغط Enter..." : "Type a task and hit Enter..."}
                     className="w-full bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl py-4 ps-12 pe-4 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all font-medium"
                   />
                 </div>
@@ -274,14 +297,15 @@ const CreateExperienceForm = () => {
 
               {/* Tasks List Display */}
               <div className="space-y-2 mt-4 min-h-[50px] p-4 bg-gray-50/50 dark:bg-black/20 rounded-xl border border-dashed border-gray-200 dark:border-gray-800">
-                {tasksList.length === 0 && (
+                {currentTasksList.length === 0 && (
                   <span className="text-gray-400 text-sm italic w-full text-center block py-2">
-                    No tasks added yet. Add at least one!
+                    {activeLang === "ar" ? "لم تتم إضافة مهام بالعربية بعد." : "No tasks added yet. Add at least one!"}
                   </span>
                 )}
-                {tasksList.map((task, index) => (
+                {currentTasksList.map((task, index) => (
                   <div
                     key={index}
+                    dir={activeLang === "ar" ? "rtl" : "ltr"}
                     className="flex items-center justify-between gap-3 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-3 rounded-lg shadow-sm animate-in fade-in duration-200"
                   >
                     <div className="flex items-center gap-2">
@@ -344,7 +368,7 @@ const CreateExperienceForm = () => {
                 </div>
               </div>
               <span className="self-start sm:self-center px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full">
-                {duration || "Duration"}
+                {previewDuration || "Duration"}
               </span>
             </div>
 
@@ -352,8 +376,8 @@ const CreateExperienceForm = () => {
               <h5 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
                 Responsibilities:
               </h5>
-              {tasksList.length > 0 ? (
-                tasksList.map((task, idx) => (
+              {previewTasks.length > 0 ? (
+                previewTasks.map((task, idx) => (
                   <div key={idx} className="flex items-start gap-3">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0"></span>
                     <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{task}</p>
