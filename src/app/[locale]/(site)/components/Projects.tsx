@@ -2,14 +2,15 @@
 
 import { FaCode, FaGithub, FaExternalLinkAlt } from 'react-icons/fa'
 import Image from 'next/image'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 import { motion } from 'framer-motion'
 import { fadeInUp, staggerContainer } from '@/utils/animations'
+import { unwrapField } from '@/utils/slug'
 
 type Project = {
   id: number;
-  title: string;
-  description: string;
+  title: string | Record<string, string>;
+  description: string | Record<string, string>;
   github_link: string;
   demo_link: string;
   tags: string[];
@@ -18,6 +19,7 @@ type Project = {
 
 export default function Projects({ projects = [] }: { projects?: Project[] }) {
   const t = useTranslations('home.featuredProjects');
+  const locale = useLocale();
   if (!projects || projects.length === 0) return null;
 
   return (
@@ -51,9 +53,9 @@ export default function Projects({ projects = [] }: { projects?: Project[] }) {
           whileInView="animate"
           viewport={{ once: true, amount: 0.1 }}
         >
-          {projects.map((project) => (
+          {projects.map((project, idx) => (
             <motion.article
-              key={project.id || project.title}
+              key={project.id ?? idx}
               className="group bg-white dark:bg-dark/50 rounded-lg shadow-md p-6"
               variants={fadeInUp}
               whileHover={{ y: -6 }}
@@ -63,7 +65,7 @@ export default function Projects({ projects = [] }: { projects?: Project[] }) {
                 {project.image_url ? (
                   <Image
                     src={project.image_url}
-                    alt={project.title}
+                    alt={unwrapField(project.title, locale)}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -77,11 +79,11 @@ export default function Projects({ projects = [] }: { projects?: Project[] }) {
               </div>
 
               <h3 className="font-heading font-bold mb-2 text-gray-900 dark:text-white group-hover:text-primary transition-colors duration-250">
-                {project.title}
+                {unwrapField(project.title, locale)}
               </h3>
 
               <p className="text-slate-600 dark:text-slate-400 mb-5 text-sm leading-relaxed flex-grow">
-                {project.description}
+                {unwrapField(project.description, locale)}
               </p>
 
               <div className="flex flex-wrap gap-1.5 mb-6">

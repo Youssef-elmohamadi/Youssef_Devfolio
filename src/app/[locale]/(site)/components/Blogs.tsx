@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { useTranslations, useLocale } from "next-intl";
 import { fadeInUp, staggerContainer } from "@/utils/animations";
 import { formatRelativeTime } from "@/utils/formatDate";
+import { unwrapField } from "@/utils/slug";
 
 export default function Blogs({ articles = [] }: { articles?: any[] }) {
   const t = useTranslations("home.featuredBlogs");
@@ -57,7 +58,7 @@ export default function Blogs({ articles = [] }: { articles?: any[] }) {
                 <div className="relative h-48 w-full overflow-hidden">
                   <Image
                     src={blog.feature_image}
-                    alt={blog.title}
+                    alt={unwrapField(blog.title, locale)}
                     fill
                     loading="lazy"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -68,12 +69,12 @@ export default function Blogs({ articles = [] }: { articles?: any[] }) {
               <div className="p-6 flex flex-col flex-grow">
                 <Link href={`/blog/${blog.id}`} className="block mb-2">
                   <h3 className="font-heading font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors duration-250">
-                    {blog.title}
+                    {unwrapField(blog.title, locale)}
                   </h3>
                 </Link>
 
                 <p className="text-slate-600 dark:text-slate-400 mb-6 text-sm leading-relaxed flex-grow">
-                  {blog.excerpt}
+                  {unwrapField(blog.excerpt, locale)}
                 </p>
 
                 <div className="flex items-center text-xs font-semibold text-gray-500 dark:text-gray-400 gap-4 border-t border-gray-100 dark:border-gray-800/60 pt-4 mt-auto">

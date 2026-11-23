@@ -1,10 +1,11 @@
 "use client";
 
 import { Link } from '@/i18n/routing';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { fadeInUp, fadeIn, scaleIn } from "@/utils/animations";
+import { unwrapField } from "@/utils/slug";
 import DeveloperGrid from "./hero/DeveloperGrid";
 import MouseSpotlight from "./hero/MouseSpotlight";
 import FloatingCodeElements from "./hero/FloatingCodeElements";
@@ -46,9 +47,10 @@ type HeroProps = {
 
 export default function Hero({ profile, socialLinks = [] }: HeroProps) {
   const t = useTranslations("home.hero");
-  const name = profile?.name ?? "Youssef";
+  const locale = useLocale();
+  const name = unwrapField(profile?.name, locale) || "Youssef";
   const firstName = name.split(" ")[0];
-  const description = profile?.description ?? t("fallbackDescription");
+  const description = unwrapField(profile?.description, locale) || t("fallbackDescription");
   const imageUrl = profile?.image_url ?? "/elmohammadi.jpg";
 
   // Fall back to hardcoded links when API returns nothing

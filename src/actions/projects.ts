@@ -14,8 +14,14 @@ export async function createProjectAction(formData: FormData) {
     );
 
         revalidateTag('projects-list');
-         revalidatePath("/admin/projects");
-         revalidatePath("/projects");
+        revalidateTag("home-data");
+        revalidateTag("home-data:en");
+        revalidateTag("home-data:ar");
+        revalidatePath("/admin/projects");
+        revalidatePath("/projects");
+        revalidatePath("/");
+        revalidatePath("/en");
+        revalidatePath("/ar");
 
     return { success: true, message: "Project created successfully", data: response };
 
@@ -40,9 +46,15 @@ export async function updateProjectAction(id: number, formData: FormData) {
 
     revalidateTag("projects-list");
     revalidateTag(`project-${id}`); 
+    revalidateTag("home-data");
+    revalidateTag("home-data:en");
+    revalidateTag("home-data:ar");
     revalidatePath("/admin/projects");
     revalidatePath(`/projects/${id}`);
     revalidatePath("/projects");
+    revalidatePath("/");
+    revalidatePath("/en");
+    revalidatePath("/ar");
 
     return { success: true, message: "Project updated successfully" };
   } catch (error: any) {
@@ -62,8 +74,14 @@ export async function deleteProjectAction(id: number) {
       "admin_token"
     );
     revalidateTag("projects-list");
+    revalidateTag("home-data");
+    revalidateTag("home-data:en");
+    revalidateTag("home-data:ar");
     revalidatePath("/admin/projects");
     revalidatePath("/projects");
+    revalidatePath("/");
+    revalidatePath("/en");
+    revalidatePath("/ar");
     return { success: true, message: "Project deleted successfully" };
   } catch (error: any) {
     console.error("Delete Action Error:", error);

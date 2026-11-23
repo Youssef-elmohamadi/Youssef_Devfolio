@@ -32,8 +32,14 @@ export async function createArticleAction(formData: FormData) {
     );
 
         revalidateTag('articles-list');
-         revalidatePath("/admin/articles");
-         revalidatePath("/blog");
+        revalidateTag("home-data");
+        revalidateTag("home-data:en");
+        revalidateTag("home-data:ar");
+        revalidatePath("/admin/articles");
+        revalidatePath("/blog");
+        revalidatePath("/");
+        revalidatePath("/en");
+        revalidatePath("/ar");
 
     return { success: true, message: "Article created successfully", data: response };
 
@@ -59,8 +65,15 @@ export async function updateArticleAction(id: number, formData: FormData) {
 
     revalidateTag("articles-list");
     revalidateTag(`article-${id}`); 
+    revalidateTag("home-data");
+    revalidateTag("home-data:en");
+    revalidateTag("home-data:ar");
     revalidatePath("/admin/articles");
     revalidatePath(`/blog/${id}`);
+    revalidatePath("/blog");
+    revalidatePath("/");
+    revalidatePath("/en");
+    revalidatePath("/ar");
 
     return { success: true, message: "Article updated successfully" };
   } catch (error: any) {
@@ -81,8 +94,14 @@ export async function deleteArticleAction(id: number) {
       "admin_token"
     );
     revalidateTag("articles-list");
+    revalidateTag("home-data");
+    revalidateTag("home-data:en");
+    revalidateTag("home-data:ar");
     revalidatePath("/admin/articles");
     revalidatePath("/blog");
+    revalidatePath("/");
+    revalidatePath("/en");
+    revalidatePath("/ar");
     return { success: true, message: "Article deleted successfully" };
   } catch (error: any) {
     console.error("Delete Action Error:", error);

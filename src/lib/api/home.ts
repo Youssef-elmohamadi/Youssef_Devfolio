@@ -2,8 +2,8 @@ import { apiFetch } from "./config";
 
 export type Profile = {
   id?: number;
-  name: string;
-  description: string;
+  name: string | Record<string, string>;
+  description: string | Record<string, string>;
   image_url: string;
   cv_url?: string;
 };
@@ -17,8 +17,8 @@ export type SocialLink = {
 
 export type HomeProject = {
   id: number;
-  title: string;
-  description: string;
+  title: string | Record<string, string>;
+  description: string | Record<string, string>;
   github_link: string;
   demo_link: string;
   tags: string[];
@@ -28,8 +28,8 @@ export type HomeProject = {
 
 export type HomeArticle = {
   id: number;
-  title: string;
-  excerpt: string;
+  title: string | Record<string, string>;
+  excerpt: string | Record<string, string>;
   feature_image: string;
   date: { raw: string } | string;
   created_at: string;
