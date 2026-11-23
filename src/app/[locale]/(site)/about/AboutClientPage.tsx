@@ -368,7 +368,7 @@ export default function AboutClient({ data }: AboutClientProps) {
 
           {/* Bento Item 6: Status & Cairo Time Banner (Full width on Desktop, Top on Mobile) */}
           <div className="order-first md:order-last lg:order-last lg:col-span-4 md:col-span-2 bg-white dark:bg-dark/50 p-6 rounded-2xl transition-all duration-300 border border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center text-center sm:text-start gap-2.5 sm:gap-4">
               <div className="relative flex h-4 w-4 shrink-0">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
                 <span className="relative inline-flex rounded-full h-4 w-4 bg-primary" />
