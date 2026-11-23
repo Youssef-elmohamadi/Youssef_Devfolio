@@ -163,25 +163,22 @@ export default function EditArticleForm({ article }: { article: any }) {
   // --- Map Existing Blocks to State Structure ---
   // Supports both new polymorphic blocks (with type) and old legacy blocks (without type)
   // Also supports multilingual content objects { en: [...], ar: [...] }
-  const mapInitialBlocks = (): ContentBlock[] => {
+  const mapInitialBlocks = (targetLang: "en" | "ar"): ContentBlock[] => {
     let rawBlocks: any[] = [];
 
-    if (Array.isArray(article.content)) {
-      rawBlocks = article.content;
-    } else if (article.content && typeof article.content === "object") {
-      // If content is keyed by locale: { en: [...], ar: [...] }
-      rawBlocks =
-        article.content[activeLang] ||
-        article.content.en ||
-        article.content.ar ||
-        [];
+    if (article.content && typeof article.content === "object" && !Array.isArray(article.content)) {
+      rawBlocks = article.content[targetLang] || [];
+    } else if (Array.isArray(article.content)) {
+      const primaryLang = article.lang || "ar";
+      rawBlocks = targetLang === primaryLang ? article.content : [];
     } else if (typeof article.content === "string") {
       try {
         const parsed = JSON.parse(article.content);
-        if (Array.isArray(parsed)) {
-          rawBlocks = parsed;
-        } else if (parsed && typeof parsed === "object") {
-          rawBlocks = parsed[activeLang] || parsed.en || parsed.ar || [];
+        if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+          rawBlocks = parsed[targetLang] || [];
+        } else if (Array.isArray(parsed)) {
+          const primaryLang = article.lang || "ar";
+          rawBlocks = targetLang === primaryLang ? parsed : [];
         }
       } catch {
         rawBlocks = [];
@@ -323,8 +320,48 @@ export default function EditArticleForm({ article }: { article: any }) {
     return blocks.length > 0 ? blocks : [];
   };
 
-  const [contentBlocks, setContentBlocks] = useState<ContentBlock[]>(mapInitialBlocks());
-  const [nextId, setNextId] = useState(contentBlocks.length + 1);
+  const [blocksByLang, setBlocksByLang] = useState<{
+    en: ContentBlock[];
+    ar: ContentBlock[];
+  }>({
+    en: mapInitialBlocks("en"),
+    ar: mapInitialBlocks("ar"),
+  });
+
+  const contentBlocks = blocksByLang[activeLang] || [];
+  const setContentBlocks = (
+    action: ContentBlock[] | ((prev: ContentBlock[]) => ContentBlock[])
+  ) => {
+    setBlocksByLang((prev) => {
+      const current = prev[activeLang] || [];
+      const updated = typeof action === "function" ? action(current) : action;
+      return {
+        ...prev,
+        [activeLang]: updated,
+      };
+    });
+  };
+
+  const copyBlocksFromOtherLang = () => {
+    const otherLang = activeLang === "en" ? "ar" : "en";
+    const sourceBlocks = blocksByLang[otherLang] || [];
+    if (sourceBlocks.length === 0) return;
+
+    const cloned: ContentBlock[] = sourceBlocks.map((b, idx) => ({
+      ...b,
+      id: idx + 1,
+      images: b.images.map((img) => ({ ...img })),
+      videos: b.videos.map((vid) => ({ ...vid })),
+      tableData: {
+        headers: [...(b.tableData?.headers || [])],
+        rows: (b.tableData?.rows || []).map((row) => [...row]),
+      },
+    }));
+
+    setContentBlocks(cloned);
+  };
+
+  const [nextId, setNextId] = useState(100);
 
   // --- Table Helpers ---
   const addTableRow = (blockIndex: number) => {
@@ -503,62 +540,61 @@ export default function EditArticleForm({ article }: { article: any }) {
       formData.append(`tags[${index}]`, tag);
     });
 
-    // Content Blocks (polymorphic)
-    contentBlocks.forEach((block, blockIndex) => {
-      formData.append(`content[${blockIndex}][type]`, block.type);
+    // Content Blocks (polymorphic) for both languages
+    (["en", "ar"] as const).forEach((l) => {
+      const blocks = blocksByLang[l] || [];
+      blocks.forEach((block, blockIndex) => {
+        formData.append(`content[${l}][${blockIndex}][type]`, block.type);
 
-      if (block.type === "heading") {
-        formData.append(`content[${blockIndex}][title]`, block.title);
-      } else if (block.type === "text") {
-        formData.append(`content[${blockIndex}][text]`, block.text);
-      } else if (block.type === "code") {
-        formData.append(`content[${blockIndex}][code]`, block.code || "");
-      } else if (block.type === "diagram") {
-        formData.append(`content[${blockIndex}][code]`, block.code || "");
-      } else if (block.type === "table") {
-        formData.append(`content[${blockIndex}][text]`, JSON.stringify(block.tableData));
-      } else if (block.type === "images") {
-        formData.append(`content[${blockIndex}][layout]`, block.layout);
+        if (block.type === "heading") {
+          formData.append(`content[${l}][${blockIndex}][title]`, block.title);
+        } else if (block.type === "text") {
+          formData.append(`content[${l}][${blockIndex}][text]`, block.text);
+        } else if (block.type === "code") {
+          formData.append(`content[${l}][${blockIndex}][code]`, block.code || "");
+        } else if (block.type === "diagram") {
+          formData.append(`content[${l}][${blockIndex}][code]`, block.code || "");
+        } else if (block.type === "table") {
+          formData.append(`content[${l}][${blockIndex}][text]`, JSON.stringify(block.tableData));
+        } else if (block.type === "images") {
+          formData.append(`content[${l}][${blockIndex}][layout]`, block.layout);
 
-        // Handle existing and new images
-        const existingImages = block.images.filter((img) => img.isExisting);
-        const newImages = block.images.filter((img) => !img.isExisting);
+          // Handle existing and new images
+          const existingImages = block.images.filter((img) => img.isExisting);
+          const newImages = block.images.filter((img) => !img.isExisting);
 
-        // Send existing image URLs to preserve them
-        existingImages.forEach((img, imgIndex) => {
-          // Extract the storage path from the full URL
-          const url = img.preview;
-          const storagePath = url.includes('/storage/')
-            ? url.split('/storage/')[1]
-            : url;
-          formData.append(`content[${blockIndex}][images][${imgIndex}]`, storagePath);
-        });
+          existingImages.forEach((img, imgIndex) => {
+            const url = img.preview;
+            const storagePath = url.includes("/storage/")
+              ? url.split("/storage/")[1]
+              : url;
+            formData.append(`content[${l}][${blockIndex}][images][${imgIndex}]`, storagePath);
+          });
 
-        // Upload new images
-        newImages.forEach((img, indx) => {
-          if (img.file) {
-            formData.append(`content_images[${blockIndex}][${indx}]`, img.file);
-          }
-        });
-      } else if (block.type === "video") {
-        // Handle existing and new videos
-        const existingVideos = block.videos.filter((vid) => vid.isExisting);
-        const newVideos = block.videos.filter((vid) => !vid.isExisting);
+          newImages.forEach((img, indx) => {
+            if (img.file) {
+              formData.append(`content_images[${l}][${blockIndex}][${indx}]`, img.file);
+            }
+          });
+        } else if (block.type === "video") {
+          const existingVideos = block.videos.filter((vid) => vid.isExisting);
+          const newVideos = block.videos.filter((vid) => !vid.isExisting);
 
-        existingVideos.forEach((vid, vidIndex) => {
-          const url = vid.preview;
-          const storagePath = url.includes('/storage/')
-            ? url.split('/storage/')[1]
-            : url;
-          formData.append(`content[${blockIndex}][videos][${vidIndex}]`, storagePath);
-        });
+          existingVideos.forEach((vid, vidIndex) => {
+            const url = vid.preview;
+            const storagePath = url.includes("/storage/")
+              ? url.split("/storage/")[1]
+              : url;
+            formData.append(`content[${l}][${blockIndex}][videos][${vidIndex}]`, storagePath);
+          });
 
-        newVideos.forEach((vid, indx) => {
-          if (vid.file) {
-            formData.append(`content_videos[${blockIndex}][${indx}]`, vid.file);
-          }
-        });
-      }
+          newVideos.forEach((vid, indx) => {
+            if (vid.file) {
+              formData.append(`content_videos[${l}][${blockIndex}][${indx}]`, vid.file);
+            }
+          });
+        }
+      });
     });
 
     try {
@@ -918,9 +954,31 @@ export default function EditArticleForm({ article }: { article: any }) {
 
           {/* Content Block Builder */}
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-              <FaCode className="text-[#ff6a00]" /> {isAr ? "مُنشئ المحتوى" : "Content Builder"}
-            </h2>
+            <div className="flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-gray-100 dark:border-gray-800">
+              <div className="flex items-center gap-2.5">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                  <FaCode className="text-[#ff6a00]" /> {isAr ? "مُنشئ المحتوى" : "Content Builder"}
+                </h2>
+                <span className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-orange-100 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 border border-orange-200 dark:border-orange-800/60">
+                  {activeLang.toUpperCase()} ({contentBlocks.length})
+                </span>
+              </div>
+
+              {blocksByLang[activeLang === "en" ? "ar" : "en"]?.length > 0 && (
+                <button
+                  type="button"
+                  onClick={copyBlocksFromOtherLang}
+                  className="text-xs px-3 py-1.5 rounded-lg bg-orange-500/10 hover:bg-orange-500/20 text-[#ff6a00] border border-orange-500/30 flex items-center gap-1.5 transition-colors font-medium active:scale-95"
+                >
+                  <span>📋</span>
+                  <span>
+                    {isAr
+                      ? `نسخ هيكل البلوكات من (${activeLang === "en" ? "العربية" : "الإنجليزية"})`
+                      : `Copy structure from ${activeLang === "en" ? "Arabic" : "English"}`}
+                  </span>
+                </button>
+              )}
+            </div>
 
             {/* Rendered Blocks */}
             {contentBlocks.map((block, index) => (

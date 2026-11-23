@@ -138,7 +138,47 @@ export default function CreateArticlePage() {
   );
 
   // 🧱 Content Blocks
-  const [contentBlocks, setContentBlocks] = useState<ContentBlock[]>([]);
+  const [blocksByLang, setBlocksByLang] = useState<{
+    en: ContentBlock[];
+    ar: ContentBlock[];
+  }>({
+    en: [],
+    ar: [],
+  });
+
+  const contentBlocks = blocksByLang[activeLang] || [];
+  const setContentBlocks = (
+    action: ContentBlock[] | ((prev: ContentBlock[]) => ContentBlock[])
+  ) => {
+    setBlocksByLang((prev) => {
+      const current = prev[activeLang] || [];
+      const updated = typeof action === "function" ? action(current) : action;
+      return {
+        ...prev,
+        [activeLang]: updated,
+      };
+    });
+  };
+
+  const copyBlocksFromOtherLang = () => {
+    const otherLang = activeLang === "en" ? "ar" : "en";
+    const sourceBlocks = blocksByLang[otherLang] || [];
+    if (sourceBlocks.length === 0) return;
+
+    const cloned: ContentBlock[] = sourceBlocks.map((b, idx) => ({
+      ...b,
+      id: idx + 1,
+      images: b.images.map((img) => ({ ...img })),
+      videos: b.videos.map((vid) => ({ ...vid })),
+      tableData: {
+        headers: [...(b.tableData?.headers || [])],
+        rows: (b.tableData?.rows || []).map((row) => [...row]),
+      },
+    }));
+
+    setContentBlocks(cloned);
+  };
+
   const [nextId, setNextId] = useState(1);
 
   // --- Table Helpers ---
@@ -318,32 +358,35 @@ export default function CreateArticlePage() {
       formData.append(`tags[${index}]`, tag);
     });
 
-    // 3. Content Blocks (polymorphic)
-    contentBlocks.forEach((block, blockIndex) => {
-      formData.append(`content[${blockIndex}][type]`, block.type);
+    // 3. Content Blocks (polymorphic) for both languages
+    (["en", "ar"] as const).forEach((l) => {
+      const blocks = blocksByLang[l] || [];
+      blocks.forEach((block, blockIndex) => {
+        formData.append(`content[${l}][${blockIndex}][type]`, block.type);
 
-      if (block.type === "heading") {
-        formData.append(`content[${blockIndex}][title]`, block.title);
-      } else if (block.type === "text") {
-        formData.append(`content[${blockIndex}][text]`, block.text);
-      } else if (block.type === "code") {
-        formData.append(`content[${blockIndex}][code]`, block.code);
-      } else if (block.type === "diagram") {
-        // Store mermaid code in the `code` field
-        formData.append(`content[${blockIndex}][code]`, block.code);
-      } else if (block.type === "table") {
-        // Serialize table data as JSON string in `text` field
-        formData.append(`content[${blockIndex}][text]`, JSON.stringify(block.tableData));
-      } else if (block.type === "images") {
-        formData.append(`content[${blockIndex}][layout]`, block.layout);
-        block.images.forEach((img, indx) => {
-          formData.append(`content_images[${blockIndex}][${indx}]`, img.file);
-        });
-      } else if (block.type === "video") {
-        block.videos.forEach((vid, indx) => {
-          formData.append(`content_videos[${blockIndex}][${indx}]`, vid.file);
-        });
-      }
+        if (block.type === "heading") {
+          formData.append(`content[${l}][${blockIndex}][title]`, block.title);
+        } else if (block.type === "text") {
+          formData.append(`content[${l}][${blockIndex}][text]`, block.text);
+        } else if (block.type === "code") {
+          formData.append(`content[${l}][${blockIndex}][code]`, block.code);
+        } else if (block.type === "diagram") {
+          // Store mermaid code in the `code` field
+          formData.append(`content[${l}][${blockIndex}][code]`, block.code);
+        } else if (block.type === "table") {
+          // Serialize table data as JSON string in `text` field
+          formData.append(`content[${l}][${blockIndex}][text]`, JSON.stringify(block.tableData));
+        } else if (block.type === "images") {
+          formData.append(`content[${l}][${blockIndex}][layout]`, block.layout);
+          block.images.forEach((img, indx) => {
+            formData.append(`content_images[${l}][${blockIndex}][${indx}]`, img.file);
+          });
+        } else if (block.type === "video") {
+          block.videos.forEach((vid, indx) => {
+            formData.append(`content_videos[${l}][${blockIndex}][${indx}]`, vid.file);
+          });
+        }
+      });
     });
 
     try {
@@ -722,9 +765,31 @@ export default function CreateArticlePage() {
 
           {/* Content Block Builder */}
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-              <FaCode className="text-[#ff6a00]" /> {isAr ? "مُنشئ المحتوى" : "Content Builder"}
-            </h2>
+            <div className="flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-gray-100 dark:border-gray-800">
+              <div className="flex items-center gap-2.5">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                  <FaCode className="text-[#ff6a00]" /> {isAr ? "مُنشئ المحتوى" : "Content Builder"}
+                </h2>
+                <span className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-orange-100 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 border border-orange-200 dark:border-orange-800/60">
+                  {activeLang.toUpperCase()} ({contentBlocks.length})
+                </span>
+              </div>
+
+              {blocksByLang[activeLang === "en" ? "ar" : "en"]?.length > 0 && (
+                <button
+                  type="button"
+                  onClick={copyBlocksFromOtherLang}
+                  className="text-xs px-3 py-1.5 rounded-lg bg-orange-500/10 hover:bg-orange-500/20 text-[#ff6a00] border border-orange-500/30 flex items-center gap-1.5 transition-colors font-medium active:scale-95"
+                >
+                  <span>📋</span>
+                  <span>
+                    {isAr
+                      ? `نسخ هيكل البلوكات من (${activeLang === "en" ? "العربية" : "الإنجليزية"})`
+                      : `Copy structure from ${activeLang === "en" ? "Arabic" : "English"}`}
+                  </span>
+                </button>
+              )}
+            </div>
 
             {/* Rendered Blocks */}
             {contentBlocks.map((block, index) => (
