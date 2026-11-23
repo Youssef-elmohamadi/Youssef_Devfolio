@@ -162,19 +162,44 @@ export default function EditArticleForm({ article }: { article: any }) {
 
   // --- Map Existing Blocks to State Structure ---
   // Supports both new polymorphic blocks (with type) and old legacy blocks (without type)
+  // Also supports multilingual content objects { en: [...], ar: [...] }
   const mapInitialBlocks = (): ContentBlock[] => {
-    if (!article.content || !Array.isArray(article.content)) {
+    let rawBlocks: any[] = [];
+
+    if (Array.isArray(article.content)) {
+      rawBlocks = article.content;
+    } else if (article.content && typeof article.content === "object") {
+      // If content is keyed by locale: { en: [...], ar: [...] }
+      rawBlocks =
+        article.content[activeLang] ||
+        article.content.en ||
+        article.content.ar ||
+        [];
+    } else if (typeof article.content === "string") {
+      try {
+        const parsed = JSON.parse(article.content);
+        if (Array.isArray(parsed)) {
+          rawBlocks = parsed;
+        } else if (parsed && typeof parsed === "object") {
+          rawBlocks = parsed[activeLang] || parsed.en || parsed.ar || [];
+        }
+      } catch {
+        rawBlocks = [];
+      }
+    }
+
+    if (!Array.isArray(rawBlocks) || rawBlocks.length === 0) {
       return [];
     }
 
     // Check if blocks have the new `type` field
-    const hasNewFormat = article.content.some((block: any) => block.type != null);
+    const hasNewFormat = rawBlocks.some((block: any) => block.type != null);
 
     if (hasNewFormat) {
       // New format: each block has a type
-      return article.content.map((block: any, index: number) => ({
+      return rawBlocks.map((block: any, index: number) => ({
         id: index + 1,
-        type: block.type as BlockType,
+        type: (block.type || "text") as BlockType,
         title: block.title || "",
         text: block.text || "",
         code: block.code || "",
@@ -195,6 +220,16 @@ export default function EditArticleForm({ article }: { article: any }) {
               isExisting: true,
             }))
           : [],
+        tableData:
+          block.type === "table" && block.text
+            ? (() => {
+                try {
+                  return JSON.parse(block.text);
+                } catch {
+                  return { headers: [], rows: [] };
+                }
+              })()
+            : { headers: [], rows: [] },
       }));
     }
 
@@ -202,7 +237,7 @@ export default function EditArticleForm({ article }: { article: any }) {
     const blocks: ContentBlock[] = [];
     let blockId = 1;
 
-    article.content.forEach((block: any) => {
+    rawBlocks.forEach((block: any) => {
       // Title -> heading block
       if (block.title) {
         blocks.push({
