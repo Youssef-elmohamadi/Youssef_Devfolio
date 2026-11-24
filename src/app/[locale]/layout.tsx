@@ -18,7 +18,6 @@ const inter = Inter({
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-heading",
-  weight: ["500", "600", "700", "800"],
   display: "swap",
 });
 
@@ -31,7 +30,6 @@ const jetBrainsMono = JetBrains_Mono({
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
   variable: "--font-cairo",
-  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
