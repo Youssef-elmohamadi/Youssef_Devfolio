@@ -73,8 +73,8 @@ export default async function Blog({ params, searchParams }: Props) {
           rel="preload"
           as="image"
           href={`/_next/image?url=${encodeURIComponent(firstArticleImage)}&w=640&q=70`}
-          imageSrcSet={`/_next/image?url=${encodeURIComponent(firstArticleImage)}&w=384&q=70 384w, /_next/image?url=${encodeURIComponent(firstArticleImage)}&w=480&q=70 480w, /_next/image?url=${encodeURIComponent(firstArticleImage)}&w=640&q=70 640w, /_next/image?url=${encodeURIComponent(firstArticleImage)}&w=750&q=70 750w, /_next/image?url=${encodeURIComponent(firstArticleImage)}&w=828&q=70 828w, /_next/image?url=${encodeURIComponent(firstArticleImage)}&w=1080&q=70 1080w`}
-          imageSizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          imageSrcSet={`/_next/image?url=${encodeURIComponent(firstArticleImage)}&w=384&q=70 384w, /_next/image?url=${encodeURIComponent(firstArticleImage)}&w=480&q=70 480w, /_next/image?url=${encodeURIComponent(firstArticleImage)}&w=640&q=70 640w, /_next/image?url=${encodeURIComponent(firstArticleImage)}&w=750&q=70 750w, /_next/image?url=${encodeURIComponent(firstArticleImage)}&w=828&q=70 828w`}
+          imageSizes="(max-width: 640px) 480px, (max-width: 1024px) 50vw, 380px"
           fetchPriority="high"
         />
       )}

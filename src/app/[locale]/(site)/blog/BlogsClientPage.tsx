@@ -87,7 +87,7 @@ const BlogCard = ({
             priority={false}
             fetchPriority={priority ? "high" : "auto"}
             loading={priority ? "eager" : "lazy"}
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            sizes="(max-width: 640px) 480px, (max-width: 1024px) 50vw, 380px"
             quality={70}
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
