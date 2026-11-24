@@ -62,7 +62,7 @@ export default function Blogs({ articles = [] }: { articles?: any[] }) {
                     fill
                     loading="lazy"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    quality={75}
+                    quality={70}
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
