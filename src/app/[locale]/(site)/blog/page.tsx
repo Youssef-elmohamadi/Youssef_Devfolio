@@ -10,6 +10,8 @@ type Props = {
   searchParams: Promise<{ page?: string; category_id?: string }>;
 };
 
+export const revalidate = 3600; // 1 hour edge cache
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const isAr = locale === "ar";
