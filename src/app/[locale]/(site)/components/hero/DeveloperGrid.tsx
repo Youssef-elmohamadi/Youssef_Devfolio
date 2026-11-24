@@ -2,9 +2,11 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState, useCallback } from "react";
-import Particles from "react-tsparticles";
+import dynamic from "next/dynamic";
 import { loadSlim } from "tsparticles-slim";
 import type { Engine } from "tsparticles-engine";
+
+const Particles = dynamic(() => import("react-tsparticles"), { ssr: false });
 
 export default function DeveloperGrid() {
   const { resolvedTheme } = useTheme();
