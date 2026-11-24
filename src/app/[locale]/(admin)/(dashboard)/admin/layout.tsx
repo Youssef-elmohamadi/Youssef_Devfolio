@@ -5,6 +5,8 @@ import { ThemeContextProvider } from "@/app/context/ThemeContext";
 import { generateSEO } from "@/utils/seo";
 import AdminLayoutClient from "./AdminLayoutClient"; 
 
+export const dynamic = "force-dynamic";
+
 export const metadata = generateSEO({
   title: "Admin Dashboard | Youssef Elmohamadi",
   description:
