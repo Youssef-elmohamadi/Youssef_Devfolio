@@ -31,6 +31,7 @@ import { Link } from '@/i18n/routing';
 import { createArticleAction } from "@/actions/articles";
 import { getCategories } from "@/lib/api/categories";
 import LanguageTabs, { SupportedAdminLocale } from "@/app/[locale]/(admin)/components/form/LanguageTabs";
+import TextBlockEditor from "@/app/[locale]/(admin)/components/form/TextBlockEditor";
 import { useLocale } from "next-intl";
 
 // --- Types ---
@@ -427,12 +428,10 @@ export default function CreateArticlePage() {
 
       case "text":
         return (
-          <textarea
+          <TextBlockEditor
             value={block.text}
-            onChange={(e) => updateBlockField(index, "text", e.target.value)}
+            onChange={(val) => updateBlockField(index, "text", val)}
             rows={5}
-            className="w-full bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg p-4 text-sm text-gray-900 dark:text-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-colors resize-y"
-            placeholder="Write your text content here..."
           />
         );
 

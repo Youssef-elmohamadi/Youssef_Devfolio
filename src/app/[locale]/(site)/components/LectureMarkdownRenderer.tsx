@@ -138,9 +138,31 @@ export default function LectureMarkdownRenderer({
     };
 
     const renderInlineTextFormatting = (text: string): React.ReactNode => {
-      // Bold, italic, inline code, links
-      const tokens = text.split(/(\*\*.*?\*\*|\*.*?\*|`.*?`|\[.*?\]\(.*?\))/g);
+      // Bold, italic, inline code, links, [badge]...[/badge], ==...==
+      const tokens = text.split(/(\[badge\][\s\S]*?\[\/badge\]|==[\s\S]*?==|\*\*.*?\*\*|\*.*?\*|`.*?`|\[.*?\]\(.*?\))/g);
       return tokens.map((token, tIdx) => {
+        if (token.startsWith("[badge]") && token.endsWith("[/badge]")) {
+          return (
+            <code
+              key={tIdx}
+              dir="ltr"
+              className="inline-flex items-center px-2 py-0.5 mx-1 rounded-md font-mono text-xs sm:text-sm font-bold bg-primary/10 text-primary border border-primary/25 dark:bg-primary/20 dark:text-orange-400 dark:border-primary/35 shadow-2xs align-baseline select-all"
+            >
+              {token.slice(7, -8)}
+            </code>
+          );
+        }
+        if (token.startsWith("==") && token.endsWith("==")) {
+          return (
+            <code
+              key={tIdx}
+              dir="ltr"
+              className="inline-flex items-center px-2 py-0.5 mx-1 rounded-md font-mono text-xs sm:text-sm font-bold bg-primary/10 text-primary border border-primary/25 dark:bg-primary/20 dark:text-orange-400 dark:border-primary/35 shadow-2xs align-baseline select-all"
+            >
+              {token.slice(2, -2)}
+            </code>
+          );
+        }
         if (token.startsWith("**") && token.endsWith("**")) {
           return <strong key={tIdx} className="font-bold text-gray-900 dark:text-white">{token.slice(2, -2)}</strong>;
         }
