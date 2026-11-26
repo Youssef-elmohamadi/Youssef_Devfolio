@@ -32,6 +32,22 @@ import { createArticleAction } from "@/actions/articles";
 import { getCategories } from "@/lib/api/categories";
 import LanguageTabs, { SupportedAdminLocale } from "@/app/[locale]/(admin)/components/form/LanguageTabs";
 import TextBlockEditor from "@/app/[locale]/(admin)/components/form/TextBlockEditor";
+import SortableBlockItem from "@/app/[locale]/(admin)/components/form/SortableBlockItem";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { useLocale } from "next-intl";
 
 // --- Types ---
@@ -274,6 +290,29 @@ export default function CreateArticlePage() {
     if (targetIndex < 0 || targetIndex >= newBlocks.length) return;
     [newBlocks[index], newBlocks[targetIndex]] = [newBlocks[targetIndex], newBlocks[index]];
     setContentBlocks(newBlocks);
+  };
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 5,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
+    setContentBlocks((prev) => {
+      const oldIndex = prev.findIndex((b) => b.id === active.id);
+      const newIndex = prev.findIndex((b) => b.id === over.id);
+      if (oldIndex === -1 || newIndex === -1) return prev;
+      return arrayMove(prev, oldIndex, newIndex);
+    });
   };
 
   const updateBlockField = (
@@ -790,53 +829,39 @@ export default function CreateArticlePage() {
               )}
             </div>
 
-            {/* Rendered Blocks */}
-            {contentBlocks.map((block, index) => (
-              <div
-                key={block.id}
-                className={`bg-white dark:bg-[#0a0a0a] border rounded-xl p-5 relative group transition-all ${BLOCK_TYPE_COLORS[block.type]} hover:shadow-md`}
+            {/* Rendered Blocks with Drag & Drop Sorting */}
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext
+                items={contentBlocks.map((b) => b.id)}
+                strategy={verticalListSortingStrategy}
               >
-                {/* Block Header */}
-                <div className="flex justify-between items-center mb-4">
-                  <div className="flex items-center gap-2">
-                    <span className={`text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full ${BLOCK_TYPE_BADGE_COLORS[block.type]}`}>
-                      {BLOCK_TYPE_LABELS[block.type]}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <button
-                      type="button"
-                      onClick={() => moveBlock(index, "up")}
-                      disabled={index === 0}
-                      className="p-1.5 rounded text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                      title="Move up"
+                <div className="space-y-4">
+                  {contentBlocks.map((block, index) => (
+                    <SortableBlockItem
+                      key={block.id}
+                      id={block.id}
+                      index={index}
+                      totalBlocks={contentBlocks.length}
+                      blockType={block.type}
+                      blockTypeLabel={BLOCK_TYPE_LABELS[block.type]}
+                      blockTypeBadgeColor={BLOCK_TYPE_BADGE_COLORS[block.type]}
+                      blockTypeColor={BLOCK_TYPE_COLORS[block.type]}
+                      blockTypeIcon={BLOCK_TYPES.find((b) => b.type === block.type)?.icon}
+                      isAr={isAr}
+                      onMoveUp={() => moveBlock(index, "up")}
+                      onMoveDown={() => moveBlock(index, "down")}
+                      onRemove={() => removeBlock(index)}
                     >
-                      <FaChevronUp size={12} />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => moveBlock(index, "down")}
-                      disabled={index === contentBlocks.length - 1}
-                      className="p-1.5 rounded text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                      title="Move down"
-                    >
-                      <FaChevronDown size={12} />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => removeBlock(index)}
-                      className="p-1.5 rounded text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
-                      title="Remove block"
-                    >
-                      <FaTrash size={12} />
-                    </button>
-                  </div>
+                      {renderBlockEditor(block, index)}
+                    </SortableBlockItem>
+                  ))}
                 </div>
-
-                {/* Block Content Editor */}
-                {renderBlockEditor(block, index)}
-              </div>
-            ))}
+              </SortableContext>
+            </DndContext>
 
             {/* Add Block Toolbar */}
             <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl p-4 hover:border-[#ff6a00]/50 transition-colors">
