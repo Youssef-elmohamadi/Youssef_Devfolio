@@ -17,7 +17,6 @@ import CodeBlockWithPreview from "../../components/CodeBlockWithPreview";
 import ArticleTable from "../../components/ArticleTable";
 import ArticleEndHelper from "../../components/ArticleEndHelper";
 import ArticleEndSentinel from "../../components/ArticleEndSentinel";
-import ArticleTextRenderer, { renderInlineRichText } from "../../components/ArticleTextRenderer";
 import { useTheme } from "@/app/context/ThemeContext";
 import { formatRelativeTime } from "@/utils/formatDate";
 import { useTranslations, useLocale } from "next-intl";
@@ -227,7 +226,7 @@ const SingleBlogClient = ({
                               className="text-xl sm:text-2xl font-bold mt-8 mb-4 flex items-center gap-2.5"
                             >
                               <span className="w-1.5 h-6 bg-primary rounded-full inline-block"></span>
-                              {renderInlineRichText(block.title || "", isRtl)}
+                              {block.title}
                             </h2>
                           </div>
                         </div>
@@ -235,7 +234,9 @@ const SingleBlogClient = ({
                     case "text":
                       return (
                         <div key={block.id} className="mb-6 group/block">
-                          <ArticleTextRenderer text={block.text || ""} locale={locale} />
+                          <p className="text-[15px] sm:text-base leading-7 mb-4 whitespace-pre-line text-slate-700 dark:text-slate-300">
+                            {block.text}
+                          </p>
                         </div>
                       );
                     case "code":
@@ -332,14 +333,16 @@ const SingleBlogClient = ({
                           className="text-xl sm:text-2xl font-bold mt-8 mb-4 flex items-center gap-2.5"
                         >
                           <span className="w-1.5 h-6 bg-primary rounded-full inline-block"></span>
-                          {renderInlineRichText(block.title, isRtl)}
+                          {block.title}
                         </h2>
                       </div>
                     )}
 
                     {/* النصوص */}
                     {block.text && (
-                      <ArticleTextRenderer text={block.text} locale={locale} />
+                      <p className="text-[15px] sm:text-base leading-7 mb-4 whitespace-pre-line text-slate-700 dark:text-slate-300">
+                        {block.text}
+                      </p>
                     )}
 
                     {/* الأكواد البرمجية */}
