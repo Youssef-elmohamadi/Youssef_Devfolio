@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import katex from "katex";
 import "katex/dist/katex.min.css";
 import CodeBlockWithPreview from "./CodeBlockWithPreview";
+import { renderInlineRichText } from "./ArticleTextRenderer";
 
 const MermaidDiagram = dynamic(
   () => import("./MermaidDiagram"),
@@ -138,42 +139,7 @@ export default function LectureMarkdownRenderer({
     };
 
     const renderInlineTextFormatting = (text: string): React.ReactNode => {
-      // Bold, italic, inline code, links
-      const tokens = text.split(/(\*\*.*?\*\*|\*.*?\*|`.*?`|\[.*?\]\(.*?\))/g);
-      return tokens.map((token, tIdx) => {
-        if (token.startsWith("**") && token.endsWith("**")) {
-          return <strong key={tIdx} className="font-bold text-gray-900 dark:text-white">{token.slice(2, -2)}</strong>;
-        }
-        if (token.startsWith("*") && token.endsWith("*") && !token.startsWith("**")) {
-          return <em key={tIdx} className="italic text-gray-800 dark:text-gray-200">{token.slice(1, -1)}</em>;
-        }
-        if (token.startsWith("`") && token.endsWith("`")) {
-          return (
-            <code
-              key={tIdx}
-              dir="ltr"
-              className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-800 font-mono text-sm text-primary border border-gray-200 dark:border-gray-700 font-semibold"
-            >
-              {token.slice(1, -1)}
-            </code>
-          );
-        }
-        const linkMatch = token.match(/\[(.*?)\]\((.*?)\)/);
-        if (linkMatch) {
-          return (
-            <a
-              key={tIdx}
-              href={linkMatch[2]}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary hover:underline font-medium"
-            >
-              {linkMatch[1]}
-            </a>
-          );
-        }
-        return token;
-      });
+      return renderInlineRichText(text, isArabic(text));
     };
 
     while (i < lines.length) {
